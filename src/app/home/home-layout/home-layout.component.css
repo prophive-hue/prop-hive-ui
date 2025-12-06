@@ -1,0 +1,80 @@
+.hero {
+  padding: 4rem 0;
+}
+
+.feature-icon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 0.75rem;
+  background-color: rgba(13, 110, 253, 0.1);
+  color: #0d6efd;
+}
+
+.gradient-text {
+  background: linear-gradient(to right, white 0%, goldenrod 40%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-slideshow {
+  position: relative;
+  color: white;
+  padding: 2rem;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* Gradient overlay */
+.gradient-slideshow::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(to right, rgba(42, 40, 40, 0.85) 30%, rgba(101, 96, 96, 0.85) 99%);
+  z-index: 2;
+}
+
+/* Image slideshow container */
+.slideshow-images {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+}
+
+.slideshow-images img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: fadeSlideshow 20s infinite;
+}
+
+.slideshow-images img:nth-child(1) { animation-delay: 0s; }
+.slideshow-images img:nth-child(2) { animation-delay: 5s; }
+.slideshow-images img:nth-child(3) { animation-delay: 10s; }
+.slideshow-images img:nth-child(4) { animation-delay: 15s; }
+
+@keyframes fadeSlideshow {
+  0%   { opacity: 0; }
+  5%   { opacity: 1; }
+  25%  { opacity: 1; }
+  30%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Content stays on top */
+.gradient-slideshow > .container {
+  position: relative;
+  z-index: 3;
+}
+
+
+.scroll-left-btn {
+  left: 15%; /* Adjust this value to move the button closer to the cards */
+}
+
+.scroll-right-btn {
+  right: 15%; /* Adjust this value to move the button closer to the cards */
+}

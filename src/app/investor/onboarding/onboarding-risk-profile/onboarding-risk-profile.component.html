@@ -1,0 +1,62 @@
+<div class="position-relative container p-4 border border-1 rounded-1" style="height: 50vh; overflow: auto;">
+  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+
+  <div class="d-flex align-items-start gap-3 mb-3">
+    <i class="bi bi-fan text-primary fs-2"></i>
+    <div>
+      <h6 class="mb-1">Risk & Investment Profile</h6>
+      <small class="text-muted">Tell us about your investment preferences and risk tolerance</small>
+    </div>
+  </div>
+
+
+  <form [formGroup]="riskProfileForm">
+
+    <!-- Risk Appetite -->
+    <div class="mb-3">
+      <label class="form-label fw-bold">Risk Appetite</label>
+      <small class="text-muted d-block">How much risk are you comfortable with in your investments?</small>
+      <select class="form-select" formControlName="riskAppetite">
+        <option value="">Select</option>
+        <option value="Low">Low - I prefer stable returns with minimal risk</option>
+        <option value="Medium">Medium - I can accept moderate fluctuations for better returns</option>
+        <option value="High">High - I'm comfortable with significant fluctuations for potentially higher returns</option>
+      </select>
+    </div>
+
+    <!-- Investment Goals -->
+    <div class="mb-3">
+      <label class="form-label mb-1 fw-bold">Investment Goals</label>
+      <p class="text-muted fs-6 mb-0"><small>Select one goal that best describes your objective.</small></p>
+
+      <div *ngFor="let goal of investmentGoals">
+        <input type="radio" [value]="goal" formControlName="investmentGoals" [id]="goal">
+        <label [for]="goal">{{ goal }}</label><br>
+      </div>
+    </div>
+
+    <!-- Investment Experience -->
+    <div class="mb-3">
+      <label class="form-label fw-bold">Investment Experience Level</label>
+      <select class="form-select" formControlName="investmentExperience">
+        <option value="">Select your experience level</option>
+        <option value="Beginner">Beginner - New to investing</option>
+        <option value="Intermediate">Intermediate - Some investment experience</option>
+        <option value="Expert">Expert - Experienced investor</option>
+      </select>
+    </div>
+
+  </form>
+
+
+</div>
+
+<div class="d-flex justify-content-between">
+  <button (click)="submitRiskProfile('6820d4faa1179f0cb69dd6b3')" class="btn btn-sm btn-light m-1"><i class="bi bi-floppy"></i> Save Progress</button>
+
+  <div>
+    <button (click)="previousStep()" class="btn btn-sm btn-light m-1"><i class="bi bi-arrow-left"></i> Back</button>
+    <button (click)="nextStep()" class="btn btn-sm btn-primary m-1"><i class="bi bi-arrow-right"></i> Next</button>
+  </div>
+</div>

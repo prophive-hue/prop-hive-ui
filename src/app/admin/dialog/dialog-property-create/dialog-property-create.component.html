@@ -1,0 +1,111 @@
+<div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="visible"
+     style="background-color: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Property</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="hide()"></button>
+      </div>
+
+      <div class="modal-body" style="height: 70vh; overflow-y: scroll;">
+        <p class="text-muted">Fill in the details below to add a new property investment opportunity.</p>
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <div class="mb-3">
+            <label class="form-label">Property Title</label>
+            <input type="text" class="form-control" formControlName="title"/>
+            <div *ngIf="form.get('title')?.touched && form.get('title')?.invalid" class="text-danger">
+              <small *ngIf="form.get('title')?.errors?.['required']">Title is required.</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="row">
+              <div class="col-6">
+                <label class="form-label">Location</label>
+                <input type="text" class="form-control" formControlName="location"/>
+                <div *ngIf="form.get('location')?.touched && form.get('location')?.invalid" class="text-danger">
+                  <small *ngIf="form.get('location')?.errors?.['required']">Location is required.</small>
+                </div>
+              </div>
+              <div class="col-6">
+                <label class="form-label">Category</label>
+                <select class="form-select" formControlName="category">
+                  <option value="RESIDENTIAL">Residential</option>
+                  <option value="COMMERCIAL">Commercial</option>
+                  <option value="INDUSTRIAL">Industrial</option>
+                  <option value="LAND">Land</option>
+                </select>
+                <div *ngIf="form.get('category')?.touched && form.get('category')?.invalid" class="text-danger">
+                  <small *ngIf="form.get('category')?.errors?.['required']">Category is required.</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea rows="3" class="form-control" formControlName="description"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Developer</label>
+            <input type="text" class="form-control" formControlName="developer"/>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Expected ROI (%)</label>
+            <input type="number" class="form-control" formControlName="expectedRoi"/>
+            <div *ngIf="form.get('expectedRoi')?.touched && form.get('expectedRoi')?.invalid" class="text-danger">
+              <small *ngIf="form.get('expectedRoi')?.errors?.['required']">Expected ROI is required.</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Total Investment Needed</label>
+            <input type="number" class="form-control" formControlName="totalInvestment"/>
+            <div *ngIf="form.get('totalInvestment')?.touched && form.get('totalInvestment')?.invalid"
+                 class="text-danger">
+              <small *ngIf="form.get('totalInvestment')?.errors?.['required']">Total investment is required.</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select class="form-select" formControlName="status">
+              <option value="NEW_DEVELOPMENT">New Development</option>
+              <option value="PRE_SALE_INVESTMENT">Pre-Sale Investment</option>
+              <option value="UNDER_CONSTRUCTION">Under Construction</option>
+              <option value="JOINT_VENTURES">Joint Ventures</option>
+            </select>
+          </div>
+
+
+          <div class="mb-3">
+            <label class="form-label">Property Images</label>
+            <input type="file" multiple accept="image/*" (change)="onFileSelected($event)" class="form-control"/>
+          </div>
+
+          <div class="row mt-3" *ngIf="imagePreviews.length > 0">
+            <div class="col-4 mb-3" *ngFor="let img of imagePreviews; let i = index">
+              <div class="position-relative">
+                <img [src]="img" class="img-fluid rounded border w-100" style="height: 150px; object-fit: cover;" />
+
+                <button type="button"
+                        class="btn btn-sm btn-danger position-absolute"
+                        style="top: 5px; right: 5px; border-radius: 10%; padding: 0.25rem 0.5rem;"
+                        (click)="removeImage(i)">
+                  &times;
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="hide()">Close</button>
+        <button type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="submit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

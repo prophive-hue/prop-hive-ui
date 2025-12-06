@@ -1,0 +1,93 @@
+<app-resource-dialog #dialog (onClose)="handleCreate($event)"></app-resource-dialog>
+
+<app-gallery #pictures [imageUrls]="selectedPropertyImages"></app-gallery>
+
+<div class="position-relative">
+  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+
+  <div class="card">
+    <p-toolbar styleClass="mb-6">
+      <ng-template #start>
+        <h4>Managed Properties</h4>
+      </ng-template>
+
+      <ng-template #end>
+        <p-button severity="secondary" label="Add New Property" icon="pi pi-plus-circle" class="mr-2"
+                  (click)="dialog?.show()"/>
+
+      </ng-template>
+    </p-toolbar>
+
+
+    <div class="container-fluid table-responsive">
+
+      <div class="my-2">
+        <app-search-button (search)="triggerSearchInput($event)"></app-search-button>
+      </div>
+
+      <table class="w-100 table table-striped">
+        <thead>
+        <tr class="text-muted">
+          <th>Property</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>ROI (%)</th>
+          <th>Progress</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+          @if (properties.length > 0) {
+            @for (property of properties; track properties) {
+              <tr>
+                <td>
+                  {{ property.title }}
+                  <p class="text-muted">{{ property.description | slice:0:50 }}...</p>
+                </td>
+                <td>
+                  <div>
+                    <span>{{ property.category }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <p-tag [value]="property.status" [severity]="getSeverity(property.status)"/>
+                  </div>
+                </td>
+                <td>
+                  {{ property.expectedRoi }}
+                </td>
+                <td>
+                  <p-progressbar [value]="50">
+                    <ng-template #content let-value>
+                      <span>{{ value }}%</span>
+                    </ng-template>
+                  </p-progressbar>
+                </td>
+
+                <td>
+                  <p>
+                    <button class="btn btn-sm btn-dark" (click)="openPropertyGallery(property)"><i
+                      class="bi bi-eye-fill"></i>
+                    </button>
+                  </p>
+                </td>
+              </tr>
+            }
+          } @else {
+            <tr>
+              <td class="text-danger fw-bold fst-italic" colspan="6">No properties found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <app-paginator (pagination)="paginate($event)" [totalElements]="totalElements"></app-paginator>
+  </div>
+</div>
+
+<p-toast position="bottom-center" key="tl"/>
+

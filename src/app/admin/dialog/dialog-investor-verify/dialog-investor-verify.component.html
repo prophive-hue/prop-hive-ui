@@ -1,0 +1,68 @@
+<div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="visible"
+     style="background-color: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Verify New Investor</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="hide()"></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="text-muted">Enter investor details to start the verification process.
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+          <div class="border rounded-1 p-3">
+
+            <div class="mb-3">
+
+              <label class="form-label">Investor Email</label>
+              <input type="text" placeholder="investor@example.com" class="form-control" formControlName="email"/>
+              <div *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="text-danger">
+                <small *ngIf="form.get('email')?.errors?.['required']">Investor email is required.</small>
+              </div>
+
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">ID Number / Passport</label>
+              <input type="text" placeholder="Enter ID or passport number" class="form-control"
+                     formControlName="identificationNumber"/>
+              <div *ngIf="form.get('identificationNumber')?.touched && form.get('identificationNumber')?.invalid"
+                   class="text-danger">
+                <small *ngIf="form.get('identificationNumber')?.errors?.['required']">Investor ID Number / Passport number is
+                  required.</small>
+              </div>
+
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">ID Number / Passport</label>
+
+              <div class="d-flex justify-content-around">
+                <div class="flex-grow-0 mx-3">
+                  <input type="checkbox" class="form-check-input">
+                </div>
+
+                <div class="flex-grow-1">
+                  <p>Send verification email</p>
+                  <p class="text-muted">This will send a verification email to the investor with instructions.</p>
+                </div>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="hide()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="submit()">Verify Investor</button>
+      </div>
+    </div>
+  </div>
+</div>

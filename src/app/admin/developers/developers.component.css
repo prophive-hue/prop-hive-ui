@@ -1,0 +1,14 @@
+.card-container {
+  display: flex;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+
+p-card {
+  flex: 1 1 10%;
+  max-width: 340px;
+}
+
+:host ::ng-deep .p-toolbar {
+  border: none !important;
+}

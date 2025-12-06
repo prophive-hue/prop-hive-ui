@@ -1,0 +1,68 @@
+<app-dialog-deduction-create #dialog (onClose)="handleCreate($event)"></app-dialog-deduction-create>
+
+<div class="position-relative">
+  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+
+  <div class="card">
+    <p-toolbar styleClass="mb-6">
+      <ng-template #start>
+        <h4>Deductions</h4>
+      </ng-template>
+
+      <ng-template #end>
+        <p-button severity="secondary" label="Add New Deduction" icon="pi pi-plus-circle" class="mr-2"
+                  (click)="dialog?.show()"/>
+
+      </ng-template>
+    </p-toolbar>
+
+    <div class="container-fluid">
+
+      <div class="my-2">
+        <app-search-button (search)="triggerSearchInput($event)"></app-search-button>
+      </div>
+
+      <table class="table table-responsive table-striped">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+          @if (deductions.length > 0) {
+            @for (deduction of deductions; track deductions) {
+              <tr>
+                <td>{{ deduction.name }}</td>
+                <td>
+                  <div>
+                    <span>{{ deduction.value }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <span>{{ deduction.description }}</span>
+                  </div>
+                </td>
+              </tr>
+            }
+          } @else {
+            <tr>
+              <td class="text-danger fw-bold fst-italic" colspan="3">No deductions found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+    </div>
+
+    <app-paginator (pagination)="paginate($event)" [totalElements]="totalElements"></app-paginator>
+  </div>
+
+</div>
+
+
+<p-toast position="bottom-center" key="tl"/>

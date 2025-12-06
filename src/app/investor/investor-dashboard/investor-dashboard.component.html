@@ -1,0 +1,160 @@
+<div class="container pb-4">
+  <h3 class="mt-5">Investor Dashboard</h3>
+
+  <div>
+    <p-card [styleClass]="'bg-light'">
+      <div>
+        <span><i class="bi bi-clipboard2-check text-primary"></i>  Complete your investor profile to access all investment opportunities.</span>
+        <button (click)="openProfileCompletion()" class="btn btn-primary float-end">Complete Profile <i
+          class="bi bi-arrow-right"></i></button>
+      </div>
+    </p-card>
+  </div>
+
+
+  <div class="mt-4 mb-4" style="display: flex; gap: 1rem; justify-content: space-between; flex-wrap: wrap;">
+    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '250px', 'max-width': '500px' }">
+      <i class="bi-wallet float-end"></i>
+      <p>Total Investments</p>
+      <div>
+        <h5>R 250,000</h5>
+      </div>
+    </p-card>
+
+    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '250px', 'max-width': '500px' }">
+
+      <i style="color: gold" class="bi-graph-up-arrow float-end"></i>
+      <p>Total Returns</p>
+
+      <h5>R 32,500</h5>
+    </p-card>
+
+    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '250px', 'max-width': '500px' }">
+      <i class="bi bi-radioactive float-end"></i>
+      <p>Active Properties</p>
+      <div>
+        <h5>3</h5>
+      </div>
+    </p-card>
+  </div>
+
+
+  <div class="mt-4 mb-4" style="display: flex; gap: 1rem; justify-content: space-between; flex-wrap: wrap;">
+    <p-card [ngStyle]="{ 'flex': '2', 'min-width': '250px', 'max-width': '800px' }">
+      <h5><i class="bi bi-calculator"></i> Investment Calculator </h5>
+
+      <div class="form-group">
+        <label class="form-label">Investment Amount</label>
+        <input (ngModelChange)="onInvestmentChange($event)" [(ngModel)]="investmentAmount" class="form-control"
+               type="number" placeholder="Enter amount in ZAR">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">ROI</label>
+        <input (ngModelChange)="onRoiChange($event)" [(ngModel)]="roi" class="form-control" type="number"
+               placeholder="Enter ROI %">
+        <i class="text-muted">* This is an estimated ROI and actual returns may vary</i>
+      </div>
+
+      <div class="form-group mb-3">
+        <label class="form-label">Term (Months)</label>
+        <input (ngModelChange)="onTermChange($event)" [(ngModel)]="term" class="form-control" type="number"
+               placeholder="">
+      </div>
+
+
+      @if (showInvestmentSummary) {
+        <div>
+          <p-card [styleClass]="'bg-light mb-4'"
+                  [ngStyle]="{ 'flex': '1', 'min-width': '250px', 'max-width': '800px' }">
+            <h6>Investment Term Summary</h6>
+            <span>Investment period: <strong>{{ term }} months</strong></span>
+            <p>Annual ROI: <strong>{{ roi }} %</strong></p>
+          </p-card>
+
+          <p-card [styleClass]="'bg-light'" [ngStyle]="{ 'flex': '1', 'min-width': '250px', 'max-width': '800px' }">
+            <h6>Return Calculation Breakdown</h6>
+
+            <div class="d-flex justify-content-between">
+              <span>Gross Return (Investment * ROI):</span>
+              <span>{{ grossReturn | number:'1.2-2' }}</span>
+            </div>
+
+            <hr class="text-primary">
+
+            <h6>Platform Deductions</h6>
+
+            @for (deduction of deductions; track deductions) {
+              <div class="d-flex justify-content-between">
+                <div>
+                  <span>{{ deduction.name }} @if (deduction.type == 'Percentage') {
+                    <span> ({{ deduction.value }}%) </span>
+                  } @else {
+                    <span>({{ deduction.value }}R) </span>
+                  } </span>
+                </div>
+
+                <span>-R {{ (deduction.value / 100) * grossReturn | number:'1.2-2' }}</span>
+
+              </div>
+            }
+
+            <hr class="text-primary">
+
+            <div class="d-flex justify-content-between">
+              <h6>Total Deductions:</h6>
+              <span class="text-danger">{{ totalDeductions | currency:'R':'symbol':'1.2-2':'en-ZA' }}</span>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <h6>Your Net Return:</h6>
+              <span class="text-success">{{ nettReturns | currency:'R':'symbol':'1.2-2':'en-ZA' }}</span>
+            </div>
+
+          </p-card>
+
+          <div class="mt-4">
+            <h6>Investment Returns Summary</h6>
+            <div class="mt-4 mb-4" style="display: flex; gap: 1rem; justify-content: space-between; flex-wrap: wrap;">
+
+              <p-card [ngStyle]="{ 'flex': '1', 'min-width': '60px', 'max-width': '500px' }">
+                <p>Gross Return</p>
+                <h6 class="text-primary">{{ grossReturn | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h6>
+              </p-card>
+
+              <p-card [ngStyle]="{ 'flex': '1', 'min-width': '60px', 'max-width': '500px' }">
+                <p>Total Deductions</p>
+                <h6 class="text-danger">{{ totalDeductions | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h6>
+              </p-card>
+
+              <p-card [ngStyle]="{ 'flex': '1', 'min-width': '60px', 'max-width': '500px' }">
+                <p>Net Return</p>
+                <h6 class="text-success">{{ nettReturns | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h6>
+              </p-card>
+
+              <p-card [ngStyle]="{ 'flex': '1', 'min-width': '60px', 'max-width': '500px' }">
+                <p>Monthly Net</p>
+                <h6>{{ monthlyNett | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h6>
+              </p-card>
+
+              <p-card [ngStyle]="{ 'flex': '1', 'min-width': '60px', 'max-width': '500px' }">
+                <p>Total Value</p>
+                <h6>{{ totalValue | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h6>
+              </p-card>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <i class="text-danger mt-3">Enter valid investment values to see investment returns summary</i>
+      }
+
+    </p-card>
+    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '250px', 'max-width': '800px' }">
+      <h5>Recent Investments</h5>
+      <span>No investments yet. Start investing to see your portfolio here.</span>
+    </p-card>
+
+  </div>
+
+</div>
+

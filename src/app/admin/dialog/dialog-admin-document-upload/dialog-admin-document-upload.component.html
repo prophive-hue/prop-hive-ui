@@ -1,0 +1,79 @@
+<div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="visible"
+     style="background-color: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="height: 200px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload Document</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="hide()"></button>
+      </div>
+
+      <div class="modal-body" style="height: 70vh; overflow-y: scroll;">
+        <p class="text-muted">Upload a new document to the platform.
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+          <div class="border rounded-1 p-3">
+
+            <div class="mb-3 row">
+
+              <div class="col-12">
+                <label class="form-label">Document Name</label>
+                <input type="text" class="form-control" formControlName="name"/>
+                <div *ngIf="form.get('name')?.touched && form.get('name')?.invalid" class="text-danger">
+                  <small *ngIf="form.get('name')?.errors?.['required']">Document name is required.</small>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="mb-3 row">
+
+              <div class="col-12">
+                <label class="form-label">Document Type</label>
+                <input type="text" class="form-control" formControlName="type"/>
+                <div *ngIf="form.get('type')?.touched && form.get('type')?.invalid" class="text-danger">
+                  <small *ngIf="form.get('type')?.errors?.['required']">Document type is required.</small>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="mb-3 row">
+
+              <div class="col-12">
+                <label class="form-label">Category</label>
+
+                <select class="form-select" formControlName="category">
+                  @for (category of categories; track categories) {
+                    <option [value]="category.value">{{ category.name }}</option>
+                  }
+                </select>
+                <div *ngIf="form.get('category')?.touched && form.get('category')?.invalid" class="text-danger">
+                  <small *ngIf="form.get('category')?.errors?.['required']">Document type is required.</small>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="mb-3">
+              <label class="form-label">File</label>
+              <input type="file" class="form-control" formControlName="fileBase64" (change)="onFileChange($event)">
+              <div *ngIf="form.get('fileBase64')?.touched && form.get('description')?.invalid"
+                   class="text-danger">
+                <small *ngIf="form.get('fileBase64')?.errors?.['required']">Document file is required.</small>
+              </div>
+            </div>
+
+          </div>
+
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="hide()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="submit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

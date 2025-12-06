@@ -1,0 +1,225 @@
+<div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="visible"
+     style="background-color: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Onboard New Developer</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="hide()"></button>
+      </div>
+
+      <div class="modal-body" style="height: 70vh; overflow-y: scroll;">
+        <p class="text-muted">Fill in the details below to add a new property developer
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+          <div class="border rounded-1 p-3">
+            <h6>Company Information</h6>
+
+            <div class="mb-3 row">
+
+              <div class="col-6">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" formControlName="companyName"/>
+                <div *ngIf="form.get('companyName')?.touched && form.get('companyName')?.invalid" class="text-danger">
+                  <small *ngIf="form.get('companyName')?.errors?.['required']">Company name is required.</small>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <label class="form-label">Email</label>
+                <input type="text" class="form-control" formControlName="companyEmail"/>
+                <div *ngIf="form.get('companyEmail')?.touched && form.get('companyEmail')?.invalid" class="text-danger">
+                  <small *ngIf="form.get('companyEmail')?.errors?.['required']">Company email is required.</small>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="mb-3 row">
+
+              <div class="col-6">
+                <label class="form-label">Phone</label>
+                <input type="text" class="form-control" formControlName="companyPhone"/>
+                <div *ngIf="form.get('companyPhone')?.touched && form.get('companyPhone')?.invalid" class="text-danger">
+                  <small *ngIf="form.get('companyPhone')?.errors?.['required']">Company phone number is
+                    required.</small>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <label class="form-label">Type</label>
+                <select class="form-select" formControlName="companyType">
+                  <option value="PROPERTY_DEVELOPER">Property Developer</option>
+                  <option value="CONSTRUCTION_COMPANY">Construction Company</option>
+                  <option value="REAL_ESTATE_AGENCY">Real Estate Agency</option>
+                  <option value="ARCHITECTURE_FIRM">Architecture Firm</option>
+                </select>
+
+                <div *ngIf="form.get('companyType')?.touched && form.get('companyType')?.invalid" class="text-danger">
+                  <small *ngIf="form.get('companyType')?.errors?.['required']">Company type is required.</small>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="mb-3 row">
+
+              <div class="col-6">
+                <label class="form-label">Years Of Experience</label>
+
+                <select class="form-select" formControlName="yearsExperience">
+                  <option value="ZERO_TO_TWO">0-2 years</option>
+                  <option value="THREE_TO_FIVE">3-5 years</option>
+                  <option value="SIX_TO_TEN">6-10 years</option>
+                  <option value="TEN_PLUS">10+ years</option>
+                </select>
+
+                <div *ngIf="form.get('yearsExperience')?.touched && form.get('yearsExperience')?.invalid"
+                     class="text-danger">
+                  <small *ngIf="form.get('yearsExperience')?.errors?.['required']">Years of experience is
+                    required.</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              <textarea rows="3" class="form-control" formControlName="description"></textarea>
+            </div>
+
+          </div>
+
+          <div class="border rounded-1 p-3 mt-3">
+            <div class="row mt-4">
+              <!-- Left Column: Upload Section -->
+              <div class="col-6">
+                <h6>Company Logo</h6>
+                <p>Upload Logo</p>
+                <input type="file" (change)="onFileSelected($event)" accept="image/*" class="form-control"/>
+                <p style="color: #cccccc" class="mt-1">Upload company logo (JPG, PNG, SVG)</p>
+              </div>
+
+              <!-- Right Column: Square Preview Box -->
+              <div class="col-6 d-flex align-items-center justify-content-center">
+                <div class="bg-light"
+                     style="width: 250px; height: 250px; border: 2px dashed #ccc; display: flex; align-items: center; justify-content: center;"
+                >
+                  <img
+                    *ngIf="previewUrl"
+                    [src]="previewUrl"
+                    alt="Logo Preview"
+                    style="max-width: 100%; max-height: 100%;"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            iv class="border rounded-1 p-3 mt-3">
+            <h6>Web Presence</h6>
+            <div class="row">
+              <div class="col-6">
+                <label class="form-label">Website</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-globe"></i></span>
+                  <input class="form-control" placeholder="https://yourcompany.com">
+                </div>
+                <p>Optional</p>
+              </div>
+
+              <div class="col-6">
+                <label class="form-label">LinkedIn</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-linkedin"></i></span>
+                  <input class="form-control" placeholder="https://linkedin.com/company/">
+                </div>
+                <p>Optional</p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6">
+                <label class="form-label">Instagram</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-instagram"></i></span>
+                  <input class="form-control" placeholder="https://instagram.com/">
+                </div>
+                <p>Optional</p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="border rounded-1 p-3 mt-3">
+            <h6>Qualifications & Experience</h6>
+
+            <div class="col-12">
+              <label class="form-label">Portfolio Projects</label>
+              <textarea class="form-control"
+                        placeholder="List notable projects you've completed (name, location, value, completion date)"></textarea>
+            </div>
+
+          </div>
+
+
+          <p-divider/>
+
+          <div class="border rounded p-3">
+            <h6>Company User</h6>
+
+            <div class="mb-3 row">
+
+              <div class="col-6">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" formControlName="userFirstName"/>
+                <div *ngIf="form.get('userFirstName')?.touched && form.get('userFirstName')?.invalid"
+                     class="text-danger">
+                  <small *ngIf="form.get('userFirstName')?.errors?.['required']">User first name is required.</small>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <label class="form-label">Surname</label>
+                <input type="text" class="form-control" formControlName="userSurname"/>
+                <div *ngIf="form.get('userSurname')?.touched && form.get('userSurname')?.invalid" class="text-danger">
+                  <small *ngIf="form.get('userSurname')?.errors?.['required']">User surname is required.</small>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="mb-3 row">
+
+              <div class="col-6">
+                <label class="form-label">Email</label>
+                <input type="text" class="form-control" formControlName="userEmail"/>
+                <div *ngIf="form.get('userEmail')?.touched && form.get('userEmail')?.invalid" class="text-danger">
+                  <small *ngIf="form.get('userEmail')?.errors?.['required']">User email is required.</small>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <label class="form-label">Phone</label>
+                <input type="text" class="form-control" formControlName="userPhone"/>
+                <div *ngIf="form.get('userPhone')?.touched && form.get('userPhone')?.invalid" class="text-danger">
+                  <small *ngIf="form.get('userPhone')?.errors?.['required']">Phone number is required.</small>
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="hide()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="submit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

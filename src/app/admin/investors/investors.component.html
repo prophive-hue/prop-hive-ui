@@ -1,0 +1,111 @@
+<app-dialog-investor-verify #dialog (onClose)="handleVerify($event)"></app-dialog-investor-verify>
+
+
+<div class="position-relative">
+  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+  <div class="card">
+    <p-toolbar styleClass="mb-6">
+      <ng-template #start>
+        <h4>Investor Management</h4>
+      </ng-template>
+
+      <ng-template #end>
+        <p-button (click)="dialog?.show()" severity="secondary" label="Verify New Investors" icon="pi pi-plus-circle"
+                  class="mr-2"/>
+
+      </ng-template>
+    </p-toolbar>
+
+    <div class="d-flex justify-content-around my-5">
+      <div class="card border-0 bg-light w-25">
+        <div class="card-body">
+          <h5 class="card-title text-primary text-center">{{ investorStats.totalActive }}</h5>
+          <p class="card-text text-center text-muted">Active Investors</p>
+        </div>
+      </div>
+
+      <div class="card border-0 bg-light-brown w-25">
+        <div class="card-body">
+          <h5 class="card-title text-warning text-center">{{ investorStats.totalPending }}</h5>
+          <p class="card-text text-center text-muted">Pending Verification.</p>
+        </div>
+      </div>
+
+      <div class="card border-0 bg-light w-25">
+        <div class="card-body">
+          <h5 class="card-title text-success text-center">{{ investorStats.totalInvested }}</h5>
+          <p class="card-text text-center text-muted">Total Invested</p>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="container-fluid table-responsive">
+
+      <table class="table table-striped">
+
+        <thead>
+        <tr>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Total Investments</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+          @if (investors.length > 0) {
+            @for (investor of investors; track investors) {
+              <tr>
+                <td>
+                  {{ investor.name }}
+                </td>
+                <td>
+                  <div>
+                    <span>{{ investor.email }}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <div>
+                    <span>{{ investor.totalInvestments }}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <div>
+                    <p-tag [value]="investor.status" [severity]="getSeverity(investor.status)"/>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-light">View Details</button>
+                    <button class="btn btn-light">Message</button>
+
+                    @if (investor.status === 'ACTIVE') {
+                      <button class="btn btn-danger">Suspend</button>
+                    } @else {
+                      <button class="btn btn-danger">Unsuspend</button>
+                    }
+                  </div>
+                </td>
+
+              </tr>
+            }
+          } @else {
+            <tr>
+              <td class="text-danger fw-bold fst-italic" colspan="6">No investors found.</td>
+            </tr>
+          }
+        </tbody>
+
+      </table>
+
+    </div>
+  </div>
+
+</div>

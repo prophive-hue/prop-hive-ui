@@ -1,0 +1,84 @@
+<footer class="bg-dark text-white pt-5 pb-3">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-12 col-md-6 col-lg-3 mb-4">
+        <h5 class="fw-bold mb-3">Property Hive</h5>
+        <p class="text-light small">
+          The platform that connects investors with property development opportunities for collaborative investments.
+        </p>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-light"><i class="bi bi-facebook fs-5"></i></a>
+          <a href="#" class="text-light"><i class="bi bi-twitter fs-5"></i></a>
+          <a href="#" class="text-light"><i class="bi bi-instagram fs-5"></i></a>
+          <a href="#" class="text-light"><i class="bi bi-linkedin fs-5"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-6 col-lg-3 mb-4">
+        <h6 class="fw-semibold mb-3">Quick Links</h6>
+        <ul class="list-unstyled">
+          <li><a routerLink="/" class="text-light text-decoration-none d-block py-1">Home</a></li>
+          <li><a routerLink="/properties" class="text-light text-decoration-none d-block py-1">Properties</a></li>
+          <li><a routerLink="/how-it-works" class="text-light text-decoration-none d-block py-1">How It Works</a></li>
+          <li><a routerLink="/about" class="text-light text-decoration-none d-block py-1">About Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Invest Links -->
+      <div class="col-6 col-lg-3 mb-4">
+        <h6 class="fw-semibold mb-3">Invest</h6>
+        <ul class="list-unstyled">
+          <li><a routerLink="/residential" class="text-light text-decoration-none d-block py-1">Residential</a></li>
+          <li><a routerLink="/commercial" class="text-light text-decoration-none d-block py-1">Commercial</a></li>
+          <li><a routerLink="/hospitality" class="text-light text-decoration-none d-block py-1">Hospitality</a></li>
+          <li><a routerLink="/mixed-use" class="text-light text-decoration-none d-block py-1">Mixed-Use</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="col-12 col-lg-3 mb-4">
+        <h6 class="fw-semibold mb-3">Contact</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2 d-flex align-items-center">
+            <i class="bi bi-envelope me-2"></i>
+            <a href="mailto:info@propertyhive.com" class="text-light text-decoration-none">info&#64;propertyhive.com</a>
+          </li>
+          <li>
+            <p class="text-light small mb-0">123 Investment Street</p>
+            <p class="text-light small mb-0">Financial District</p>
+            <p class="text-light small">Johannesburg, 2000</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="border-light mb-4">
+
+    <div class="text-center mb-4">
+      <h6 class="fw-semibold mb-4">In Association With</h6>
+      <div class="row justify-content-center g-4">
+        <div *ngFor="let bank of bankLogos" class="col-4 col-md-2 text-center">
+          <div class="rounded p-2 d-flex align-items-center justify-content-center" style="height: 64px;">
+            <img [src]="bank.logo"
+                 [alt]="bank.name + ' logo'"
+                 class="img-fluid w-50 h-100 rounded  rounded-2"
+                 (error)="bank.logo = '/placeholder.svg'">
+          </div>
+          <small class="d-block text-light mt-2">{{ bank.name }}</small>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="border-top border-secondary pt-3 d-flex flex-column flex-md-row justify-content-between text-center text-md-start">
+      <p class="text-light small mb-2 mb-md-0">© 2025 Property Hive. All rights reserved.</p>
+      <div>
+        <a href="#" class="text-light small text-decoration-none me-3">Privacy Policy</a>
+        <a href="#" class="text-light small text-decoration-none me-3">Terms of Service</a>
+        <a href="#" class="text-light small text-decoration-none">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>

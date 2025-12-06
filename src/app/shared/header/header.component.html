@@ -1,0 +1,48 @@
+<div class="border border-bottom sticky-top bg-white">
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+      <img width="11%" class="img-fluid" style="cursor: pointer" (click)="routeHome()" src="https://property-funding.s3.eu-west-1.amazonaws.com/assets/main-logo.png" alt="">
+<!--      <a class="navbar-brand text-primary" routerLink="/">PropertyHive</a>-->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"></a>
+          </li>
+          <!-- Add more navigation links as needed -->
+        </ul>
+        <ul class="navbar-nav">
+          <ng-container *ngIf="!isLoggedIn; else loggedInTemplate">
+            <li class="nav-item m-1">
+              <a class="nav-link border border-1 rounded-2 border-primary" routerLink="/auth/login"
+                 routerLinkActive="active"><i class="bi-person"></i>Sign In</a>
+            </li>
+            <li class="nav-item m-1">
+              <a class="nav-link border border-1 rounded-2 text-light bg-primary" routerLink="/auth/register"
+                 routerLinkActive="active">Join Now</a>
+            </li>
+          </ng-container>
+          <ng-template #loggedInTemplate>
+            <li class="nav-item m-1">
+              <a class="nav-link nav-link border border-1 rounded-2 border-primary" routerLink="/investor/"
+                 routerLinkActive="active"><i class="bi bi-bank"></i> Investor Dashboard </a>
+            </li>
+            <li class="nav-item m-1">
+              <a class="nav-link nav-link border border-1 rounded-2 border-primary" routerLink="/admin/"
+                 routerLinkActive="active"><i class="bi bi-person-workspace"></i> Administration </a>
+            </li>
+            <li class="nav-item m-1">
+              <a class="nav-link nav-link border border-1 rounded-2 text-light bg-primary" href="javascript:void(0)"
+                 (click)="logout()"><i class="bi bi-power"></i> Logout </a>
+            </li>
+          </ng-template>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <app-top-nav></app-top-nav>
+</div>

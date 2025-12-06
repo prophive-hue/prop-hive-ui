@@ -1,0 +1,141 @@
+<app-header></app-header>
+
+<div class="bg-light">
+  <!-- Hero Section -->
+  <section class="hero gradient-slideshow text-white py-5">
+
+    <div class="slideshow-images">
+      <img ngSrc="https://property-funding.s3.eu-west-1.amazonaws.com/assets/building-1.jpg" alt="Building 1" fill>
+      <img ngSrc="https://property-funding.s3.eu-west-1.amazonaws.com/assets/building-2.jpg" alt="Building 2" fill>
+      <img ngSrc="https://property-funding.s3.eu-west-1.amazonaws.com/assets/building-3.jpg" alt="Building 3" fill>
+      <img ngSrc="https://property-funding.s3.eu-west-1.amazonaws.com/assets/building-4.jpg" alt="Building 4" fill>
+    </div>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h1 class="display-4 fw-bold gradient-text">
+            Collaborative Property Investment Made Simple
+          </h1>
+          <p class="lead my-4">Discover a powerful platform designed to help you achieve your goals efficiently and effectively.</p>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <a routerLink="/auth/login" style="background-color: goldenrod" class="btn btn-light btn-lg px-4 me-md-2">Explore Properties</a>
+            <a routerLink="/auth/register" class="btn btn-outline-lig bg-light btn-lg px-4"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Features Section -->
+  <section class="features py-5">
+    <div class="container">
+      <div class="d-flex flex-row flex-nowrap gap-4 overflow-auto">
+        <div class="col-md-6 col-lg-3 flex-shrink-0" *ngFor="let feature of features">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+              <div class="feature-icon d-inline-flex align-items-center justify-content-center fs-2 mb-3">
+                <i class="{{ feature.icon }}"></i>
+              </div>
+              <h5 class="card-title">{{ feature.title }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container mb-2">
+    <div class="form-group d-flex">
+      <div class="input-group mx-1">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input class="form-control" placeholder="search properties...">
+      </div>
+
+      <div>
+        <button class="btn btn-primary mx-1">Search</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mb-2 mt-3">
+    <div class="row g-1 justify-content-between">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+        <select class="form-select">
+          <option value="">Investment Type</option>
+          @for (t of investmentTypes; track investmentTypes) {
+            <option [value]="t">{{ t }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+        <select class="form-select">
+          <option value="">Project Type</option>
+          @for (t of propertyCompletionTypes; track propertyCompletionTypes) {
+            <option [value]="t">{{ t }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+        <select class="form-select">
+          <option value="">Property Type</option>
+          @for (t of propertyTypes; track propertyTypes) {
+            <option [value]="t">{{ t }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+        <select class="form-select">
+          <option value="">Property Value</option>
+          @for (t of propertyValues; track propertyValues) {
+            <option [value]="t">{{ t }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+        <select class="form-select">
+          <option value="">Property Management</option>
+          @for (t of managementTypes; track managementTypes) {
+            <option [value]="t">{{ t }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
+
+  @if (properties.length > 0) {
+    <div class="position-relative mb-4">
+      <!-- Scroll Left Button -->
+      <button
+        class="btn btn-light position-absolute top-50 translate-middle-y z-1 scroll-left-btn"
+        (click)="scrollLeft()">
+        <i class="bi bi-arrow-left-circle-fill fs-3"></i>
+      </button>
+
+      <!-- Scrollable Container -->
+      <div class="container position-relative">
+        <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                       fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+        <div #scrollContainer class="d-flex overflow-auto">
+          @for (p of properties; track p) {
+            <div class="px-2 m-3" style="min-width: 300px;">
+              <app-card-property [property]="p"></app-card-property>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Scroll Right Button -->
+      <button
+        class="btn btn-light position-absolute top-50 translate-middle-y z-1 scroll-right-btn"
+        (click)="scrollRight()"
+      >
+        <i class="bi bi-arrow-right-circle-fill fs-3"></i>
+      </button>
+    </div>
+  }
+
+  <app-footer></app-footer>
+</div>

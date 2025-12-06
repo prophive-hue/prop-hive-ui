@@ -1,0 +1,73 @@
+<div class="position-relative container p-4 border border-1 rounded-1" style="height: 50vh; overflow: auto;">
+  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+
+  <div class="d-flex align-items-start gap-3 mb-3">
+    <i class="bi bi-shield-check text-primary fs-2"></i>
+    <div>
+      <h6 class="mb-1">Legal & Agreements</h6>
+      <small class="text-muted">Information required for Know Your Customer and Anti-Money Laundering compliance</small>
+    </div>
+  </div>
+
+  <div class="alert alert-primary" role="alert">
+    <span>What is KYC & AML?</span>
+    <small class="d-block">KYC (Know Your Customer) and AML (Anti-Money Laundering) procedures help us verify your identity and ensure compliance with financial regulations. This information is required by law.</small>
+  </div>
+
+  <form [formGroup]="kycAmlForm">
+    <div>
+      <p class="fw-bold">PEP Status Declaration</p>
+      <small class="text-muted d-block">
+        A Politically Exposed Person (PEP) is someone who holds a prominent public position or has a close relationship with such a person.
+      </small>
+
+      <div class="mt-3 p-2 border rounded">
+        <input
+          style="margin-right: 10px"
+          class="form-check-input"
+          type="checkbox"
+          id="agreeCheck"
+          formControlName="termsAndConditionsAgreed"
+        >
+        <label class="form-check-label fw-semibold" for="agreeCheck">
+          I have read and agree to the Terms & Conditions
+        </label>
+
+        <small class="d-block text-muted">
+          Check this box if you, a family member, or a close associate holds a prominent public function.
+        </small>
+      </div>
+
+      <div class="mt-4">
+        <p class="fw-bold">Source of Wealth Declaration</p>
+        <small class="text-muted d-block mb-2">
+          Please provide information about how you accumulated your wealth (e.g., employment income, investments, inheritance, etc.)
+        </small>
+
+        <textarea
+          rows="5"
+          class="form-control"
+          formControlName="sourceOfWealth"
+          placeholder="Describe your source of income and wealth here..."
+        ></textarea>
+      </div>
+
+      <small class="text-muted d-block mt-2">
+        Note: An automated background screening will be conducted using a third-party service. No further action is required from you for this step.
+      </small>
+    </div>
+
+  </form>
+
+</div>
+
+
+<div class="d-flex justify-content-between">
+  <button (click)="submitKycAml('6820d4faa1179f0cb69dd6b3')" class="btn btn-sm btn-light m-1"><i class="bi bi-floppy"></i> Save Progress</button>
+
+  <div>
+    <button (click)="previousStep()" class="btn btn-sm btn-light m-1"><i class="bi bi-arrow-left"></i> Back</button>
+    <button (click)="nextStep()" class="btn btn-sm btn-primary m-1"><i class="bi bi-arrow-right"></i> Next</button>
+  </div>
+</div>

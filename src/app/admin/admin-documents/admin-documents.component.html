@@ -1,0 +1,142 @@
+<app-dialog-admin-document-upload #dialog (onClose)="handleCreate($event)"></app-dialog-admin-document-upload>
+
+<div class="position-relative">
+  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+
+  <div class="card">
+    <p-toolbar>
+      <h4>Document Management</h4>
+
+      <p-button severity="secondary" label="Upload New Document" icon="pi pi-plus-circle" class="mr-2"
+                (click)="dialog?.show()"/>
+
+    </p-toolbar>
+
+
+    <div class="d-flex justify-content-between p-2">
+      <div class="p-1">
+        <app-search-button (search)="triggerSearchInput($event)" placeHolder="documents"></app-search-button>
+      </div>
+      <div class="d-inline-block bg-white rounded rounded-2 shadow-sm mb-3">
+        <ul class="nav nav-pills p-1" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button (click)="searchCategory('all')" class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+              All
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button (click)="searchCategory('property')" class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                    type="button" role="tab" aria-controls="pills-profile"
+                    aria-selected="false">Property
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button (click)="searchCategory('investor')" class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
+                    type="button" role="tab" aria-controls="pills-contact"
+                    aria-selected="false">Investor
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button (click)="searchCategory('financial')" class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                    type="button" role="tab" aria-controls="pills-profile"
+                    aria-selected="false">Financial
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button (click)="searchCategory('legal')" class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                    type="button" role="tab" aria-controls="pills-profile"
+                    aria-selected="false">Legal
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button (click)="searchCategory('operational')" class="nav-link" id="pills-contact-tab"
+                    data-bs-toggle="pill"
+                    type="button" role="tab" aria-controls="pills-contact"
+                    aria-selected="false">Operational
+            </button>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+
+    <div class="container-fluid table-responsive">
+      <table class="table table-striped w-100">
+        <thead>
+        <th>Document Name</th>
+        <th>Category</th>
+        <th>Type</th>
+        <th>Uploaded By</th>
+        <th>Date</th>
+        <th>Size</th>
+        <th>Status</th>
+        <th>Actions</th>
+        </thead>
+
+        <tbody>
+          @if (documents.length > 0) {
+            @for (document of documents; track documents) {
+              <tr>
+                <td>
+                  {{ document.name }}
+                </td>
+
+                <td>
+                  {{ document.category }}
+                </td>
+
+                <td>
+                  {{ document.type }}
+                </td>
+
+                <td>
+                  {{ document.uploadedBy }}
+                </td>
+
+                <td>
+                  {{ document.date | date:"dd-MM-yyyy" }}
+                </td>
+
+                <td>
+                  2.4mb
+                </td>
+
+                <td>
+                  {{ document.description }}
+                </td>
+
+                <td>
+                  <div class="d-flex items-center gap-3">
+                    <button (click)="downloadWithUrl(document.fileUrl)" class="btn btn-sm btn-primary"><i
+                      class="bi bi-download"></i></button>
+                    <button (click)="deleteDocument(document.id)" class="btn btn-sm btn-danger"><i
+                      class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </td>
+
+
+              </tr>
+            }
+          } @else {
+            <tr>
+              <td class="text-danger fw-bold fst-italic" colspan="8">No documents found.</td>
+            </tr>
+          }
+        </tbody>
+
+
+      </table>
+
+      <app-paginator (pagination)="paginate($event)" [totalElements]="totalElements"></app-paginator>
+    </div>
+
+  </div>
+
+</div>
+
+
+<p-toast position="bottom-center" key="tl"/>

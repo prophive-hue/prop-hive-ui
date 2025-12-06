@@ -1,0 +1,10 @@
+.navbar-nav .nav-link.active {
+    font-weight: bold;
+    color: #0d6efd;
+  }
+
+
+li :hover {
+  background-color: #0d6efd;
+  color: white;
+}

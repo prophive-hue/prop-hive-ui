@@ -1,0 +1,92 @@
+<app-dialog-developer-create #dialog (onClose)="handleCreate($event)"></app-dialog-developer-create>
+
+<div class="position-relative">
+  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+
+  <div class="card">
+    <p-toolbar styleClass="mb-6">
+      <ng-template #start>
+        <h4>Developers</h4>
+      </ng-template>
+
+      <ng-template #end>
+        <p-button severity="secondary" label="Add New Developer" icon="pi pi-plus-circle" class="mr-2"
+                  (click)="dialog?.show()"/>
+
+        <!-- <i class="pi pi-spin pi-plus-circle" style="font-size: 2rem"></i> -->
+      </ng-template>
+    </p-toolbar>
+
+    <div class="container-fluid table-responsive">
+
+      <div class="my-2">
+        <app-search-button (search)="triggerSearchInput($event)"></app-search-button>
+      </div>
+
+      <table class="w-100 table table-striped">
+        <thead>
+        <tr>
+          <th>Developer</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Type</th>
+          <th>Years Of Experience</th>
+          <th>Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+          @if (developers.length > 0) {
+            @for (developer of developers; track developers) {
+              <tr>
+                <td>
+                  {{ developer.companyName }}
+                </td>
+                <td>
+                  <div>
+                    <span>{{ developer.email }}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <div>
+                    <span>{{ developer.phone }}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <div>
+                    <p-tag [value]="developer.developerType" [severity]="getSeverity(developer.developerType)"/>
+                  </div>
+                </td>
+                <td>
+                  <p-tag [value]="developer.yearsExperience" [severity]="getSeverity(developer.yearsExperience)"/>
+                </td>
+
+                <td>
+                  <div>
+                    <span>{{ developer.companyDescription | slice:0:50 }}</span>
+                  </div>
+                </td>
+
+              </tr>
+            }
+          } @else {
+            <tr>
+              <td class="text-danger fw-bold fst-italic" colspan="6">No developers found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+    </div>
+
+
+    <app-paginator (pagination)="paginate($event)" [totalElements]="totalElements"></app-paginator>
+  </div>
+</div>
+
+
+<p-toast position="bottom-center" key="tl"/>
+

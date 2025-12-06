@@ -1,0 +1,63 @@
+<div class="position-relative container p-4 border border-1 rounded-1" style="height: 50vh; overflow: auto;">
+  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+
+  <div class="d-flex align-items-start gap-3 mb-3">
+    <i class="bi bi-shield-check text-primary fs-2"></i>
+    <div>
+      <h6 class="mb-1">Borrow-to-Invest (Optional)</h6>
+      <small class="text-muted">Learn about our financing options to increase your investment capacity</small>
+    </div>
+  </div>
+
+  <div class="p-2 border border-1 rounded-2">
+    <div class="d-flex justify-content-between mb-0">
+      <span class="fw-bold d-block">Borrow-to-Invest Program</span>
+
+      <small style="font-size: 12px" class="p-1 rounded rounded-3 d-block bg-primary text-white">Optional</small>
+
+    </div>
+
+    <small class="text-muted mb-2">Leverage your investment with our financing options to access larger property
+      investments</small>
+
+    <div class="alert alert-warning" role="alert">
+      <small class="d-block">This section is entirely optional. You can complete your investor registration without
+        providing this information now and apply for financing later.</small>
+    </div>
+
+    <p class="fw-bold mb-1">Credit Check Consent</p>
+
+    <small class="text-muted">To qualify for investment financing, we need your permission to perform a credit
+      check.</small>
+
+    <form [formGroup]="creditCheckForm">
+      <div class="mt-2 p-2 border rounded">
+        <input
+          style="margin-right: 10px"
+          class="form-check-input"
+          type="checkbox"
+          id="agreeCheck"
+          formControlName="creditCheckConsentAgreed"
+        >
+        <label class="form-check-label fw-semibold" for="agreeCheck">
+          I give consent to perform a credit check as per the Terms & Conditions
+        </label>
+      </div>
+    </form>
+
+  </div>
+
+
+  <small class="text-muted mt-4 d-block">This completes your investor onboarding. You can review your information before submitting.</small>
+
+
+</div>
+
+<div class="d-flex justify-content-between">
+  <button  (click)="submitCreditCheck('6820d4faa1179f0cb69dd6b3')" class="btn btn-sm btn-light m-1"><i class="bi bi-floppy"></i> Save Progress</button>
+
+  <div>
+    <button (click)="previousStep()" class="btn btn-sm btn-light m-1"><i class="bi bi-arrow-left"></i> Back</button>
+  </div>
+</div>

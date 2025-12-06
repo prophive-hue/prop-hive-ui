@@ -1,0 +1,561 @@
+<div class="position-relative container p-4 border border-1 rounded-1" style="height: 50vh; overflow: auto;">
+  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+
+  <div class="d-flex align-items-start gap-3 mb-3">
+    <i class="bi bi-fan text-primary fs-2"></i>
+    <div>
+      <h6 class="mb-1">Legal & Agreements</h6>
+      <small class="text-muted">Review and accept the legal documents</small>
+    </div>
+  </div>
+
+  <div class="alert alert-warning" role="alert">
+    Please carefully read all agreements before accepting them. These are legally binding documents.
+  </div>
+
+  <form [formGroup]="legalAgreementsForm">
+
+    <!-- Terms & Conditions -->
+    <div class="container mt-4">
+      <div class="mb-3">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="mb-0">Terms & Conditions</h6>
+            <small class="text-muted">The general terms governing your use of the platform</small>
+          </div>
+          <button type="button" (click)="openAgreementDocument(1)" class="btn btn-sm btn-outline-primary">View</button>
+        </div>
+        <div class="mt-3 p-2 border rounded">
+          <input class="form-check-input" type="checkbox" formControlName="termsAndConditionsAgreed" id="terms">
+          <label class="form-check-label fw-semibold" for="terms">
+            I have read and agree to the Terms & Conditions
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy Policy -->
+    <div class="container mt-4">
+      <div class="mb-3">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="mb-0">Privacy Policy (POPIA Compliant)</h6>
+            <small class="text-muted">How we process and protect your personal information</small>
+          </div>
+          <button type="button" (click)="openAgreementDocument(2)" class="btn btn-sm btn-outline-primary">View</button>
+        </div>
+        <div class="mt-3 p-2 border rounded">
+          <input class="form-check-input" type="checkbox" formControlName="privacyPolicyAgreed" id="privacy">
+          <label class="form-check-label fw-semibold" for="privacy">
+            I have read and agree to the Privacy Policy
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk Disclosure -->
+    <div class="container mt-4">
+      <div class="mb-3">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="mb-0">Investor Risk Disclosure Statement</h6>
+            <small class="text-muted">The risks associated with property investment</small>
+          </div>
+          <button type="button" (click)="openAgreementDocument(3)" class="btn btn-sm btn-outline-primary">View</button>
+        </div>
+        <div class="mt-3 p-2 border rounded">
+          <input class="form-check-input" type="checkbox" formControlName="riskDisclosureAgreed" id="risk">
+          <label class="form-check-label fw-semibold" for="risk">
+            I acknowledge that I understand the risks associated with property investment
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscription Agreement -->
+    <div class="container mt-4">
+      <div class="mb-3">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="mb-0">Investor Subscription Agreement</h6>
+            <small class="text-muted">The agreement governing your investment in specific properties</small>
+          </div>
+          <button type="button" (click)="openAgreementDocument(4)" class="btn btn-sm btn-outline-primary">View</button>
+        </div>
+        <div class="mt-3 p-2 border rounded">
+          <input class="form-check-input" type="checkbox" formControlName="investorSubscriptionAgreed" id="subscription">
+          <label class="form-check-label fw-semibold" for="subscription">
+            I agree to the Investor Subscription Agreement for each project I invest in
+          </label>
+        </div>
+      </div>
+    </div>
+
+
+  </form>
+
+
+
+</div>
+
+<div class="d-flex justify-content-between">
+  <button (click)="submitLegalAgreements('6820d4faa1179f0cb69dd6b3')" class="btn btn-sm btn-light m-1"><i class="bi bi-floppy"></i> Save Progress</button>
+
+  <div>
+    <button (click)="previousStep()" class="btn btn-sm btn-light m-1"><i class="bi bi-arrow-left"></i> Back</button>
+    <button (click)="nextStep()" class="btn btn-sm btn-primary m-1"><i class="bi bi-arrow-right"></i> Next</button>
+  </div>
+</div>
+
+
+<p-dialog header="Terms & Conditions" [modal]="true" [(visible)]="termsConditions" [style]="{ width: '50rem' }">
+  <small class="text-muted">The agreement governing your investment in specific properties</small>
+
+  <p-panel [style]="{ height: '50vh', overflow: 'auto', marginTop:'5px' }">
+    <p class="fw-bold">TERMS AND CONDITIONS</p>
+
+    <p class="fw-bold">Last Updated: May 17, 2025</p>
+
+    <p>1. INTRODUCTION</p>
+
+    <p>Welcome to Property Crowdfunding Platform ("we," "our," or "us"). These Terms and Conditions govern your use of
+      our website, platform, and services.</p>
+
+    <p>2. DEFINITIONS</p>
+
+    <p>
+      <span>"Platform" refers to our website, mobile applications, and related services. <br>
+        "User," "you," or "your" refers to individuals accessing or using our Platform. <br>
+        "Investment" refers to the financial contribution made towards property projects listed on our Platform.</span>
+    </p>
+
+    <p>3. ELIGIBILITY</p>
+
+    <p>To use our Platform, you must be at least 18 years old and have the legal capacity to enter into binding
+      contracts.<br>
+      You must complete our verification process, which includes providing accurate personal information and
+      documentation.</p>
+
+    <p>4. ACCOUNT REGISTRATION AND SECURITY</p>
+
+    <p>You are responsible for maintaining the confidentiality of your account credentials.<br>
+      You must provide accurate, current, and complete information during registration.<br>
+      You agree to notify us immediately of any unauthorized use of your account.</p>
+
+
+    <p>5. INVESTMENT TERMS</p>
+
+    <p>All investments are subject to risk, including the potential loss of principal.<br>
+      Minimum investment amounts may vary by property project.<br>
+      Returns on investments are not guaranteed and may fluctuate based on market conditions and property performance.
+    </p>
+
+    <p>6. FEES AND CHARGES</p>
+
+    <p>
+      Platform usage fees are outlined in our Fee Schedule.<br>
+      All fees are non-refundable unless explicitly stated otherwise.
+    </p>
+
+    <p>7. PROPERTY INFORMATION</p>
+
+    <p>While we strive for accuracy, we do not guarantee the completeness or accuracy of property information.<br>
+      We recommend conducting your own due diligence before making investment decisions.</p>
+
+
+    <p>8. RISKS DISCLOSURE</p>
+
+    <p>
+      Property investments involve substantial risks, including market volatility, liquidity constraints, and potential
+      loss of capital.<br>
+      Past performance is not indicative of future results.
+    </p>
+
+
+    <p>9. LIMITATION OF LIABILITY</p>
+
+    <p>
+      To the maximum extent permitted by law, we shall not be liable for any indirect, incidental, special,
+      consequential, or punitive damages.<br>
+      Our total liability shall not exceed the amount paid by you for the services during the twelve (12) months
+      preceding the claim.
+    </p>
+
+    <p>10. GOVERNING LAW</p>
+
+    <P>These Terms are governed by the laws of the Republic of South Africa.<br>
+      Any disputes shall be resolved in the courts of Johannesburg, South Africa.</P>
+
+    <p>11. CHANGES TO TERMS</p>
+
+    <p>We reserve the right to modify these Terms at any time.<br>
+      Continued use of the Platform after such modifications constitutes acceptance of the updated Terms.</p>
+
+
+    <p>12. CONTACT INFORMATION</p>
+
+    <p>For questions regarding these Terms, please contact us at legalpropertycrowdfunding.co.za.</p>
+
+    <p>By clicking "I Agree," you acknowledge that you have read, understood, and agree to be bound by these Terms and
+      Conditions.</p>
+
+
+  </p-panel>
+
+  <div class="float-end mt-3">
+    <button (click)="termsConditions=!termsConditions" class="btn btn-primary">Close Document</button>
+  </div>
+</p-dialog>
+
+<p-dialog header="Privacy Policy" [modal]="true" [(visible)]="privacyPolicy" [style]="{ width: '50rem' }">
+  <small class="text-muted">Please read the document carefully before agreeing</small>
+
+  <p-panel [style]="{ height: '50vh', overflow: 'auto', marginTop:'5px' }">
+    <p class="fw-bold">PRIVACY POLICY (POPIA COMPLIANT)</p>
+
+    <p class="fw-bold">Last Updated: May 17, 2025</p>
+
+    <p>1. INTRODUCTION</p>
+
+    <p>This Privacy Policy explains how Property Crowdfunding Platform ("we," "our," or "us") collects, uses, discloses,
+      and safeguards your personal information in accordance with the Protection of Personal Information Act (POPIA) of
+      South Africa.</p>
+
+    <p>2. INFORMATION WE COLLECT</p>
+
+    <p>
+      <span>2.1 Personal Information:</span> <br>
+      - Full name, contact details, and identification information<br>
+      - Residential address and nationality<br>
+      - Banking details for processing investments and returns<br>
+      - Employment status and income information<br>
+      - Tax identification number<br>
+      - Investment preferences and risk profile
+    </p>
+
+    <p>
+      <span>2.2 Technical Information:</span> <br>
+      - Device information and IP address<br>
+      - Browser type and operating system<br>
+      - Usage data and cookies
+    </p>
+
+    <p>3. HOW WE USE YOUR INFORMATION</p>
+    <p>
+      <span>We use your personal information to:</span> <br>
+      - Process your registration and verify your identity<br>
+      - Facilitate investments in property projects<br>
+      - Distribute returns and provide transaction statements<br>
+      - Comply with legal and regulatory requirements<br>
+      - Improve our services and user experience<br>
+      - Communicate important updates and marketing information (subject to your consent)
+    </p>
+
+    <p>4. LEGAL BASIS FOR PROCESSING</p>
+    <p>
+      <span>We process your personal information based on:</span> <br>
+      - Your consent<br>
+      - Performance of our contract with you<br>
+      - Compliance with legal obligations<br>
+      - Our legitimate interests
+    </p>
+
+
+    <p>5. INFORMATION SHARING AND DISCLOSURE</p>
+    <p>
+      <span>We may share your information with:</span> <br>
+      - Financial institutions for processing transactions<br>
+      - Regulatory authorities and law enforcement agencies as required by law<br>
+      - Service providers who assist us in operating our Platform<br>
+      - Property developers (limited information only)
+    </p>
+
+    <p>6. DATA SECURITY</p>
+    <p>We implement appropriate technical and organizational measures to protect your personal information from unauthorized access, disclosure, alteration, and destruction.
+    </p>
+
+
+    <p>7. DATA RETENTION</p>
+    <p>We retain your personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required by law.
+    </p>
+
+    <p>8. YOUR RIGHTS UNDER POPIA</p>
+    <p>
+      <span>You have the right to:</span> <br>
+      - Access your personal information<br>
+      - Correct inaccurate or incomplete information<br>
+      - Request deletion of your information<br>
+      - Object to the processing of your information<br>
+      - Lodge a complaint with the Information Regulator
+    </p>
+
+
+    <p>9. CHILDREN'S PRIVACY</p>
+    <p>Our Platform is not intended for individuals under 18 years of age. We do not knowingly collect personal information from children.
+    </p>
+
+    <p>10. CHANGES TO THIS PRIVACY POLICY</p>
+    <p>We may update this Privacy Policy periodically. The updated version will be indicated by an updated "Last Updated" date.
+    </p>
+
+
+    <p>11. CONTACT INFORMATION</p>
+    <p>
+      If you are unsatisfied with our response to your privacy concerns, you may contact the South African Information Regulator:<br>
+      Email: inforeg&#64;justice.gov.za<br>
+      Address: JD House, 27 Stiemens Street, Braamfontein, Johannesburg, 2001
+    </p>
+
+    <p>12. INFORMATION REGULATOR CONTACT DETAILS</p>
+    <p>
+      For privacy-related inquiries, please contact our Information Officer:<br>
+      Email: privacy&#64;propertycrowdfunding.co.za<br>
+      Phone: +27 (0) 21 555 1234<br>
+    </p>
+
+    <p>By clicking "I Agree," you acknowledge that you have read, understood, and consent to the collection and processing of your personal information as described in this Privacy Policy.</p>
+
+  </p-panel>
+
+  <div class="float-end mt-3">
+    <button (click)="privacyPolicy=!privacyPolicy" class="btn btn-primary">Close Document</button>
+  </div>
+</p-dialog>
+
+<p-dialog header="Risk Disclosure Statement" [modal]="true" [(visible)]="investorRiskDisclosureStatement" [style]="{ width: '50rem' }">
+  <small class="text-muted">Please read the document carefully before agreeing</small>
+
+  <p-panel [style]="{ height: '50vh', overflow: 'auto', marginTop:'5px' }">
+    <p class="fw-bold">INVESTOR RISK DISCLOSURE STATEMENT</p>
+
+    <p class="fw-bold">Last Updated: May 17, 2025</p>
+
+
+    <p>This Risk Disclosure Statement outlines the key risks associated with property investments through our Platform. Please read this document carefully before making any investment decisions.</p>
+
+    <p>1. GENERAL INVESTMENT RISKS</p>
+
+    <p>
+      <span>1.1 Capital Risk</span> <br>
+      Your capital is at risk. The value of your investment may go down as well as up, and you may not get back the amount you invested.
+    </p>
+
+    <p>
+      <span>1.2 No Guaranteed Returns</span> <br>
+      Returns on investments are not guaranteed and may vary from projections. Past performance is not indicative of future results.
+    </p>
+
+    <p>
+      <span>1.3 Liquidity Risk</span> <br>
+      Property investments are generally illiquid. You may not be able to sell your investment quickly or at your desired price.
+    </p>
+
+    <p>2. PROPERTY-SPECIFIC RISKS</p>
+
+
+    <p>
+      <span>2.1 Market Risk</span> <br>
+      Property values can fluctuate due to economic conditions, interest rate changes, or local market factors.
+    </p>
+
+    <p>
+      <span>2.2 Development Risks</span> <br>
+      For development projects, risks include construction delays, cost overruns, contractor issues, and failure to secure necessary permits.
+    </p>
+
+    <p>
+      <span>2.3 Rental Income Risks</span> <br>
+      Rental income may be affected by vacancy periods, tenant defaults, market demand, and changes in rental rates.
+    </p>
+
+    <p>
+      <span>2.4 Property Damage</span> <br>
+      Properties may suffer damage from various causes, including natural disasters, fire, or vandalism, which may not be fully covered by insurance.
+    </p>
+
+    <p>3. PLATFORM-RELATED RISKS</p>
+
+
+    <p>
+      <span>3.1 Technology Risks</span> <br>
+      The Platform may experience technical issues or security breaches that could affect your investments.
+    </p>
+
+    <p>
+      <span>3.2 Operational Risks</span> <br>
+      Risks associated with the day-to-day operations of the Platform, including processing errors or administrative failures.
+    </p>
+
+    <p>4. LEGAL AND REGULATORY RISKS</p>
+
+    <p>
+      <span>4.1 Regulatory Changes</span> <br>
+      Changes in laws or regulations governing property investments or crowdfunding may adversely affect your investment.
+    </p>
+
+    <p>
+      <span>4.2 Tax Risks</span> <br>
+      Tax laws and their interpretation may change, potentially affecting the net returns on your investment.
+    </p>
+
+    <p>5. DIVERSIFICATION NOTICE</p>
+
+    <p>It is advisable not to invest more than 10% of your investment portfolio in any single property or property-type. Diversification across different properties and asset classes is recommended.</p>
+
+    <p>6. SEEK INDEPENDENT ADVICE</p>
+
+    <p>We recommend seeking independent financial, legal, and tax advice before making investment decisions.</p>
+
+
+    <p>7. ACKNOWLEDGMENT</p>
+
+    <p>
+      <span>By clicking "I acknowledge," you confirm that:</span> <br>
+      - You have read and understood this Risk Disclosure Statement<br>
+      - You understand that property investment involves significant risks<br>
+      - You are investing based on your own judgment and at your own risk<br>
+      - You acknowledge that the Platform does not provide investment advice
+    </p>
+
+    <p>This Risk Disclosure Statement is not exhaustive and does not disclose all risks associated with property investment. It should be read in conjunction with our Terms and Conditions and all property-specific information provided for each investment opportunity.</p>
+
+
+
+  </p-panel>
+
+  <div class="float-end mt-3">
+    <button (click)="investorRiskDisclosureStatement=!investorRiskDisclosureStatement" class="btn btn-primary">Close Document</button>
+  </div>
+</p-dialog>
+
+<p-dialog header="Investor Subscription Agreement" [modal]="true" [(visible)]="investorSubscriptionAgreement" [style]="{ width: '50rem' }">
+  <small class="text-muted">Please read the document carefully before agreeing</small>
+
+  <p-panel [style]="{ height: '50vh', overflow: 'auto', marginTop:'5px' }">
+    <p class="fw-bold">INVESTOR RISK DISCLOSURE STATEMENT</p>
+
+    <p class="fw-bold">Last Updated: May 17, 2025</p>
+
+
+    <p>This Investor Subscription Agreement ("Agreement") is entered into between you ("Investor") and Property Crowdfunding Platform ("Platform"), governing your investment in specific property projects through our Platform.</p>
+
+    <p>1. SUBSCRIPTION FOR INVESTMENT</p>
+
+    <p>
+      1.1 The Investor agrees to subscribe for an investment interest in the selected property project(s) as specified during the investment process.
+    </p>
+
+    <p>1.2 Each investment is subject to minimum and maximum investment amounts as specified for the particular property project.</p>
+
+    <p>1.3 By executing this Agreement, the Investor commits to providing the full investment amount by the specified deadline.</p>
+
+
+    <p>2. INVESTMENT STRUCTURE</p>
+
+    <p>
+      <span>2.1 Investment Vehicle</span> <br>
+      Investments are made through a special purpose vehicle (SPV) structured as a company or trust specifically established for the property project.
+    </p>
+
+    <p>
+      <span>2.2 Ownership Interest</span> <br>
+      The Investor's ownership interest in the property project will be proportional to their investment amount relative to the total amount raised.
+    </p>
+
+    <p>
+      <span>2.3 Documentation</span> <br>
+      The Investor will receive a certificate or digital confirmation of their investment shares or units after the investment is processed.
+    </p>
+
+    <p>3. INVESTMENT PROCESS</p>
+
+    <p>
+      <span>3.1 Reservation</span> <br>
+      The Investor's funds will be held in an escrow account until the funding target for the property project is achieved.
+    </p>
+
+    <p>
+      <span>3.2 Investment Confirmation</span> <br>
+      Once the funding target is met, the Investor will receive confirmation that their investment has been finalized.
+    </p>
+
+    <p>
+      <span>3.3 Failed Funding</span> <br>
+      If the funding target is not reached within the specified timeframe, all funds will be returned to the Investor without interest.
+    </p>
+
+
+    <p>4. DISTRIBUTIONS AND RETURNS</p>
+
+
+    <p>
+      <span>4.1 Distribution Schedule</span> <br>
+      Returns will be distributed according to the schedule specified in the property project documentation.
+    </p>
+
+    <p>
+      <span>4.2 Payment Method</span> <br>
+      Distributions will be made directly to the Investor's registered bank account.
+    </p>
+
+    <p>
+      <span>4.3 Taxation</span> <br>
+      Distributions may be subject to applicable taxes, which are the responsibility of the Investor.
+    </p>
+
+    <p>5. TERM AND EXIT</p>
+
+
+    <p>
+      <span>5.1 Investment Term</span> <br>
+      The investment term is as specified in the property project documentation.
+    </p>
+
+    <p>
+      <span>5.2 Exit Mechanism</span> <br>
+      The primary exit strategy will be as outlined in the property project documentation, typically through property sale or refinancing
+    </p>
+
+    <p>
+      <span>5.3 Early Exit</span> <br>
+      Early exit options, if available, will be subject to specific terms, conditions, and potential fees as described in the property project documentation.
+    </p>
+
+    <p>6. INVESTOR REPRESENTATIONS AND WARRANTIES</p>
+
+    <p>6.1 They have the legal capacity to enter into this Agreement.</p>
+
+    <p>6.2 They understand the risks associated with property investment.</p>
+
+    <p>6.3 They are investing based on their own judgment or with appropriate professional advice.</p>
+
+    <p>6.4 Their investment funds are from legitimate sources and compliant with anti-money laundering regulations.</p>
+
+
+    <p>7. AMENDMENT AND TERMINATION</p>
+
+
+    <p>
+      <span>7.1 Amendments</span> <br>
+      This Agreement may be amended with the written consent of both parties.
+    </p>
+
+    <p>
+      <span>7.2 Termination</span> <br>
+      This Agreement will terminate upon the completion of the investment term and the distribution of all proceeds.
+    </p>
+
+    <p>8. GOVERNING LAW</p>
+
+    <p>This Agreement shall be governed by the laws of the Republic of South Africa.</p>
+
+    <p>By clicking "I agree," the Investor acknowledges that they have read, understood, and agree to be bound by the terms and conditions of this Agreement.</p>
+
+
+  </p-panel>
+
+  <div class="float-end mt-3">
+    <button (click)="investorSubscriptionAgreement=!investorSubscriptionAgreement" class="btn btn-primary">Close Document</button>
+  </div>
+</p-dialog>

@@ -1,0 +1,83 @@
+<div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="visible"
+     style="background-color: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="height: 200px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Platform Deduction</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="hide()"></button>
+      </div>
+
+      <div class="modal-body" style="height: 70vh; overflow-y: scroll;">
+        <p class="text-muted">Fill in the details below to add a new platform deduction
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+          <div class="border rounded-1 p-3">
+            <h6>Deduction Information</h6>
+
+            <div class="mb-3 row">
+
+              <div class="col-12">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" formControlName="name"/>
+                <div *ngIf="form.get('name')?.touched && form.get('name')?.invalid" class="text-danger">
+                  <small *ngIf="form.get('name')?.errors?.['required']">Deduction name is required.</small>
+                </div>
+              </div>
+
+            </div>
+
+
+<!--            <div class="mb-3 row">-->
+
+<!--              <div class="col-12">-->
+<!--                <label class="form-label">Deduction Type</label>-->
+<!--                <select class="form-select" formControlName="type">-->
+<!--                  <option value="PERCENTAGE">Percentage (%)</option>-->
+<!--                  <option value="AMOUNT">Amount (R)</option>-->
+<!--                </select>-->
+<!--                <div *ngIf="form.get('type')?.touched && form.get('type')?.invalid" class="text-danger">-->
+<!--                  <small *ngIf="form.get('type')?.errors?.['required']">Deduction type is required.</small>-->
+<!--                </div>-->
+<!--              </div>-->
+
+<!--            </div>-->
+
+            <div class="mb-3 row">
+
+              <div class="col-12">
+                <label class="form-label">Amount @if (form.get('type')?.value === "PERCENTAGE") {
+                  <span> (%) </span>
+                } @else {
+                  <span> (R) </span>
+                } </label>
+                <input type="number" class="form-control" formControlName="value"/>
+
+                <div *ngIf="form.get('value')?.touched && form.get('value')?.invalid"
+                     class="text-danger">
+                  <small *ngIf="form.get('value')?.errors?.['required']">Deduction value is required.</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              <textarea rows="3" class="form-control" formControlName="description"></textarea>
+              <div *ngIf="form.get('description')?.touched && form.get('description')?.invalid"
+                   class="text-danger">
+                <small *ngIf="form.get('description')?.errors?.['required']">Deduction description is required.</small>
+              </div>
+            </div>
+
+          </div>
+
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="hide()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="submit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

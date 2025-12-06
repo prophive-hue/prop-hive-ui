@@ -1,0 +1,73 @@
+<div class="position-relative container p-4 border border-1 rounded-1" style="height: 50vh; overflow: auto;">
+  <ngx-ui-loader  [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1" fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+
+  <div class="d-flex align-items-start gap-3 mb-3">
+    <i class="bi bi-person-circle text-primary fs-2"></i>
+    <div>
+      <h6 class="mb-1">Personal Information</h6>
+      <small class="text-muted">Please provide your personal details as they appear on your ID document</small>
+    </div>
+  </div>
+
+
+  <form [formGroup]="form" novalidate>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold small">Full Name (as on ID)</label>
+      <input type="text" class="form-control" formControlName="fullName"/>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold small">Date of Birth</label>
+      <input type="date" class="form-control" formControlName="dateOfBirth"/>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold small">Gender</label>
+      <select class="form-select" formControlName="gender">
+        <option value=""></option>
+        @for (gender of genders;track genders){
+          <option [value]="gender">{{gender}}</option>
+        }
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold small">Nationality</label>
+
+      <select class="form-select" formControlName="nationality">
+        <option value=""></option>
+        @for (nationality of nationalities; track nationalities){
+          <option [value]="nationality">{{nationality}}</option>
+        }
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold small">Residential Address</label>
+      <input type="text" class="form-control" formControlName="residentialAddress"/>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold small">Email Address</label>
+      <input type="email" class="form-control" formControlName="email"/>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold small">Phone Number</label>
+      <input type="text" class="form-control" formControlName="mobile"/>
+    </div>
+
+  </form>
+
+
+
+</div>
+
+<div class="d-flex justify-content-between">
+  <button (click)="savePersonalInformation()" class="btn btn-sm btn-light m-1"><i class="bi bi-floppy"></i> Save Progress</button>
+
+  <div>
+    <button (click)="nextStep()" class="btn btn-sm btn-primary m-1"><i class="bi bi-arrow-right"></i> Next</button>
+  </div>
+</div>

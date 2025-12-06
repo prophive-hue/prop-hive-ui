@@ -1,0 +1,11 @@
+/* Override default border color */
+:host ::ng-deep .p-inputtext {
+  border: 1px solid #ccc !important; /* light grey border */
+  box-shadow: none !important;       /* remove theme glow */
+}
+
+/* Optional: custom focus border */
+:host ::ng-deep .p-inputtext:focus {
+  border-color: #007bff !important; /* blue border on focus */
+  box-shadow: 0 0 0 1px #007bff !important;
+}

@@ -1,0 +1,70 @@
+
+<div class="position-relative container p-4 border border-1 rounded-1" style="height: 50vh; overflow: auto;">
+  <ngx-ui-loader  [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1" fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+
+  <div class="d-flex align-items-start gap-3 mb-3">
+    <i class="bi bi-passport text-primary fs-2"></i>
+    <div>
+      <h6 class="mb-1 fw-bold">Identity Verification (FICA)</h6>
+      <small class="text-muted">Upload the required documents to verify your identity</small>
+    </div>
+  </div>
+
+
+  <div class="border border-1 rounded-4 p-4">
+    <div class="mb-3">
+      <label class="form-label fw-bold">ID Document</label>
+      <small class="text-muted d-block">Upload a certified copy of your South African ID or passport</small>
+
+      <div class="d-flex justify-content-between">
+        <div class="d-flex flex-grow-1 me-3">
+          <input type="file" class="form-control" (change)="handleFileInput($event, 'id')"/>
+        </div>
+        @if (idDocumentUrl) {
+          <div class="d-flex">
+            <button (click)="downloadFileByUrl(idDocumentUrl)" class="btn btn-primary"><i class="bi bi-download"></i>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold">Proof of Address</label>
+      <small class="text-muted d-block">Upload a utility bill, lease agreement, or bank statement (not older than 3
+        months)</small>
+
+      <div class="d-flex justify-content-between">
+        <div class="d-flex flex-lg-grow-1 me-3">
+          <input type="file" class="form-control" (change)="handleFileInput($event, 'address')"/>
+        </div>
+        @if (proofOfAddressUrl) {
+          <div class="d-flex">
+            <button (click)="downloadFileByUrl(proofOfAddressUrl)" class="btn btn-primary"><i
+              class="bi bi-download"></i></button>
+          </div>
+        }
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mb-3 mt-3">
+    <label class="form-label fw-bold">Tax Identification Number</label>
+    <small class="text-muted d-block">Your Income Tax Reference Number from SARS</small>
+    <input type="text" placeholder="Enter your tax number" class="form-control" [(ngModel)]="taxNumber"/>
+  </div>
+
+</div>
+
+<div class="d-flex justify-content-between">
+  <button (click)="saveIdentityVerification()" class="btn btn-sm btn-light m-1"><i class="bi bi-floppy"></i> Save
+    Progress
+  </button>
+
+  <div>
+    <button (click)="previousStep()" class="btn btn-sm btn-light m-1"><i class="bi bi-arrow-left"></i> Back</button>
+    <button (click)="nextStep()" class="btn btn-sm btn-primary m-1"><i class="bi bi-arrow-right"></i> Next</button>
+  </div>
+</div>

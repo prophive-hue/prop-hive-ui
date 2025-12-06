@@ -1,0 +1,115 @@
+<app-header></app-header>
+
+
+<div class="container py-5 bg-light rounded rounded-1 mt-3 mb-4" *ngIf="property; else notFound">
+  <a routerLink="/" class="text-decoration-none text-primary d-inline-flex align-items-center mb-4">
+    <i class="bi bi-arrow-left me-2"></i> Back to Properties
+  </a>
+
+  <div class="row g-4">
+    <!-- Left: Main Details -->
+    <div class="col-lg-8">
+      <h1 class="h3 mb-3 fw-bold">{{ property.title }}</h1>
+      <img [ngSrc]="property.imageUrls[0]" class="img-fluid rounded mb-4" alt="{{ property.title }}" fill>
+
+      <p class="text-muted">{{ property.description }}</p>
+
+    </div>
+
+    <!-- Right: Investment Sidebar -->
+    <div class="col-lg-4 z-0">
+      <div class="card sticky-top">
+        <div class="card-body">
+          <h5 class="card-title">Investment Overview</h5>
+
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <small class="text-muted">Expected ROI</small>
+              <div class="fw-semibold">{{ property.expectedRoi }}%</div>
+            </div>
+            <div class="col-6">
+              <small class="text-muted">Timeframe</small>
+              <div class="fw-semibold">N/A</div>
+            </div>
+            <div class="col-6">
+              <small class="text-muted">Min. Investment</small>
+              <div class="fw-semibold">N/A</div>
+            </div>
+            <div class="col-6">
+              <small class="text-muted">Investors</small>
+              <div class="fw-semibold">N/A</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="d-flex justify-content-between small">
+              <span>Progress</span>
+              <span>{{ progressPercentage | number:'1.0-0' }}%</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar bg-success" role="progressbar" [style.width.%]="progressPercentage"></div>
+            </div>
+            <div class="d-flex justify-content-between small mt-1 text-muted">
+              <span>Raised: N/A</span>
+              <span>Target: {{ formatCurrency(property.totalInvestment) }}</span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary w-100 mb-2" (click)="handleInvestNow()">
+            <i class="bi bi-graph-up-arrow me-1"></i>
+            {{ getInvestButtonText() }}
+          </button>
+
+          <div class="text-center small text-success mb-1">
+            <i class="bi bi-shield-lock me-1"></i> Secure & Protected Investment
+          </div>
+          <div class="text-center small text-primary mb-2">
+            {{ getUrgencyText() }}
+          </div>
+
+          <button class="btn btn-outline-secondary w-100 mb-2" (click)="handleRequestInfo()" [disabled]="isRequesting">
+            {{ isRequesting ? 'Sending...' : 'Request More Info' }}
+          </button>
+
+          <div class="dropdown">
+            <button class="btn btn-outline-warning w-100 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <i class="bi bi-wallet2 me-2"></i>
+              {{ isMobile ? 'Borrow to Invest' : 'Invest with Borrowed Capital' }}
+            </button>
+            <ul class="dropdown-menu w-100">
+              <li><a class="dropdown-item" (click)="handleBankSelection('Absa')">Absa</a></li>
+              <li><a class="dropdown-item" (click)="handleBankSelection('Nedbank')">Nedbank</a></li>
+              <li><a class="dropdown-item" (click)="handleBankSelection('Standard Bank')">Standard Bank</a></li>
+              <li><a class="dropdown-item" (click)="handleBankSelection('Capitec')">Capitec</a></li>
+              <li><a class="dropdown-item" (click)="handleBankSelection('FNB')">FNB</a></li>
+              <li><a class="dropdown-item" (click)="handleBankSelection('Investec')">Investec</a></li>
+              <li><a class="dropdown-item" (click)="handleBankSelection('Discovery Bank')">Discovery Bank</a></li>
+              <li><a class="dropdown-item" (click)="handleBankSelection('African Bank')">African Bank</a></li>
+              <li><a class="dropdown-item" (click)="handleBankSelection('SA Home Loans')">SA Home Loans</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template class="mb-4" #notFound>
+  <div class="container py-5 text-center">
+    <h2 class="mb-3">Property Not Found</h2>
+    <p class="mb-4">The property you're looking for doesn't exist or has been removed.</p>
+    <a routerLink="/" class="btn btn-primary">Return to Home</a>
+  </div>
+</ng-template>
+
+<!--<app-investment-steps-dialog-->
+<!--  *ngIf="showInvestmentSteps"-->
+<!--  [open]="showInvestmentSteps"-->
+<!--  [propertyTitle]="property?.title"-->
+<!--  [expectedROI]="property?.expectedRoi"-->
+<!--  [minimumInvestment]="0"-->
+<!--  (close)="showInvestmentSteps = false">-->
+<!--</app-investment-steps-dialog>-->
+
+
+<app-footer></app-footer>

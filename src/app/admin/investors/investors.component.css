@@ -1,0 +1,15 @@
+.card-container {
+    display: flex;
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+
+  p-card {
+    flex: 1 1 10%;
+    max-width: 340px;
+  }
+
+
+  .bg-light-brown{
+    background-color: rgb(240, 240, 240);
+  }

@@ -1,0 +1,31 @@
+p-step-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+
+span.p-step-title {
+  background-color: transparent !important;
+  color: red;
+}
+
+.stepper-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+
+.progress {
+  height: 6px;
+  background-color: #e9ecef;
+}
+
+.progress-bar {
+  background-color: #0d6efd;
+}
+
+
