@@ -1,0 +1,7 @@
+.scroll-left-btn {
+  left: 15%; /* Adjust this value to move the button closer to the cards */
+}
+
+.scroll-right-btn {
+  right: 15%; /* Adjust this value to move the button closer to the cards */
+}
