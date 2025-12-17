@@ -77,7 +77,7 @@ export interface AdminInvestorsPagination extends Pagination {
 
 export class AdminPropertiesService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080/api/v1';
+  private baseUrl = 'https://ylkgde9us8.execute-api.eu-west-1.amazonaws.com/dev/';
   constructor() { }
 
 

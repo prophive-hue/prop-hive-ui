@@ -9,7 +9,7 @@ import {Pagination, ResponseMessage} from './admin-properties.service';
 export class AdminDocumentsService {
 
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080/api/v1';
+  private baseUrl = 'https://ylkgde9us8.execute-api.eu-west-1.amazonaws.com/dev/';
 
   constructor() {
   }
