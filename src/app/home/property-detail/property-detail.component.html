@@ -10,10 +10,24 @@
     <!-- Left: Main Details -->
     <div class="col-lg-8">
       <h1 class="h3 mb-3 fw-bold">{{ property.title }}</h1>
-      <img [ngSrc]="property.imageUrls[0]" class="img-fluid rounded mb-4" alt="{{ property.title }}" fill>
 
+      <div>
+        <img [ngSrc]="property.imageUrls[0]" class="d-block img-fluid w-50" alt="{{ property.title }}">
+      </div>
+      
+
+      <p>About this Project</p>
       <p class="text-muted">{{ property.description }}</p>
 
+      <p>Developer Information</p>
+      <p class="text-muted">{{ property.description }}</p>
+
+      <p>Property Features</p>
+      <p>Foreign Investor Ready</p>
+
+
+      <p>Location</p>
+      <p>456 Business Avenue, CBD, Cape Town</p>
     </div>
 
     <!-- Right: Investment Sidebar -->
