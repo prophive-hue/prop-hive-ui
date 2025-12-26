@@ -1,0 +1,31 @@
+<div class="d-flex justify-content-center">
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+      <!-- Mobile: Horizontal scroll -->
+      <div class="d-block d-lg-none w-100">
+        <div class="d-flex overflow-auto pb-2" style="scrollbar-width: none; -ms-overflow-style: none;">
+          <a class="nav-link flex-shrink-0 px-3" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+          <a class="nav-link flex-shrink-0 px-3" routerLink="/home-properties" routerLinkActive="active">Properties</a>
+          <a class="nav-link flex-shrink-0 px-3" routerLink="/how-it-works" routerLinkActive="active">How it works</a>
+          <a class="nav-link flex-shrink-0 px-3" routerLink="/about" routerLinkActive="active">About</a>
+        </div>
+      </div>
+      
+      <!-- Desktop: Normal navbar -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-none d-lg-flex">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/home-properties" routerLinkActive="active">Properties</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/how-it-works" routerLinkActive="active">How it works</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>

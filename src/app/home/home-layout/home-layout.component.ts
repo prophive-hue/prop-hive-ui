@@ -1,14 +1,17 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import {FooterComponent} from "../../shared/footer/footer.component";
-import {HeaderComponent} from "../../shared/header/header.component";
+import {Component, ElementRef, ViewChild, ChangeDetectionStrategy, OnInit} from '@angular/core';
+import {FooterComponent} from "../../shared/components/footer/footer.component";
+import {HeaderComponent} from "../../shared/components/header/header.component";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {CardPropertyComponent} from '../card-property/card-property.component';
-import {AdminPropertiesService, Property} from '../../admin/services/admin-properties.service';
-import {Pagination} from '../../admin/services/admin-properties.service';
-import {ConstantsService} from '../../shared/service/constants.service';
+import {AdminPropertiesService, Property} from '../../features/admin/services/admin-properties.service';
+import {Pagination} from '../../features/admin/services/admin-properties.service';
+import {PaginatedResponse} from '../../models';
+import {ConstantsService} from '../../core/services/constants.service';
 import {NgxUiLoaderModule} from 'ngx-ui-loader';
-import {LoaderService} from '../../shared/service/loader.service';
+import {LoaderService} from '../../core/services/loader.service';
+import {SmartComponent} from '../../shared/components/base/base.component';
+import {takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-home-layout',
@@ -22,11 +25,13 @@ import {LoaderService} from '../../shared/service/loader.service';
     NgOptimizedImage
   ],
   templateUrl: './home-layout.component.html',
-  styleUrl: './home-layout.component.css'
+  styleUrl: './home-layout.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeLayoutComponent {
+export class HomeLayoutComponent extends SmartComponent implements OnInit {
 
   constructor(private propertiesService: AdminPropertiesService, private constants: ConstantsService, private loader:LoaderService) {
+    super();
   }
 
 
@@ -40,7 +45,7 @@ export class HomeLayoutComponent {
 
   managementTypes: string[] = [];
 
-  imagePath = '../public/building-1.jpg';
+  imagePath = '/building-1.jpg';
 
 
   ngOnInit() {
@@ -86,31 +91,31 @@ export class HomeLayoutComponent {
   properties: Property[] = [];
 
   getProperties(){
-
-    this.loader.startLoader();
+    this.setLoading(true);
 
     const paginator: Pagination = {
       page: 0,
       size: 15
     }
-    this.propertiesService.getAllHomeProperties(paginator).subscribe({
-      next: (response) => {
-        console.log('Login successful', response);
+    this.propertiesService.getAllHomeProperties(paginator)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+      next: (response: PaginatedResponse<Property>) => {
         this.properties = response.content;
-        this.loader.stopLoader();
+        this.setLoading(false);
       },
       error: (error: Error) => {
-        this.loader.stopLoader();
+        this.handleError(error);
       }
     });
-
   }
+
   scrollLeft() {
-    this.scrollContainer.nativeElement.scrollBy({left: -200, behavior: 'smooth'});
+    this.scrollContainer.nativeElement.scrollBy({left: -300, behavior: 'smooth'});
   }
 
   scrollRight() {
-    this.scrollContainer.nativeElement.scrollBy({left: 200, behavior: 'smooth'});
+    this.scrollContainer.nativeElement.scrollBy({left: 300, behavior: 'smooth'});
   }
 
 

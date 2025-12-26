@@ -12,9 +12,34 @@
       <h1 class="h3 mb-3 fw-bold">{{ property.title }}</h1>
 
       <div>
-        <img [ngSrc]="property.imageUrls[0]" class="d-block img-fluid w-50" alt="{{ property.title }}">
+        <div class="position-relative mb-3" style="max-width: 600px;">
+          <img [src]="property.imageUrls[currentImageIndex] || '/building-1.jpg'" 
+               class="img-fluid w-100 rounded" 
+               style="height: 300px; object-fit: cover;"
+               alt="{{ property.title }}">
+          
+          <!-- Previous Button -->
+          <button class="btn btn-primary position-absolute top-50 start-0 translate-middle-y" 
+                  style="margin-left: 10px;"
+                  (click)="previousImage()" 
+                  [disabled]="property.imageUrls.length <= 1">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          
+          <!-- Next Button -->
+          <button class="btn btn-primary position-absolute top-50 end-0 translate-middle-y" 
+                  style="margin-right: 10px;"
+                  (click)="nextImage()" 
+                  [disabled]="property.imageUrls.length <= 1">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+          
+          <!-- Image Counter -->
+          <div class="position-absolute bottom-0 end-0 bg-dark bg-opacity-75 text-white px-2 py-1 rounded-top-start small" style="margin: 10px;">
+            {{ currentImageIndex + 1 }} / {{ property.imageUrls.length || 1 }}
+          </div>
+        </div>
       </div>
-      
 
       <p>About this Project</p>
       <p class="text-muted">{{ property.description }}</p>

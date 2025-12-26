@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
-import {HeaderComponent} from "../../shared/header/header.component";
-import {FooterComponent} from '../../shared/footer/footer.component';
-import {AdminPropertiesService, Property} from '../../admin/services/admin-properties.service';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {HeaderComponent} from "../../shared/components/header/header.component";
+import {FooterComponent} from '../../shared/components/footer/footer.component';
+import {AdminPropertiesService, Property, PropertyCategory, PropertyStatus} from '../../features/admin/services/admin-properties.service';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {Toast, ToastModule} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
 import {DecimalPipe, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
+import { SmartComponent } from '../../shared/components/base/base.component';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-property-detail',
@@ -14,26 +16,26 @@ import {DecimalPipe, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
     FooterComponent,
     DecimalPipe,
     RouterLink,
-    NgIf,
-    NgOptimizedImage
+    NgIf
   ],
   providers: [
     MessageService
   ],
   templateUrl: './property-detail.component.html',
-  styleUrl: './property-detail.component.css'
+  styleUrl: './property-detail.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PropertyDetailComponent {
+export class PropertyDetailComponent extends SmartComponent implements OnInit {
   property: Property = {
     id:'',
     title: '',
     location: '',
-    category: '',
+    category: PropertyCategory.RESIDENTIAL,
     description: '',
     developer: '',
     expectedRoi: 0,
     totalInvestment: 0,
-    status: '',
+    status: PropertyStatus.NEW_DEVELOPMENT,
     imageUrls: []
   };
   progressPercentage = 0;
@@ -41,12 +43,15 @@ export class PropertyDetailComponent {
   showInvestmentSteps = false;
   isMobile = false;
   propertyId: any;
+  currentImageIndex = 0;
 
   constructor(
     private route: ActivatedRoute,
     private toast: MessageService,
     private admin: AdminPropertiesService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
 
@@ -104,18 +109,30 @@ export class PropertyDetailComponent {
   }
 
   getProperty(id:string){
-    this.admin.getProperty(id).subscribe({
-      next: (response) => {
-        console.log('Login successful', response);
+    this.setLoading(true);
+    this.admin.getProperty(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+      next: (response: Property) => {
         this.property = response;
-        //this.loading = false;
-        // Navigate to dashboard or home page after login
-        // this.router.navigate(['/dashboard']);
+        this.currentImageIndex = 0; // Reset to first image
+        this.setLoading(false);
       },
-      error: (error: Error) => {
-        // this.errorMessage = error.message;
-        //this.loading = false;
+      error: (error: any) => {
+        this.handleError(error);
       }
     });
+  }
+
+  previousImage() {
+    if (this.property.imageUrls.length > 1) {
+      this.currentImageIndex = this.currentImageIndex > 0 ? this.currentImageIndex - 1 : this.property.imageUrls.length - 1;
+    }
+  }
+
+  nextImage() {
+    if (this.property.imageUrls.length > 1) {
+      this.currentImageIndex = this.currentImageIndex < this.property.imageUrls.length - 1 ? this.currentImageIndex + 1 : 0;
+    }
   }
 }
