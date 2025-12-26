@@ -1,12 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Button} from 'primeng/button';
 import {ProgressBar} from 'primeng/progressbar';
-import {Paginator,} from 'primeng/paginator';
-
 import {Tag} from 'primeng/tag';
 import {Toast} from 'primeng/toast';
 import {Toolbar} from 'primeng/toolbar';
-
 import {CustomerService} from '../services/customer.service';
 import {DialogPropertyCreateComponent} from '../dialog/dialog-property-create/dialog-property-create.component';
 import {
@@ -14,7 +11,6 @@ import {
   AdminPropertiesService,
   Base64File,
   CreateProperty,
-  Pagination,
   Property
 } from '../services/admin-properties.service';
 import {MessageService} from 'primeng/api';
@@ -103,17 +99,14 @@ export class PropertiesComponent implements OnInit {
 
     }
 
-    console.log("paginator: " + paginator.size);
+    console.log("paginator size:", paginator.size);
 
     this.loader.startLoader();
     this.propertiesService.getAllProperties(paginator).subscribe({
       next: (response) => {
-        console.log('Login successful', response);
         this.properties = response.content;
         this.totalElements = response.totalElements;
         this.loader.stopLoader();
-        // Navigate to dashboard or home page after login
-        // this.router.navigate(['/dashboard']);
       },
       error: (error: Error) => {
         // this.errorMessage = error.message;
@@ -124,18 +117,12 @@ export class PropertiesComponent implements OnInit {
 
   handleCreate(data: any) {
     if (data) {
-      console.log('Resource created:', data);
-      // TODO: Persist data to a service or backend
-
       const base64Strings: string[] = data.images;
 
       const base64Images: Base64File[] = base64Strings.map(
-        (base64String: string) => {
-          const newBase64: Base64File = {
-            base64: base64String
-          }
-          return newBase64
-        }
+        (base64String: string) => ({
+          base64: base64String
+        })
       )
 
       const createProperty: CreateProperty = {
@@ -153,7 +140,6 @@ export class PropertiesComponent implements OnInit {
       this.loader.startLoader();
       this.propertiesService.createProperty(createProperty).subscribe({
         next: (response) => {
-          console.log('Login successful', response);
           this.loader.stopLoader();
           this.getAllProperties();
           this.messageService.add({
@@ -163,8 +149,6 @@ export class PropertiesComponent implements OnInit {
             key: 'tl',
             life: 10000
           });
-          // Navigate to dashboard or home page after login
-          // this.router.navigate(['/dashboard']);
         },
         error: (error: Error) => {
           this.messageService.add({
@@ -174,7 +158,6 @@ export class PropertiesComponent implements OnInit {
             key: 'tl',
             life: 10000
           });
-          // this.errorMessage = error.message;
           this.loader.stopLoader();
         }
       });
@@ -182,10 +165,6 @@ export class PropertiesComponent implements OnInit {
   }
 
   openPropertyGallery(property: any) {
-    console.log("showing pics: " + property.title);
-    console.log("showing pics: " + property.imageUrls.length);
-
-
     if (Number(property.imageUrls.length) > 0) {
       this.selectedPropertyImages = property.imageUrls;
       this.picturesComponent.show();

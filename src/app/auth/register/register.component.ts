@@ -59,11 +59,8 @@ export class RegisterComponent {
   onSubmit(): void {
     this.submitted = true;
     this.errorMessage = '';
-    console.log('Form submitted:', this.registerForm.value);
     
-    // Stop here if form is invalid
     if (this.registerForm.invalid) {
-      console.log('Form is invalid');
       return;
     }
     
@@ -79,12 +76,10 @@ export class RegisterComponent {
     
     this.authService.register(registerData).subscribe({
       next: (response) => {
-        console.log('Registration successful', response);
         this.loading = false;
-        // Navigate to login page after registration
         this.router.navigate(['/auth/login']);
       },
-      error: (error: Error) => {
+      error: (error) => {
         this.errorMessage = error.message;
         this.loading = false;
       }

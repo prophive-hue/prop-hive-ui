@@ -1,6 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, of, tap, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, of, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { ErrorHandlerService } from '../shared/service/error-handler.service';
 
 export interface LoginRequest {
   email: string;
@@ -33,7 +35,8 @@ export interface AuthResponse {
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private baseUrl = 'https://ylkgde9us8.execute-api.eu-west-1.amazonaws.com/dev';
+  private errorHandler = inject(ErrorHandlerService);
+  private baseUrl = environment.apiUrl;
 
   private readonly TOKEN_KEY = 'auth_token';
   private readonly USER_KEY = 'auth_user';
@@ -45,7 +48,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.baseUrl}/session/login`, credentials)
       .pipe(
         tap(response => this.storeAuthData(response)),
-        catchError(this.handleError)
+        catchError(error => this.errorHandler.throwError(this.errorHandler.handleHttpError(error)))
       );
   }
 
@@ -53,7 +56,7 @@ export class AuthService {
   register(userData: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.baseUrl}/user/register`, userData)
       .pipe(
-        catchError(this.handleError)
+        catchError(error => this.errorHandler.throwError(this.errorHandler.handleHttpError(error)))
       );
   }
 
@@ -94,7 +97,6 @@ export class AuthService {
   private storeAuthData(response: AuthResponse): void {
     if (response.accessToken) {
       localStorage.setItem(this.TOKEN_KEY, response.accessToken);
-      console.log('Token stored:', this.getToken())
     }
     if (response.user) {
       localStorage.setItem(this.USER_KEY, JSON.stringify(response.user));
@@ -104,20 +106,5 @@ export class AuthService {
   private clearAuthData(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
-
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'An unknown error occurred';
-
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      errorMessage = error.error?.message ||
-        `Server returned code ${error.status}, error message: ${error.message}`;
-    }
-
-    console.error(errorMessage);
-    return throwError(() => new Error(errorMessage));
   }
 }
