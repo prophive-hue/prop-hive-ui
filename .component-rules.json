@@ -1,0 +1,43 @@
+{
+  "rules": {
+    "component-responsibilities": {
+      "smart-components": {
+        "allowed-patterns": [
+          "features/**/*.component.ts",
+          "**/*-layout.component.ts"
+        ],
+        "required-extends": "SmartComponent",
+        "allowed-injections": ["services", "repositories"],
+        "forbidden-patterns": [
+          "direct DOM manipulation",
+          "business logic in templates"
+        ]
+      },
+      "presentation-components": {
+        "allowed-patterns": [
+          "shared/components/**/*.component.ts",
+          "**/*-card.component.ts",
+          "**/*-item.component.ts"
+        ],
+        "required-extends": "PresentationComponent",
+        "forbidden-injections": ["HttpClient", "*Service", "*Repository"],
+        "required-patterns": [
+          "@Input() decorators",
+          "@Output() decorators"
+        ]
+      },
+      "layout-components": {
+        "allowed-patterns": [
+          "**/*-layout.component.ts",
+          "shared/components/header/*.component.ts",
+          "shared/components/footer/*.component.ts"
+        ],
+        "allowed-injections": ["AuthService", "Router"],
+        "forbidden-patterns": [
+          "business logic",
+          "data fetching"
+        ]
+      }
+    }
+  }
+}

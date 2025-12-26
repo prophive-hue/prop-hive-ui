@@ -5,14 +5,16 @@ import {provideAnimationsAsync} from '@angular/platform-browser/animations/async
 import {providePrimeNG} from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import {routes} from './app.routes';
-import {authInterceptor} from './auth/interceptors/auth.interceptor';
-import {errorInterceptor} from './interceptors/error.interceptor';
+import {authInterceptor} from './core/interceptors/auth.interceptor';
+import {errorInterceptor} from './core/interceptors/global/error.interceptor';
+import {cacheInterceptor} from './core/interceptors/cache.interceptor';
+import {securityInterceptor} from './core/interceptors/security.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([authInterceptor, errorInterceptor])
+      withInterceptors([securityInterceptor, authInterceptor, errorInterceptor, cacheInterceptor])
     ),
     provideAnimationsAsync(),
     providePrimeNG({

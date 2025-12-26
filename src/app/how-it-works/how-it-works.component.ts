@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import {TopNavComponent} from '../shared/top-nav/top-nav.component';
-import {FooterComponent} from '../shared/footer/footer.component';
-import {HeaderComponent} from '../shared/header/header.component';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import {FooterComponent} from '../shared/components/footer/footer.component';
+import {HeaderComponent} from '../shared/components/header/header.component';
+import { PresentationComponent } from '../shared/components/base/base.component';
 
 @Component({
   selector: 'app-how-it-works',
@@ -10,8 +10,9 @@ import {HeaderComponent} from '../shared/header/header.component';
     HeaderComponent
   ],
   templateUrl: './how-it-works.component.html',
-  styleUrl: './how-it-works.component.css'
+  styleUrl: './how-it-works.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HowItWorksComponent {
+export class HowItWorksComponent extends PresentationComponent {
 
 }

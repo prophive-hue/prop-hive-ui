@@ -1,13 +1,15 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import {FooterComponent} from '../shared/footer/footer.component';
-import {HeaderComponent} from '../shared/header/header.component';
+import {Component, ElementRef, ViewChild, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {FooterComponent} from '../shared/components/footer/footer.component';
+import {HeaderComponent} from '../shared/components/header/header.component';
 import {NgForOf} from '@angular/common';
-import {RouterLink} from '@angular/router';
 import {CardPropertyComponent} from '../home/card-property/card-property.component';
 import {NgxUiLoaderModule} from 'ngx-ui-loader';
-import {AdminPropertiesService, Pagination, Property} from '../admin/services/admin-properties.service';
-import {ConstantsService} from '../shared/service/constants.service';
-import {LoaderService} from '../shared/service/loader.service';
+import {AdminPropertiesService, Pagination, Property} from '../features/admin/services/admin-properties.service';
+import {ConstantsService} from '../core/services/constants.service';
+import {LoaderService} from '../core/services/loader.service';
+import { SmartComponent } from '../shared/components/base/base.component';
+import { takeUntil } from 'rxjs';
+import { TrackByFunctions } from '../shared/utils/track-by.functions';
 
 @Component({
   selector: 'app-home-properties',
@@ -19,9 +21,12 @@ import {LoaderService} from '../shared/service/loader.service';
     NgxUiLoaderModule
   ],
   templateUrl: './home-properties.component.html',
-  styleUrl: './home-properties.component.css'
+  styleUrl: './home-properties.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomePropertiesComponent {
+export class HomePropertiesComponent extends SmartComponent implements OnInit {
+  trackById = TrackByFunctions.trackById;
+  trackByTitle = TrackByFunctions.trackByTitle;
   constructor(private propertiesService: AdminPropertiesService, private constants: ConstantsService, private loader:LoaderService) {
   }
 
@@ -80,24 +85,23 @@ export class HomePropertiesComponent {
   properties: Property[] = [];
 
   getProperties(){
-
-    this.loader.startLoader();
+    this.setLoading(true);
 
     const paginator: Pagination = {
       page: 0,
       size: 15
     }
-    this.propertiesService.getAllHomeProperties(paginator).subscribe({
-      next: (response) => {
-        console.log('Login successful', response);
-        this.properties = response.content;
-        this.loader.stopLoader();
-      },
-      error: (error: Error) => {
-        this.loader.stopLoader();
-      }
-    });
-
+    this.propertiesService.getAllHomeProperties(paginator)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          this.properties = response.content;
+          this.setLoading(false);
+        },
+        error: (error: any) => {
+          this.handleError(error);
+        }
+      });
   }
   scrollLeft() {
     this.scrollContainer.nativeElement.scrollBy({left: -200, behavior: 'smooth'});

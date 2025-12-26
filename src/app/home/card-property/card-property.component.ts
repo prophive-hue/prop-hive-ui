@@ -1,17 +1,21 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import {NgOptimizedImage} from '@angular/common';
-import {Property} from '../../admin/services/admin-properties.service';
+import {Property} from '../../features/admin/services/admin-properties.service';
 import {Router} from '@angular/router';
+import { PresentationComponent } from '../../shared/components/base/base.component';
+import { LazyLoadDirective } from '../../shared/directives/lazy-load.directive';
 
 @Component({
   selector: 'app-card-property',
   imports: [
-    NgOptimizedImage
+    NgOptimizedImage,
+    LazyLoadDirective
   ],
   templateUrl: './card-property.component.html',
-  styleUrl: './card-property.component.css'
+  styleUrl: './card-property.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CardPropertyComponent {
+export class CardPropertyComponent extends PresentationComponent {
 
   constructor(private router: Router) {
   }
