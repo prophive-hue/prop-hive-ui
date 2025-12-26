@@ -109,12 +109,13 @@ export class HomeLayoutComponent extends SmartComponent implements OnInit {
       }
     });
   }
+
   scrollLeft() {
-    this.scrollContainer.nativeElement.scrollBy({left: -200, behavior: 'smooth'});
+    this.scrollContainer.nativeElement.scrollBy({left: -300, behavior: 'smooth'});
   }
 
   scrollRight() {
-    this.scrollContainer.nativeElement.scrollBy({left: 200, behavior: 'smooth'});
+    this.scrollContainer.nativeElement.scrollBy({left: 300, behavior: 'smooth'});
   }
 
 

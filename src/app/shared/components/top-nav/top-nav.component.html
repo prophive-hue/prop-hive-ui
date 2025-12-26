@@ -3,16 +3,16 @@
     <div class="container-fluid">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" href="#">Home</a>
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/home-properties">Properties</a>
+          <a class="nav-link" routerLink="/home-properties" routerLinkActive="active">Properties</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/how-it-works">How it works</a>
+          <a class="nav-link" routerLink="/how-it-works" routerLinkActive="active">How it works</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/about">About</a>
+          <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
         </li>
       </ul>
     </div>
