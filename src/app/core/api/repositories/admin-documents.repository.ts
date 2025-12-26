@@ -5,6 +5,8 @@ import { BaseHttpService } from '../base/base-http.service';
 export interface DocumentPagination {
   page: number;
   size: number;
+  documentName?: string;
+  category?: string;
 }
 
 @Injectable({

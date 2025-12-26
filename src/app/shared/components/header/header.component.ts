@@ -1,9 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
-import { AuthService } from '../../features/auth/services/auth.service';
+import { AuthService } from '../../../features/auth/services/auth.service';
 import {TopNavComponent} from '../top-nav/top-nav.component';
-import { PresentationComponent } from '../base/base.component';
+import { SmartComponent } from '../base/base.component';
+import { UserRole } from '../../../models';
 
 @Component({
   selector: 'app-header',
@@ -18,14 +19,24 @@ import { PresentationComponent } from '../base/base.component';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent extends PresentationComponent implements OnInit {
+export class HeaderComponent extends SmartComponent implements OnInit {
   isLoggedIn = false;
 
-  constructor(private authService: AuthService, private router:Router) {}
+  constructor(private authService: AuthService, private router:Router) {
+    super();
+  }
 
   ngOnInit(): void {
     // Check auth status on initialization
     this.isLoggedIn = this.authService.isLoggedIn();
+  }
+
+  isInvestor(): boolean {
+    return this.authService.hasRole(UserRole.INVESTOR);
+  }
+
+  isAdmin(): boolean {
+    return this.authService.hasRole(UserRole.ADMIN);
   }
 
   logout(): void {

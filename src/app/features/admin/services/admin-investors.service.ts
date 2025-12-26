@@ -1,8 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AdminInvestorsRepository, Investor, InvestorPagination, PaginatedInvestors } from '../../../core/api/repositories/admin-investors.repository';
+import { AdminInvestorsRepository } from '../../../core/api/repositories/admin-investors.repository';
+import type { Investor, PaginatedResponse } from '../../../models';
+import type { InvestorPagination } from '../../../core/api/repositories/admin-investors.repository';
 
-export { Investor, InvestorPagination, PaginatedInvestors } from '../../../core/api/repositories/admin-investors.repository';
+export type { Investor } from '../../../models';
+export type { InvestorPagination } from '../../../core/api/repositories/admin-investors.repository';
+export type PaginatedInvestors = PaginatedResponse<Investor>;
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +14,7 @@ export { Investor, InvestorPagination, PaginatedInvestors } from '../../../core/
 export class AdminInvestorsService {
   private repository = inject(AdminInvestorsRepository);
 
-  getAllInvestors(pagination: InvestorPagination): Observable<PaginatedInvestors> {
+  getAllInvestors(pagination: InvestorPagination): Observable<PaginatedResponse<Investor>> {
     return this.repository.getAllInvestors(pagination);
   }
 

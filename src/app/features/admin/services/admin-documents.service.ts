@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AdminDocumentsRepository, DocumentPagination } from '../../../core/api/repositories/admin-documents.repository';
 
-export { DocumentPagination } from '../../../core/api/repositories/admin-documents.repository';
+export type { DocumentPagination } from '../../../core/api/repositories/admin-documents.repository';
 
 @Injectable({
   providedIn: 'root'

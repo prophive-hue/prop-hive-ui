@@ -31,6 +31,13 @@ export class ConfigService {
     }
   };
 
+  constructor() {
+    if (!environment.production) {
+      console.log('🔧 ConfigService initialized with API URL:', this.config.apiUrl);
+      console.log('🔧 Environment object:', environment);
+    }
+  }
+
   private readonly featureFlags: FeatureFlags = {
     enableNewDashboard: environment.features?.enableNewDashboard ?? true,
     enableAdvancedSearch: environment.features?.enableAdvancedSearch ?? true,
@@ -47,6 +54,10 @@ export class ConfigService {
   }
 
   getApiUrl(): string {
+    if (!environment.production) {
+      console.log('🔍 ConfigService - API URL:', this.config.apiUrl);
+      console.log('🔍 Environment:', environment);
+    }
     return this.config.apiUrl;
   }
 

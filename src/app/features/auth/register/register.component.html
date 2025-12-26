@@ -4,8 +4,8 @@
 </div>
 
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-  <div *ngIf="errorMessage" class="alert alert-danger mb-3">
-    {{ errorMessage }}
+  <div *ngIf="error" class="alert alert-danger mb-3">
+    {{ error.message }}
   </div>
   <div class="mb-3">
     <label for="name" class="form-label">Full Name</label>
@@ -49,6 +49,7 @@
     />
     <div *ngIf="submitted && f['phone'].errors" class="invalid-feedback">
       <div *ngIf="f['phone'].errors['required']">Phone number is required</div>
+      <div *ngIf="f['phone'].errors['pattern']">Phone number must be exactly 10 digits</div>
     </div>
   </div>
 
@@ -80,7 +81,7 @@
     />
     <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
       <div *ngIf="f['password'].errors['required']">Password is required</div>
-      <div *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters</div>
+      <div *ngIf="f['password'].errors['strongPassword']">Password must contain uppercase, lowercase, number, and special character (min 8 chars)</div>
     </div>
   </div>
 

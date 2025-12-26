@@ -2,10 +2,11 @@ export interface User {
   id: string;
   email: string;
   fullName: string;
-  role: UserRole;
+  roles: string[];
   name?: string;
   surname?: string;
   phone?: string;
+  active?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }

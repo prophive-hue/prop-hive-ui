@@ -7,8 +7,7 @@ import { TrackByFunctions } from '../../utils/track-by.functions';
 @Component({
   selector: 'app-footer',
   imports: [
-    NgForOf,
-    LazyLoadDirective
+    NgForOf
   ],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css',

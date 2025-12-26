@@ -29,7 +29,7 @@ export class InvestorDashboardComponent extends SmartComponent implements OnInit
   monthlyNett: number = 0;
   totalValue: number = 0;
 
-  loading: boolean = false;
+  override loading: boolean = false;
 
 
   showInvestmentSummary: boolean = false;
@@ -38,6 +38,7 @@ export class InvestorDashboardComponent extends SmartComponent implements OnInit
   deductions: any[] = [];
 
   constructor(private router: Router, private deductionsService: AdminDeductionsService) {
+    super();
   }
 
   ngOnInit() {

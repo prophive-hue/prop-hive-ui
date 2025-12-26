@@ -13,7 +13,9 @@ export class BaseHttpService {
 
   protected get<T>(endpoint: string, params?: any): Observable<T> {
     const httpParams = this.buildParams(params);
-    return this.http.get<T>(`${this.baseUrl}${endpoint}`, { params: httpParams });
+    const fullUrl = `${this.baseUrl}${endpoint}`;
+    console.log('🚀 HTTP GET:', fullUrl);
+    return this.http.get<T>(fullUrl, { params: httpParams });
   }
 
   protected post<T>(endpoint: string, body: any): Observable<T> {

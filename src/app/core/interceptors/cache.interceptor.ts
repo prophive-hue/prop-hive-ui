@@ -1,7 +1,7 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { tap } from 'rxjs';
-import { PerformanceService } from '../../services/performance.service';
+import { tap, of, Observable } from 'rxjs';
+import { PerformanceService } from '../services/performance.service';
 
 export const cacheInterceptor: HttpInterceptorFn = (req, next) => {
   const performanceService = inject(PerformanceService);
@@ -16,9 +16,7 @@ export const cacheInterceptor: HttpInterceptorFn = (req, next) => {
   const cachedResponse = performanceService.getCachedResponse(cacheKey);
   
   if (cachedResponse) {
-    return new Promise(resolve => {
-      setTimeout(() => resolve(cachedResponse), 0);
-    }) as any;
+    return of(cachedResponse) as Observable<any>;
   }
 
   // Make request and cache response

@@ -3,11 +3,8 @@ import {ButtonModule} from 'primeng/button';
 import {Tag} from 'primeng/tag';
 import {Toolbar} from 'primeng/toolbar';
 import {CustomerService} from '../services/customer.service';
-import {
-  AdminInvestorsPagination,
-} from '../services/admin-properties.service';
+import {AdminInvestorsService, InvestorPagination} from '../services/admin-investors.service';
 import {MessageService} from 'primeng/api';
-import {AdminInvestorsService} from '../services/admin-investors.service';
 import {StatsService} from '../services/stats.service';
 import {DialogInvestorVerifyComponent} from '../dialog/dialog-investor-verify/dialog-investor-verify.component';
 import {NgxUiLoaderModule} from 'ngx-ui-loader';
@@ -34,7 +31,7 @@ export class InvestorsComponent extends SmartComponent implements OnInit {
 
   statuses!: any[];
 
-  loading: boolean = true;
+  override loading: boolean = true;
 
 
   investors: any[] = [];
@@ -53,6 +50,7 @@ export class InvestorsComponent extends SmartComponent implements OnInit {
 
 
   constructor(private customerService: CustomerService, private investorsService: AdminInvestorsService, private messageService: MessageService, private statsService:StatsService, private loader:LoaderService) {
+    super();
   }
 
   ngOnInit() {
@@ -81,7 +79,7 @@ export class InvestorsComponent extends SmartComponent implements OnInit {
   }
 
   getAllInvestors() {
-    const paginator: AdminInvestorsPagination = {
+    const paginator: InvestorPagination = {
       investorName: this.searchInvestorInput,
       page: this.page,
       size: this.size

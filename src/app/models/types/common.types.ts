@@ -25,8 +25,6 @@ export type ApiErrorResponse = {
   details?: any;
 };
 
-export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;
-
 // Form types
 export type FormErrors<T> = {
   [K in keyof T]?: string[];

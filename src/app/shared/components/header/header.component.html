@@ -26,11 +26,11 @@
             </li>
           </ng-container>
           <ng-template #loggedInTemplate>
-            <li class="nav-item m-1">
+            <li class="nav-item m-1" *ngIf="isInvestor()">
               <a class="nav-link nav-link border border-1 rounded-2 border-primary" routerLink="/investor/"
                  routerLinkActive="active"><i class="bi bi-bank"></i> Investor Dashboard </a>
             </li>
-            <li class="nav-item m-1">
+            <li class="nav-item m-1" *ngIf="isAdmin()">
               <a class="nav-link nav-link border border-1 rounded-2 border-primary" routerLink="/admin/"
                  routerLinkActive="active"><i class="bi bi-person-workspace"></i> Administration </a>
             </li>

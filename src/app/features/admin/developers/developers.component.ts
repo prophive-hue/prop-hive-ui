@@ -8,9 +8,8 @@ import {ToastModule} from 'primeng/toast';
 import {ToolbarModule} from 'primeng/toolbar';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MessageService} from 'primeng/api';
-import {AdminDevelopersPagination} from '../services/admin-properties.service';
 import {DialogDeveloperCreateComponent} from '../dialog/dialog-developer-create/dialog-developer-create.component';
-import {AdminDevelopersService, CreateDeveloper, Developer} from '../services/admin-developers.service';
+import {AdminDevelopersService, CreateDeveloper, Developer, DeveloperPagination} from '../services/admin-developers.service';
 import {RegisterRequest} from '../../auth/services/auth.service';
 import {SearchButtonComponent} from '../../../shared/components/search-button/search-button.component';
 import {SlicePipe} from '@angular/common';
@@ -64,6 +63,7 @@ export class DevelopersComponent extends SmartComponent implements OnInit {
 
 
   constructor(private developersService: AdminDevelopersService, private messageService: MessageService, private loader: LoaderService) {
+    super();
   }
 
   ngOnInit() {
@@ -92,7 +92,7 @@ export class DevelopersComponent extends SmartComponent implements OnInit {
   }
 
   getAllDevelopers() {
-    const paginator: AdminDevelopersPagination = {
+    const paginator: DeveloperPagination = {
       companyName: this.searchDeveloperInput,
       page: this.page,
       size: this.size

@@ -1,8 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
-import { AuthRepository } from '../../core/api/repositories/auth.repository';
-import { ErrorHandlerService } from '../../core/services/error-handler.service';
-import { LoginRequest, RegisterRequest, AuthResponse, User, UserRole } from '../../models';
+import { AuthRepository } from '../../../core/api/repositories/auth.repository';
+import { ErrorHandlerService } from '../../../core/services/error-handler.service';
+import type { LoginRequest, RegisterRequest, AuthResponse, User, UserRole } from '../../../models';
+
+// Re-export types for easier importing
+export type { LoginRequest, RegisterRequest, AuthResponse, User, UserRole } from '../../../models';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +48,7 @@ export class AuthService {
 
   hasRole(role: UserRole): boolean {
     const user = this.getCurrentUser();
-    return user?.role === role;
+    return user?.roles?.includes(role) || false;
   }
 
   private storeAuthData(response: AuthResponse): void {

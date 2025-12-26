@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AdminDeductionsRepository, DeductionPagination } from '../../../core/api/repositories/admin-deductions.repository';
 
-export { DeductionPagination } from '../../../core/api/repositories/admin-deductions.repository';
+export type { DeductionPagination } from '../../../core/api/repositories/admin-deductions.repository';
 
 @Injectable({
   providedIn: 'root'

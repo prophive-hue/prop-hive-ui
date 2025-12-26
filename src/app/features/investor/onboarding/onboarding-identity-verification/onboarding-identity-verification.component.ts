@@ -2,10 +2,11 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {InvestorService} from '../../services/investor.service';
 import {NgxUiLoaderModule} from 'ngx-ui-loader';
-import {LoaderService} from '../../../shared/service/loader.service';
+import {LoaderService} from '../../../../core/services/loader.service';
 
 @Component({
   selector: 'app-onboarding-identity-verification',
+  standalone: true,
   templateUrl: './onboarding-identity-verification.component.html',
   imports: [
     FormsModule,

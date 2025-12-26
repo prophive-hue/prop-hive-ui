@@ -11,10 +11,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if (token) {
     const isExpired = isTokenExpired(token);
     if (isExpired) {
-      authService.logout(); // clear token and user state
-      router.navigate(['/login']);
-      // Optionally: throw error or prevent request
-      return next(req); // or return EMPTY if you want to halt the request
+      authService.logout();
+      router.navigate(['/auth/login']).catch(() => {
+        window.location.href = '/auth/login';
+      });
+      return next(req);
     }
 
     const authReq = req.clone({

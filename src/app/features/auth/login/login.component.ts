@@ -6,12 +6,11 @@ import { AuthService, LoginRequest } from '../services/auth.service';
 import { SmartComponent } from '../../../shared/components/base/base.component';
 import { takeUntil } from 'rxjs';
 import { SecurityValidators } from '../../../shared/validators/security.validators';
-import { SanitizeInputDirective } from '../../../shared/directives/sanitize-input.directive';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, SanitizeInputDirective],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -19,7 +18,6 @@ import { SanitizeInputDirective } from '../../../shared/directives/sanitize-inpu
 export class LoginComponent extends SmartComponent {
   loginForm: FormGroup;
   submitted = false;
-  errorMessage = '';
   
   constructor(
     private formBuilder: FormBuilder,
@@ -36,7 +34,8 @@ export class LoginComponent extends SmartComponent {
       ]],
       password: ['', [
         Validators.required, 
-        Validators.minLength(6),
+        Validators.minLength(8),
+        SecurityValidators.strongPassword(),
         SecurityValidators.noXss(),
         SecurityValidators.noSqlInjection()
       ]],

@@ -5,6 +5,7 @@ import { BaseHttpService } from '../base/base-http.service';
 export interface DeductionPagination {
   page: number;
   size: number;
+  deductionName?: string;
 }
 
 @Injectable({

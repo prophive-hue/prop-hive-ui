@@ -3,21 +3,20 @@ import {
   DialogAdminDocumentUploadComponent
 } from '../dialog/dialog-admin-document-upload/dialog-admin-document-upload.component';
 import {MessageService} from 'primeng/api';
-import {AdminDocumentsPagination} from '../services/admin-properties.service';
+import {AdminDocumentsService, DocumentPagination} from '../services/admin-documents.service';
 import {Button} from 'primeng/button';
 import {Toolbar} from 'primeng/toolbar';
 import {Toast} from 'primeng/toast';
-import {AdminDocumentsService} from '../services/admin-documents.service';
 import {DatePipe} from '@angular/common';
 import {IconField} from 'primeng/iconfield';
 import {InputIcon} from 'primeng/inputicon';
 import {InputText} from 'primeng/inputtext';
 import {FormsModule} from '@angular/forms';
 import {Paginator} from 'primeng/paginator';
-import {SearchButtonComponent} from '../../shared/search-button/search-button.component';
-import {PaginatorComponent} from '../../shared/paginator/paginator.component';
+import {SearchButtonComponent} from '../../../shared/components/search-button/search-button.component';
+import {PaginatorComponent} from '../../../shared/components/paginator/paginator.component';
 import {NgxUiLoaderModule} from 'ngx-ui-loader';
-import {LoaderService} from '../../shared/service/loader.service';
+import {LoaderService} from '../../../core/services/loader.service';
 
 @Component({
   selector: 'app-admin-documents',
@@ -61,7 +60,7 @@ export class AdminDocumentsComponent {
   }
 
   getAllDocuments() {
-    const paginator: AdminDocumentsPagination = {
+    const paginator: DocumentPagination = {
       page: this.page,
       size: this.size,
       documentName: this.searchDocumentName,

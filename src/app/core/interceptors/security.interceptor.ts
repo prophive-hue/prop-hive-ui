@@ -1,14 +1,16 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { map } from 'rxjs';
-import { SanitizationService } from '../../services/sanitization.service';
+import { SanitizationService } from '../services/sanitization.service';
 
 export const securityInterceptor: HttpInterceptorFn = (req, next) => {
   const sanitizationService = inject(SanitizationService);
 
-  // Sanitize request body for POST/PUT requests
+  // Sanitize request body for POST/PUT requests (exclude file uploads and JSON)
   let sanitizedReq = req;
-  if ((req.method === 'POST' || req.method === 'PUT') && req.body) {
+  if ((req.method === 'POST' || req.method === 'PUT') && req.body && 
+      !req.headers.get('Content-Type')?.includes('multipart/form-data') &&
+      !req.headers.get('Content-Type')?.includes('application/json')) {
     const sanitizedBody = sanitizeObject(req.body, sanitizationService);
     sanitizedReq = req.clone({ body: sanitizedBody });
   }

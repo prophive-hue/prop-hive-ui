@@ -11,7 +11,7 @@ import { SanitizeInputDirective } from '../../../shared/directives/sanitize-inpu
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, SanitizeInputDirective],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -47,7 +47,7 @@ export class RegisterComponent extends SmartComponent {
       ]],
       phone: ['', [
         Validators.required,
-        SecurityValidators.phoneNumber(),
+        Validators.pattern(/^[0-9]{10}$/),
         SecurityValidators.noXss()
       ]],
       password: ['', [

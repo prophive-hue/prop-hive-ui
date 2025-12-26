@@ -68,6 +68,7 @@ export class PropertiesComponent extends SmartComponent implements OnInit {
 
 
   constructor(private propertiesService: AdminPropertiesService, private messageService: MessageService, private loader: LoaderService) {
+    super();
   }
 
   ngOnInit() {

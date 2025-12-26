@@ -104,12 +104,12 @@ import {OverlayBadgeModule} from 'primeng/overlaybadge';
 import {AdminDevelopersService, CreateDeveloper} from '../services/admin-developers.service';
 import {MessageService} from 'primeng/api';
 import {RegisterRequest} from '../../auth/services/auth.service';
-import {AdminDeductionsService} from '../services/admin-deductions.service';
-import {AdminDeductionsPagination, Pagination} from '../services/admin-properties.service';
-import {PaginatorComponent} from '../../shared/paginator/paginator.component';
-import {SearchButtonComponent} from '../../shared/search-button/search-button.component';
+import {AdminDeductionsService, DeductionPagination} from '../services/admin-deductions.service';
+import {Pagination} from '../services/admin-properties.service';
+import {PaginatorComponent} from '../../../shared/components/paginator/paginator.component';
+import {SearchButtonComponent} from '../../../shared/components/search-button/search-button.component';
 import {NgxUiLoaderModule} from 'ngx-ui-loader';
-import {LoaderService} from '../../shared/service/loader.service';
+import {LoaderService} from '../../../core/services/loader.service';
 
 @Component({
   selector: 'app-deductions',
@@ -149,7 +149,7 @@ export class DeductionsComponent {
 
 
   getAllDeductions() {
-    const paginator: AdminDeductionsPagination = {
+    const paginator: DeductionPagination = {
       deductionName: this.searchDeductionInput,
       page: this.page,
       size: this.size

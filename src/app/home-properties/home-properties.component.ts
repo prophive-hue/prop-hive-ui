@@ -28,6 +28,7 @@ export class HomePropertiesComponent extends SmartComponent implements OnInit {
   trackById = TrackByFunctions.trackById;
   trackByTitle = TrackByFunctions.trackByTitle;
   constructor(private propertiesService: AdminPropertiesService, private constants: ConstantsService, private loader:LoaderService) {
+    super();
   }
 
 

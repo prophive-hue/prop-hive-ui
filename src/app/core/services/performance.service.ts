@@ -14,6 +14,12 @@ interface CacheEntry<T> {
 export class PerformanceService {
   private cache = new Map<string, CacheEntry<any>>();
   private readonly DEFAULT_CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+  private cleanupInterval: any;
+
+  constructor() {
+    // Auto cleanup every 10 minutes
+    this.cleanupInterval = setInterval(() => this.cleanupExpiredCache(), 10 * 60 * 1000);
+  }
 
   // Cache HTTP responses
   cacheResponse<T>(key: string, data: T, cacheTime = this.DEFAULT_CACHE_TIME): void {

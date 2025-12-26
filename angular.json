@@ -40,8 +40,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2MB",
-                  "maximumError": "3MB"
+                  "maximumWarning": "1MB",
+                  "maximumError": "1.5MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -61,6 +61,17 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "local-prod": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local-prod.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -73,6 +84,9 @@
             },
             "development": {
               "buildTarget": "property-hive-ui:build:development"
+            },
+            "local-prod": {
+              "buildTarget": "property-hive-ui:build:local-prod"
             }
           },
           "defaultConfiguration": "development"

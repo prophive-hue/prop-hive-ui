@@ -2,8 +2,8 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {InvestorService} from '../../services/investor.service';
-import {ConstantsService} from '../../../shared/service/constants.service';
-import {LoaderService} from '../../../shared/service/loader.service';
+import {ConstantsService} from '../../../../core/services/constants.service';
+import {LoaderService} from '../../../../core/services/loader.service';
 import {NgxUiLoaderModule} from 'ngx-ui-loader';
 
 @Component({

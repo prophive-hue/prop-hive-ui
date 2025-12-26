@@ -25,7 +25,8 @@ import {NgClass, NgForOf, NgSwitch, NgSwitchCase} from '@angular/common';
     OnboardingRiskProfileComponent,
     OnboardingLegalAgreementsComponent,
     OnboardingKycAmlComponent,
-    OnboardingCreditCheckComponent, NgSwitch, NgSwitchCase, NgClass, NgForOf,
+    OnboardingCreditCheckComponent,
+    NgSwitch, NgSwitchCase, NgClass, NgForOf,
   ],
   templateUrl: './onboarding-layout.component.html',
   styleUrl: './onboarding-layout.component.css'

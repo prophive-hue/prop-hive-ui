@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseHttpService } from '../base/base-http.service';
-import { Investor, PaginationRequest, PaginatedResponse } from '../../models';
+import { Investor, PaginationRequest, PaginatedResponse } from '../../../models';
 
-export interface InvestorPagination extends PaginationRequest {
+export interface InvestorPagination {
+  page: number;
+  size: number;
   investorName?: string;
 }
 

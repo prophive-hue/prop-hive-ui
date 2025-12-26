@@ -38,9 +38,13 @@ export class SecurityValidators {
       if (!value) return null;
 
       const sqlPatterns = [
-        /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|UNION|SCRIPT)\b)/i,
-        /(--|\/\*|\*\/|;|'|"|`)/,
-        /(\bOR\b|\bAND\b).*[=<>]/i
+        /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|UNION|SCRIPT|TRUNCATE|MERGE|GRANT|REVOKE)\b)/i,
+        /(--|\/#|\*#|\/\*|\*\/|;|'|"|`|\\x|\\u|%27|%22)/,
+        /(\bOR\b|\bAND\b).*(=|<|>|LIKE|IN|EXISTS)/i,
+        /(UNION\s+(ALL\s+)?SELECT)/i,
+        /(\b(WAITFOR|DELAY|BENCHMARK|SLEEP)\b)/i,
+        /(\b(INFORMATION_SCHEMA|SYS\.|DUAL)\b)/i,
+        /(\b(CONCAT|CHAR|ASCII|SUBSTRING|LENGTH)\s*\()/i
       ];
 
       const hasSqlInjection = sqlPatterns.some(pattern => pattern.test(value));
@@ -60,7 +64,14 @@ export class SecurityValidators {
         /on\w+\s*=/gi,
         /<iframe/gi,
         /<object/gi,
-        /<embed/gi
+        /<embed/gi,
+        /data:\s*text\/html/gi,
+        /vbscript:/gi,
+        /expression\s*\(/gi,
+        /<(svg|math|form|input|textarea|select|button)\b/gi,
+        /&#x?[0-9a-f]+;?/gi,
+        /%3c|%3e|%22|%27|%2f/gi,
+        /<\w+[^>]*\s(src|href|action)\s*=\s*["']?\s*(javascript|data|vbscript):/gi
       ];
 
       const hasXss = xssPatterns.some(pattern => pattern.test(value));
