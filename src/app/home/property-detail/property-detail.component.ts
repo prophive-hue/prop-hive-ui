@@ -16,8 +16,7 @@ import { takeUntil } from 'rxjs';
     FooterComponent,
     DecimalPipe,
     RouterLink,
-    NgIf,
-    NgOptimizedImage
+    NgIf
   ],
   providers: [
     MessageService
@@ -44,6 +43,7 @@ export class PropertyDetailComponent extends SmartComponent implements OnInit {
   showInvestmentSteps = false;
   isMobile = false;
   propertyId: any;
+  currentImageIndex = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -115,11 +115,24 @@ export class PropertyDetailComponent extends SmartComponent implements OnInit {
       .subscribe({
       next: (response: Property) => {
         this.property = response;
+        this.currentImageIndex = 0; // Reset to first image
         this.setLoading(false);
       },
       error: (error: any) => {
         this.handleError(error);
       }
     });
+  }
+
+  previousImage() {
+    if (this.property.imageUrls.length > 1) {
+      this.currentImageIndex = this.currentImageIndex > 0 ? this.currentImageIndex - 1 : this.property.imageUrls.length - 1;
+    }
+  }
+
+  nextImage() {
+    if (this.property.imageUrls.length > 1) {
+      this.currentImageIndex = this.currentImageIndex < this.property.imageUrls.length - 1 ? this.currentImageIndex + 1 : 0;
+    }
   }
 }

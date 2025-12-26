@@ -17,18 +17,18 @@ export class AdminPropertiesRepository extends BaseHttpService {
   }
 
   createProperty(property: CreateProperty): Observable<{ message: string }> {
-    return this.post<{ message: string }>('/admin/properties', property);
+    return this.post<{ message: string }>('/property', property);
   }
 
   updateProperty(id: string, property: Partial<CreateProperty>): Observable<{ message: string }> {
-    return this.put<{ message: string }>(`/admin/properties/${id}`, property);
+    return this.put<{ message: string }>(`/property/${id}`, property);
   }
 
   deleteProperty(id: string): Observable<{ message: string }> {
-    return this.delete<{ message: string }>(`/admin/properties/${id}`);
+    return this.delete<{ message: string }>(`/property/${id}`);
   }
 
   getProperty(id: string): Observable<Property> {
-    return this.get<Property>(`/admin/properties/${id}`);
+    return this.get<Property>(`/property/${id}`);
   }
 }
