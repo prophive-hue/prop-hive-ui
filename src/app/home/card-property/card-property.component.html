@@ -1,7 +1,7 @@
-<div class="card shadow-sm border-1 h-100 d-flex flex-column overflow-hidden hover-shadow transition-all" style="width: 18rem;">
+<div class="card shadow-sm border-1 h-100 d-flex flex-column overflow-hidden hover-shadow transition-all w-100" style="max-width: 18rem;">
   <div class="position-relative bg-light" style="aspect-ratio: 16/9;">
     <img
-      [ngSrc]="property.imageUrls[0]"
+      [ngSrc]="property.imageUrls[0] || '/placeholder.svg'"
       class="w-100 h-100 object-fit-lg-fill rounded-top"
       alt="Property image"
       onerror="this.src='/placeholder.svg';"

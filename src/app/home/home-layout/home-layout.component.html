@@ -146,10 +146,10 @@
         </button>
 
         <!-- Properties Container -->
-        <div class="px-5">
-          <div #scrollContainer class="d-flex overflow-auto gap-3 pb-3" style="scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none;">
+        <div class="px-2 px-md-5">
+          <div #scrollContainer class="d-flex overflow-auto gap-2 gap-md-3 pb-3" style="scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none;">
             @for (p of properties; track p) {
-              <div class="flex-shrink-0" style="width: 300px;">
+              <div class="flex-shrink-0" style="width: calc(100vw - 2rem); max-width: 300px;">
                 <app-card-property [property]="p"></app-card-property>
               </div>
             }
