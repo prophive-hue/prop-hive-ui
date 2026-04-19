@@ -12,6 +12,10 @@ export class AuthRepository extends BaseHttpService {
     return this.post<AuthResponse>('/session/login', credentials);
   }
 
+  googleLogin(idToken: string): Observable<AuthResponse> {
+    return this.post<AuthResponse>('/session/google', { idToken });
+  }
+
   register(userData: RegisterRequest): Observable<AuthResponse> {
     return this.post<AuthResponse>('/user/register', userData);
   }

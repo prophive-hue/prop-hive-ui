@@ -24,6 +24,13 @@ export class AuthService {
       );
   }
 
+  googleLogin(idToken: string): Observable<AuthResponse> {
+    return this.authRepository.googleLogin(idToken)
+      .pipe(
+        tap(response => this.storeAuthData(response))
+      );
+  }
+
   register(userData: RegisterRequest): Observable<AuthResponse> {
     return this.authRepository.register(userData);
   }
