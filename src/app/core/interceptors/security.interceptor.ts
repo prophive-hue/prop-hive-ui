@@ -6,11 +6,10 @@ import { SanitizationService } from '../services/sanitization.service';
 export const securityInterceptor: HttpInterceptorFn = (req, next) => {
   const sanitizationService = inject(SanitizationService);
 
-  // Sanitize request body for POST/PUT requests (exclude file uploads and JSON)
+  // Sanitize request body for POST/PUT requests (exclude file uploads)
   let sanitizedReq = req;
   if ((req.method === 'POST' || req.method === 'PUT') && req.body && 
-      !req.headers.get('Content-Type')?.includes('multipart/form-data') &&
-      !req.headers.get('Content-Type')?.includes('application/json')) {
+      !req.headers.get('Content-Type')?.includes('multipart/form-data')) {
     const sanitizedBody = sanitizeObject(req.body, sanitizationService);
     sanitizedReq = req.clone({ body: sanitizedBody });
   }

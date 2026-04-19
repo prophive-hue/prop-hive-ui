@@ -4,6 +4,7 @@ import {CommonModule} from '@angular/common';
 import {InvestorService} from '../../services/investor.service';
 import {ConstantsService} from '../../../../core/services/constants.service';
 import {LoaderService} from '../../../../core/services/loader.service';
+import {AuthService} from '../../../auth/services/auth.service';
 import {NgxUiLoaderModule} from 'ngx-ui-loader';
 
 @Component({
@@ -30,7 +31,7 @@ export class OnboardingPersonalInfoComponent {
 
   genders: string[] = [];
 
-  constructor(private fb: FormBuilder, private investorService: InvestorService, private constantsService: ConstantsService, private loader: LoaderService) {
+  constructor(private fb: FormBuilder, private investorService: InvestorService, private constantsService: ConstantsService, private loader: LoaderService, private authService: AuthService) {
     this.form = this.fb.group({
       fullName: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
@@ -53,8 +54,11 @@ export class OnboardingPersonalInfoComponent {
   }
 
   getPersonalInformation() {
+    const userId = this.authService.getCurrentUser()?.id;
+    if (!userId) return;
+
     this.loader.startLoader();
-    this.investorService.getStepDetails('6820d4faa1179f0cb69dd6b3', 0).subscribe({
+    this.investorService.getStepDetails(userId, 0).subscribe({
       next: (data) => {
         if (data) {
           this.form.patchValue({
@@ -95,7 +99,9 @@ export class OnboardingPersonalInfoComponent {
   savePersonalInformation() {
     if (this.form.invalid) return;
 
-    const userId = '6820d4faa1179f0cb69dd6b3';
+    const userId = this.authService.getCurrentUser()?.id;
+    if (!userId) return;
+
     const dto = this.form.value;
 
     dto.dateOfBirth = this.form.value.dateOfBirth + 'T00:00:00';
