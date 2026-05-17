@@ -21,4 +21,8 @@ export class AdminDevelopersRepository extends BaseHttpService {
   createDeveloper(developer: CreateDeveloper): Observable<{ message: string }> {
     return this.post<{ message: string }>('/developer/create', developer);
   }
+
+  getDeveloperList(): Observable<{ id: string; companyName: string }[]> {
+    return this.get<{ id: string; companyName: string }[]>('/developer/list');
+  }
 }

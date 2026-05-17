@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Output, OnInit, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DialogModule} from 'primeng/dialog';
@@ -6,6 +6,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {DropdownModule} from 'primeng/dropdown';
 import {ButtonModule} from 'primeng/button';
 import {SelectModule} from 'primeng/select';
+import {AdminDevelopersRepository} from '../../../../core/api/repositories/admin-developers.repository';
 
 @Component({
   selector: 'app-resource-dialog',
@@ -22,7 +23,7 @@ import {SelectModule} from 'primeng/select';
   templateUrl: './dialog-property-create.component.html',
   styleUrl: './dialog-property-create.component.css'
 })
-export class DialogPropertyCreateComponent {
+export class DialogPropertyCreateComponent implements OnInit {
   @Output() onClose = new EventEmitter<any>();
   visible = false;
 
@@ -30,17 +31,31 @@ export class DialogPropertyCreateComponent {
 
   imageFiles: File[] = [];
   imagePreviews: string[] = [];
+  developers: any[] = [];
 
-  constructor(private fb: FormBuilder) {
+  private fb = inject(FormBuilder);
+  private devRepo = inject(AdminDevelopersRepository);
+
+  constructor() {
     this.form = this.fb.group({
       title: ['', Validators.required],
       location: ['', Validators.required],
       category: ['', Validators.required],
       description: [''],
-      developer: [''],
+      developerId: [''],
       expectedRoi: ['', Validators.required],
       totalInvestment: ['', Validators.required],
       status: ['pending', Validators.required]
+    });
+  }
+
+  ngOnInit() {
+    this.loadDevelopers();
+  }
+
+  private loadDevelopers() {
+    this.devRepo.getDeveloperList().subscribe({
+      next: (list: any[]) => this.developers = list
     });
   }
 
@@ -87,5 +102,4 @@ export class DialogPropertyCreateComponent {
     this.imageFiles.splice(index, 1);
     this.imagePreviews.splice(index, 1);
   }
-
 }

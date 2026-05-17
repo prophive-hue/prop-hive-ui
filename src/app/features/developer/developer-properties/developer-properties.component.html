@@ -1,0 +1,65 @@
+<app-resource-dialog #dialog (onClose)="handleCreate($event)"></app-resource-dialog>
+
+<div class="position-relative">
+  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+
+  <div class="card">
+    <p-toolbar styleClass="mb-6">
+      <ng-template #start>
+        <h4>My Properties</h4>
+      </ng-template>
+
+      <ng-template #end>
+        <p-button severity="secondary" label="Submit New Property" icon="pi pi-plus-circle" class="mr-2"
+                  (click)="dialog?.show()"/>
+      </ng-template>
+    </p-toolbar>
+
+    <div class="container-fluid table-responsive">
+      <table class="w-100 table table-striped">
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Location</th>
+          <th>Category</th>
+          <th>Investment</th>
+          <th>ROI</th>
+          <th>Status</th>
+          <th>Reason</th>
+        </tr>
+        </thead>
+
+        <tbody>
+          @if (properties.length > 0) {
+            @for (property of properties; track property.id) {
+              <tr>
+                <td>{{ property.title }}</td>
+                <td>{{ property.location }}</td>
+                <td>{{ property.category }}</td>
+                <td>R {{ property.totalInvestment | number:'1.0-0' }}</td>
+                <td>{{ property.expectedRoi }}%</td>
+                <td>
+                  <p-tag [value]="property.approvalStatus" [severity]="getSeverity(property.approvalStatus)"/>
+                </td>
+                <td>
+                  @if (property.rejectionReason) {
+                    <span class="text-danger">{{ property.rejectionReason }}</span>
+                  } @else {
+                    -
+                  }
+                </td>
+              </tr>
+            }
+          } @else {
+            <tr>
+              <td class="text-danger fw-bold fst-italic" colspan="7">No properties found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<p-toast position="bottom-center" key="tl"/>

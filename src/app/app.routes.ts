@@ -22,6 +22,10 @@ export const routes: Routes = [
     path: 'investor',
     loadChildren: () => import('./features/investor/investor.routes').then(m => m.investorRoutes)
   },
+  {
+    path: 'developer',
+    loadChildren: () => import('./features/developer/developer.routes').then(m => m.developerRoutes)
+  },
 
   {
     path: 'property-details/:id',

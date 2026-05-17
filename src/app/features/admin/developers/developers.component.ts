@@ -10,7 +10,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MessageService} from 'primeng/api';
 import {DialogDeveloperCreateComponent} from '../dialog/dialog-developer-create/dialog-developer-create.component';
 import {AdminDevelopersService, CreateDeveloper, Developer, DeveloperPagination} from '../services/admin-developers.service';
-import {RegisterRequest} from '../../auth/services/auth.service';
 import {SearchButtonComponent} from '../../../shared/components/search-button/search-button.component';
 import {SlicePipe} from '@angular/common';
 import {PaginatorComponent} from '../../../shared/components/paginator/paginator.component';
@@ -116,17 +115,6 @@ export class DevelopersComponent extends SmartComponent implements OnInit {
 
   handleCreate(data: any) {
     if (data) {
-      console.log('Resource created:', data);
-      // TODO: Persist data to a service or backend
-      const createUser: RegisterRequest = {
-        email: data.userEmail,
-        password: data.password,
-        name: data.userFirstName,
-        surname: data.userSurname,
-        phone: data.userPhone
-      }
-
-
       const createDeveloper: CreateDeveloper = {
         companyName: data.companyName,
         email: data.companyEmail,
@@ -134,13 +122,18 @@ export class DevelopersComponent extends SmartComponent implements OnInit {
         developerType: data.companyType,
         yearsExperience: data.yearsExperience,
         companyDescription: data.description,
-        contactPerson: createUser
+        logoBase64: data.logoBase64 || null,
+        contactPerson: {
+          name: data.userFirstName,
+          surname: data.userSurname,
+          email: data.userEmail,
+          phone: data.userPhone
+        }
       };
 
       this.loader.startLoader();
       this.developersService.createDeveloper(createDeveloper).subscribe({
         next: (response) => {
-          console.log('developer created successfully', response);
           this.loader.stopLoader();
           this.getAllDevelopers();
           this.messageService.add({
@@ -150,8 +143,6 @@ export class DevelopersComponent extends SmartComponent implements OnInit {
             key: 'tl',
             life: 10000
           });
-          //Navigate to dashboard or home page after login
-          //this.router.navigate(['/dashboard']);
         },
         error: (error: Error) => {
           this.messageService.add({
@@ -161,7 +152,6 @@ export class DevelopersComponent extends SmartComponent implements OnInit {
             key: 'tl',
             life: 10000
           });
-          //this.errorMessage = error.message;
           this.loader.stopLoader();
         }
       });

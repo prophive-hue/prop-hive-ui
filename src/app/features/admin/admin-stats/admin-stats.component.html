@@ -1,21 +1,37 @@
 <div class="card-container mb-3 mt-3">
   <p-card header="Active Properties">
-    <p>4</p>
-    <p><span style="color: green;">+2</span> since last month</p>
+    <p>{{ stats?.activeProperties || 0 }}</p>
+    <p>
+      <span [style.color]="propertiesDiff >= 0 ? 'green' : 'red'">
+        {{ propertiesDiff >= 0 ? '+' : '' }}{{ propertiesDiff }}
+      </span> since last month
+    </p>
   </p-card>
 
   <p-card header="Total Investors">
-    <p>5,240</p>
-    <p><span style="color: green;">+124</span> since last month</p>
+    <p>{{ stats?.totalInvestors || 0 | number }}</p>
+    <p>
+      <span [style.color]="investorsDiff >= 0 ? 'green' : 'red'">
+        {{ investorsDiff >= 0 ? '+' : '' }}{{ investorsDiff }}
+      </span> since last month
+    </p>
   </p-card>
 
   <p-card header="Capital Raised" styleClass="custom-card">
-    <p>R 805M</p>
-    <p><span style="color: green;">+12%</span> since last month</p>
+    <p>{{ formatCapital(stats?.capitalRaised || 0) }}</p>
+    <p>
+      <span [style.color]="capitalDiffPercent >= 0 ? 'green' : 'red'">
+        {{ capitalDiffPercent >= 0 ? '+' : '' }}{{ capitalDiffPercent | number:'1.0-0' }}%
+      </span> since last month
+    </p>
   </p-card>
 
-  <p-card header="Avg.ROI">
-    <p>11.8%</p>
-    <p><span style="color: green;">+0.3%</span> since last month</p>
+  <p-card header="Avg. ROI">
+    <p>{{ stats?.averageRoi || 0 | number:'1.1-1' }}%</p>
+    <p>
+      <span [style.color]="roiDiff >= 0 ? 'green' : 'red'">
+        {{ roiDiff >= 0 ? '+' : '' }}{{ roiDiff | number:'1.1-1' }}%
+      </span> since last month
+    </p>
   </p-card>
 </div>

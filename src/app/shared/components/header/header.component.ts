@@ -39,6 +39,10 @@ export class HeaderComponent extends SmartComponent implements OnInit {
     return this.authService.hasRole(UserRole.ADMIN);
   }
 
+  isDeveloper(): boolean {
+    return this.authService.hasRole(UserRole.DEVELOPER);
+  }
+
   logout(): void {
     this.authService.logout().subscribe(() => {
       window.location.href = '/'; // Hard reload to reset application state

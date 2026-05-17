@@ -27,6 +27,7 @@ import {DividerModule} from 'primeng/divider';
 export class DialogDeveloperCreateComponent {
 
   previewUrl: string | ArrayBuffer | null = null;
+  logoBase64: string = '';
   @Output() onClose = new EventEmitter<any>();
   visible = false;
 
@@ -58,11 +59,11 @@ export class DialogDeveloperCreateComponent {
   }
 
   submit() {
-    console.log(this.form)
     this.form.markAllAsTouched();
 
     if (this.form.valid) {
-      this.onClose.emit(this.form.value);
+      const data = { ...this.form.value, logoBase64: this.logoBase64 };
+      this.onClose.emit(data);
       this.visible = false;
     }
   }
@@ -76,6 +77,7 @@ export class DialogDeveloperCreateComponent {
       const reader = new FileReader();
       reader.onload = () => {
         this.previewUrl = reader.result;
+        this.logoBase64 = reader.result as string;
       };
       reader.readAsDataURL(file);
     }

@@ -1,0 +1,105 @@
+<div class="card p-4">
+  <h4><i class="bi bi-house-add"></i> Submit New Property</h4>
+  <p class="text-muted">Your property will be reviewed by an admin before it appears publicly.</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Title</label>
+        <input type="text" class="form-control" formControlName="title" placeholder="Property title"/>
+        <div *ngIf="form.get('title')?.touched && form.get('title')?.invalid" class="text-danger">
+          <small>Title is required.</small>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Location</label>
+        <input type="text" class="form-control" formControlName="location" placeholder="City, Province"/>
+        <div *ngIf="form.get('location')?.touched && form.get('location')?.invalid" class="text-danger">
+          <small>Location is required.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Category</label>
+        <select class="form-select" formControlName="category">
+          <option value="">Select category</option>
+          <option value="RESIDENTIAL">Residential</option>
+          <option value="COMMERCIAL">Commercial</option>
+          <option value="INDUSTRIAL">Industrial</option>
+          <option value="LAND">Land</option>
+        </select>
+        <div *ngIf="form.get('category')?.touched && form.get('category')?.invalid" class="text-danger">
+          <small>Category is required.</small>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Project Type</label>
+        <select class="form-select" formControlName="status">
+          <option value="">Select type</option>
+          <option value="NEW_DEVELOPMENT">New Development</option>
+          <option value="PRE_SALE_INVESTMENT">Pre-Sale Investment</option>
+          <option value="UNDER_CONSTRUCTION">Under Construction</option>
+          <option value="JOINT_VENTURES">Joint Ventures</option>
+        </select>
+        <div *ngIf="form.get('status')?.touched && form.get('status')?.invalid" class="text-danger">
+          <small>Project type is required.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Total Investment (ZAR)</label>
+        <input type="number" class="form-control" formControlName="totalInvestment" placeholder="0"/>
+        <div *ngIf="form.get('totalInvestment')?.touched && form.get('totalInvestment')?.invalid" class="text-danger">
+          <small>Must be greater than 0.</small>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Expected ROI (%)</label>
+        <input type="number" class="form-control" formControlName="expectedRoi" placeholder="0"/>
+        <div *ngIf="form.get('expectedRoi')?.touched && form.get('expectedRoi')?.invalid" class="text-danger">
+          <small>Cannot be negative.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Developer / Company Name</label>
+        <input type="text" class="form-control" formControlName="developer" placeholder="Your company name"/>
+        <div *ngIf="form.get('developer')?.touched && form.get('developer')?.invalid" class="text-danger">
+          <small>Developer name is required.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" rows="4" formControlName="description"
+                placeholder="Describe the property, investment opportunity, and key features"></textarea>
+      <div *ngIf="form.get('description')?.touched && form.get('description')?.invalid" class="text-danger">
+        <small>Description is required.</small>
+      </div>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-primary" [disabled]="loading">
+        @if (loading) {
+          <span class="spinner-border spinner-border-sm me-2"></span>
+        }
+        Submit for Review
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+    </div>
+
+  </form>
+</div>
+
+<p-toast position="bottom-center" key="tl"/>

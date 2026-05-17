@@ -18,7 +18,7 @@ export interface CreateProperty {
   location: string;
   category: PropertyCategory;
   description: string;
-  developer: string;
+  developerId?: string;
   expectedRoi: number;
   totalInvestment: number;
   status: PropertyStatus;

@@ -7,6 +7,7 @@ export interface Developer {
   yearsExperience: number;
   companyDescription: string;
   contactPerson: ContactPerson;
+  logoUrl?: string;
   status: DeveloperStatus;
   createdAt?: string;
   updatedAt?: string;
@@ -19,6 +20,7 @@ export interface CreateDeveloper {
   developerType: DeveloperType;
   yearsExperience: number;
   companyDescription: string;
+  logoBase64?: string | null;
   contactPerson: ContactPerson;
 }
 
@@ -27,7 +29,6 @@ export interface ContactPerson {
   surname: string;
   email: string;
   phone: string;
-  position?: string;
 }
 
 export enum DeveloperType {

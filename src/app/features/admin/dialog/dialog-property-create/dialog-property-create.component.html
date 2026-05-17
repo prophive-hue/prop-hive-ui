@@ -49,7 +49,10 @@
 
           <div class="mb-3">
             <label class="form-label">Developer</label>
-            <input type="text" class="form-control" formControlName="developer"/>
+            <select class="form-select" formControlName="developerId">
+              <option value="">Select developer</option>
+              <option *ngFor="let dev of developers" [value]="dev.id">{{ dev.companyName }}</option>
+            </select>
           </div>
 
           <div class="mb-3">

@@ -12,3 +12,4 @@ export * from './repositories/admin-deductions.repository';
 export * from './repositories/stats.repository';
 export * from './repositories/wallet.repository';
 export * from './repositories/team.repository';
+export * from './repositories/developer.repository';

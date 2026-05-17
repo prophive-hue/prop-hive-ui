@@ -135,7 +135,7 @@ export class PropertiesComponent extends SmartComponent implements OnInit {
         location: data.location,
         category: data.category,
         description: data.description,
-        developer: data.developer,
+        developerId: data.developerId,
         expectedRoi: data.expectedRoi,
         totalInvestment: data.totalInvestment,
         status: data.status,

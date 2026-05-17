@@ -26,6 +26,7 @@ function sanitizeObject(obj: any, sanitizationService: SanitizationService): any
   if (obj === null || obj === undefined) return obj;
   
   if (typeof obj === 'string') {
+    if (obj.startsWith('data:')) return obj;
     return sanitizationService.sanitizeInput(obj);
   }
   

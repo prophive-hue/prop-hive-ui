@@ -33,6 +33,7 @@
           <th>Type</th>
           <th>Years Of Experience</th>
           <th>Description</th>
+          <th>Logo</th>
         </tr>
         </thead>
 
@@ -70,11 +71,19 @@
                   </div>
                 </td>
 
+                <td>
+                  @if (developer.logoUrl) {
+                    <img [src]="developer.logoUrl" alt="Logo" style="width: 40px; height: 40px; object-fit: contain;"/>
+                  } @else {
+                    <i class="bi bi-building text-muted"></i>
+                  }
+                </td>
+
               </tr>
             }
           } @else {
             <tr>
-              <td class="text-danger fw-bold fst-italic" colspan="6">No developers found.</td>
+              <td class="text-danger fw-bold fst-italic" colspan="7">No developers found.</td>
             </tr>
           }
         </tbody>
