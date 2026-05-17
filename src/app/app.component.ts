@@ -13,5 +13,5 @@ import { RouterOutlet } from '@angular/router';
   `
 })
 export class AppComponent {
-  title = 'property-hive';
+  title = 'ShareProp';
 }

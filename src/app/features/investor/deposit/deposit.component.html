@@ -1,0 +1,38 @@
+<div class="container pb-4">
+  <h3 class="mt-5">Deposit Funds</h3>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <p-card>
+        <h5><i class="bi bi-wallet2"></i> Current Balance</h5>
+        <h3 class="text-primary">{{ (wallet?.balance || 0) | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h3>
+      </p-card>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <p-card>
+        <h5>Deposit via PayFast</h5>
+        <div class="form-group mb-3">
+          <label class="form-label">Amount (ZAR)</label>
+          <input [(ngModel)]="amount" class="form-control" type="number" placeholder="Enter deposit amount" min="1">
+        </div>
+
+        <button
+          (click)="initiateDeposit()"
+          [disabled]="amount <= 0 || loading"
+          class="btn btn-primary">
+          @if (loading) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+          }
+          Proceed to Payment
+        </button>
+
+        <p class="text-muted mt-3">
+          <i class="bi bi-shield-check"></i> Payments are securely processed by PayFast.
+        </p>
+      </p-card>
+    </div>
+  </div>
+</div>

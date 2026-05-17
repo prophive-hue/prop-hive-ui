@@ -10,3 +10,5 @@ export * from './repositories/admin-developers.repository';
 export * from './repositories/admin-documents.repository';
 export * from './repositories/admin-deductions.repository';
 export * from './repositories/stats.repository';
+export * from './repositories/wallet.repository';
+export * from './repositories/team.repository';

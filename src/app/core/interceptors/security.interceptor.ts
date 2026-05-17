@@ -14,15 +14,6 @@ export const securityInterceptor: HttpInterceptorFn = (req, next) => {
     sanitizedReq = req.clone({ body: sanitizedBody });
   }
 
-  // Add security headers
-  sanitizedReq = sanitizedReq.clone({
-    setHeaders: {
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block'
-    }
-  });
-
   return next(sanitizedReq).pipe(
     map(event => {
       // Sanitize response data if needed

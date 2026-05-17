@@ -7,6 +7,8 @@ export * from './interfaces/common.interface';
 export * from './interfaces/config.interface';
 export * from './interfaces/error.interface';
 
+export * from './interfaces/wallet.interface';
+
 // Enums
 export * from './enums/constants.enum';
 

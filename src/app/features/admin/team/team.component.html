@@ -1,0 +1,51 @@
+<app-dialog-admin-invite #dialog (onClose)="handleCreate($event)"></app-dialog-admin-invite>
+
+<div class="position-relative">
+  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+
+  <div class="card">
+    <p-toolbar styleClass="mb-6">
+      <ng-template #start>
+        <h4>Team</h4>
+      </ng-template>
+
+      <ng-template #end>
+        <p-button severity="secondary" label="Invite Admin" icon="pi pi-plus-circle" class="mr-2"
+                  (click)="dialog?.show()"/>
+      </ng-template>
+    </p-toolbar>
+
+    <div class="container-fluid table-responsive">
+      <table class="w-100 table table-striped">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+
+        <tbody>
+          @if (admins.length > 0) {
+            @for (admin of admins; track admin.email) {
+              <tr>
+                <td>{{ admin.name }} {{ admin.surname }}</td>
+                <td>{{ admin.email }}</td>
+                <td>
+                  <p-tag [value]="admin.active ? 'Active' : 'Pending'" [severity]="admin.active ? 'success' : 'warn'"/>
+                </td>
+              </tr>
+            }
+          } @else {
+            <tr>
+              <td class="text-danger fw-bold fst-italic" colspan="3">No team members found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<p-toast position="bottom-center" key="tl"/>

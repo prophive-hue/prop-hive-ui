@@ -11,30 +11,30 @@
     </p-card>
   </div>
 
-
   <div class="mt-4 mb-4" style="display: flex; gap: 1rem; justify-content: space-between; flex-wrap: wrap;">
-    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '250px', 'max-width': '500px' }">
+    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '200px', 'max-width': '500px' }">
       <i class="bi-wallet float-end"></i>
-      <p>Total Investments</p>
-      <div>
-        <h5>R 250,000</h5>
-      </div>
+      <p>Wallet Balance</p>
+      <h5>{{ (wallet?.balance || 0) | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h5>
+      <button (click)="deposit()" class="btn btn-sm btn-outline-primary mt-2">Deposit</button>
     </p-card>
 
-    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '250px', 'max-width': '500px' }">
+    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '200px', 'max-width': '500px' }">
+      <i class="bi-wallet2 float-end"></i>
+      <p>Total Investments</p>
+      <h5>{{ (stats?.totalInvested || 0) | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h5>
+    </p-card>
 
+    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '200px', 'max-width': '500px' }">
       <i style="color: gold" class="bi-graph-up-arrow float-end"></i>
       <p>Total Returns</p>
-
-      <h5>R 32,500</h5>
+      <h5>{{ (stats?.totalReturns || 0) | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h5>
     </p-card>
 
-    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '250px', 'max-width': '500px' }">
+    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '200px', 'max-width': '500px' }">
       <i class="bi bi-radioactive float-end"></i>
       <p>Active Properties</p>
-      <div>
-        <h5>3</h5>
-      </div>
+      <h5>{{ stats?.activeProperties || 0 }}</h5>
     </p-card>
   </div>
 
@@ -151,10 +151,34 @@
     </p-card>
     <p-card [ngStyle]="{ 'flex': '1', 'min-width': '250px', 'max-width': '800px' }">
       <h5>Recent Investments</h5>
-      <span>No investments yet. Start investing to see your portfolio here.</span>
+      @if (investments.length > 0) {
+        <div class="table-responsive">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Amount</th>
+                <th>Share</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (inv of investments; track inv.id) {
+                <tr>
+                  <td>{{ inv.propertyTitle }}</td>
+                  <td>{{ inv.amount | currency:'R':'symbol':'1.0-0':'en-ZA' }}</td>
+                  <td>{{ inv.sharePercentage | number:'1.2-2' }}%</td>
+                  <td>{{ inv.investedAt | date:'mediumDate' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <span>No investments yet. Start investing to see your portfolio here.</span>
+      }
     </p-card>
 
   </div>
 
 </div>
-

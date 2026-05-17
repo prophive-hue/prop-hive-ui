@@ -1,0 +1,48 @@
+<div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="visible"
+     style="background-color: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Invite Admin</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="hide()"></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="text-muted">Send an invitation to a new administrator</p>
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" formControlName="name" placeholder="First name"/>
+            <div *ngIf="form.get('name')?.touched && form.get('name')?.invalid" class="text-danger">
+              <small *ngIf="form.get('name')?.errors?.['required']">Name is required.</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Surname</label>
+            <input type="text" class="form-control" formControlName="surname" placeholder="Last name"/>
+            <div *ngIf="form.get('surname')?.touched && form.get('surname')?.invalid" class="text-danger">
+              <small *ngIf="form.get('surname')?.errors?.['required']">Surname is required.</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" formControlName="email" placeholder="admin@example.com"/>
+            <div *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="text-danger">
+              <small *ngIf="form.get('email')?.errors?.['required']">Email is required.</small>
+              <small *ngIf="form.get('email')?.errors?.['email']">Invalid email format.</small>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="hide()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="submit()">Send Invitation</button>
+      </div>
+    </div>
+  </div>
+</div>
