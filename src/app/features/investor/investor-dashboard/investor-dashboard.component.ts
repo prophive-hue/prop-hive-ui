@@ -10,7 +10,7 @@ import {AuthService} from '../../auth/services/auth.service';
 import {SmartComponent} from '../../../shared/components/base/base.component';
 import {takeUntil} from 'rxjs';
 import {TrackByFunctions} from '../../../shared/utils/track-by.functions';
-import type {InvestorStats, Investment, Wallet} from '../../../models';
+import type {InvestorStats, Investment, Wallet, WalletTransaction} from '../../../models';
 
 @Component({
   selector: 'app-investor-dashboard',
@@ -39,6 +39,7 @@ export class InvestorDashboardComponent extends SmartComponent implements OnInit
   stats: InvestorStats | null = null;
   investments: Investment[] = [];
   wallet: Wallet | null = null;
+  transactions: WalletTransaction[] = [];
 
   private userId: string = '';
 
@@ -64,6 +65,7 @@ export class InvestorDashboardComponent extends SmartComponent implements OnInit
     this.loadStats();
     this.loadInvestments();
     this.loadWallet();
+    this.loadTransactions();
   }
 
   openProfileCompletion() {
@@ -157,5 +159,17 @@ export class InvestorDashboardComponent extends SmartComponent implements OnInit
 
   deposit() {
     this.router.navigate(['investor/deposit']);
+  }
+
+  private loadTransactions() {
+    this.walletService.getTransactions(this.userId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (transactions) => {
+          this.transactions = transactions;
+          this.cdr.markForCheck();
+        },
+        error: (error: any) => this.handleError(error)
+      });
   }
 }

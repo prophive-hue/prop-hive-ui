@@ -181,4 +181,38 @@
 
   </div>
 
+  <div class="mt-4">
+    <p-card>
+      <h5><i class="bi bi-clock-history"></i> Transaction History</h5>
+      @if (transactions.length > 0) {
+        <div class="table-responsive">
+          <table class="table table-sm table-striped">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (tx of transactions; track tx.id) {
+                <tr>
+                  <td>{{ tx.type }}</td>
+                  <td>{{ tx.amount | currency:'R':'symbol':'1.2-2':'en-ZA' }}</td>
+                  <td>{{ tx.status }}</td>
+                  <td>{{ tx.description }}</td>
+                  <td>{{ tx.createdAt | date:'medium' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <span>No transactions yet.</span>
+      }
+    </p-card>
+  </div>
+
 </div>

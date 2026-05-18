@@ -46,14 +46,19 @@ export class TeamComponent extends SmartComponent implements OnInit {
   }
 
   private loadAdmins() {
+    this.loader.startLoader();
     this.teamService.getAllAdmins()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (admins) => {
           this.admins = admins;
+          this.loader.stopLoader();
           this.cdr.markForCheck();
         },
-        error: (error) => this.handleError(error)
+        error: (error) => {
+          this.loader.stopLoader();
+          this.handleError(error);
+        }
       });
   }
 

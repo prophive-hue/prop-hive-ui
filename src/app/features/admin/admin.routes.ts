@@ -7,6 +7,7 @@ import { AnalyticsComponent } from './analytics/analytics.component';
 import { DeductionsComponent } from './deductions/deductions.component';
 import { AdminDocumentsComponent } from './admin-documents/admin-documents.component';
 import { TeamComponent } from './team/team.component';
+import { TransactionsComponent } from './transactions/transactions.component';
 import { adminGuard } from '../../core/guards/admin.guard';
 
 export const adminRoutes: Routes = [
@@ -21,6 +22,7 @@ export const adminRoutes: Routes = [
       { path: 'properties', component: PropertiesComponent },
       { path: 'deductions', component: DeductionsComponent },
       { path: 'documents', component: AdminDocumentsComponent },
+      { path: 'transactions', component: TransactionsComponent },
       { path: 'team', component: TeamComponent },
       { path: '', redirectTo: 'properties', pathMatch: 'full' }
     ]

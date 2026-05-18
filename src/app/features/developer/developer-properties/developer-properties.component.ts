@@ -49,15 +49,19 @@ export class DeveloperPropertiesComponent extends SmartComponent implements OnIn
   }
 
   private loadProperties() {
-    this.setLoading(true);
+    this.loader.startLoader();
     this.developerService.getMyProperties(this.userId, { page: 0, size: 50 })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
           this.properties = response.content;
-          this.setLoading(false);
+          this.loader.stopLoader();
+          this.cdr.markForCheck();
         },
-        error: (error) => this.handleError(error)
+        error: (error) => {
+          this.loader.stopLoader();
+          this.handleError(error);
+        }
       });
   }
 

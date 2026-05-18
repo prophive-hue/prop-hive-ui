@@ -1,0 +1,52 @@
+<div class="position-relative">
+  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
+
+  <div class="card">
+  <p-toolbar styleClass="mb-6">
+    <ng-template #start>
+      <h4>Transactions</h4>
+    </ng-template>
+  </p-toolbar>
+
+  <div class="container-fluid table-responsive">
+    <table class="w-100 table table-striped">
+      <thead>
+      <tr>
+        <th>User</th>
+        <th>Amount</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Description</th>
+        <th>Date</th>
+      </tr>
+      </thead>
+
+      <tbody>
+        @if (transactions.length > 0) {
+          @for (tx of transactions; track tx.id) {
+            <tr>
+              <td>{{ tx.userEmail }}</td>
+              <td>{{ tx.amount | currency:'R':'symbol':'1.2-2':'en-ZA' }}</td>
+              <td>
+                <p-tag [value]="tx.type" [severity]="getTypeSeverity(tx.type)"/>
+              </td>
+              <td>
+                <p-tag [value]="tx.status" [severity]="getStatusSeverity(tx.status)"/>
+              </td>
+              <td>{{ tx.description }}</td>
+              <td>{{ tx.createdAt | date:'medium' }}</td>
+            </tr>
+          }
+        } @else {
+          <tr>
+            <td class="text-danger fw-bold fst-italic" colspan="6">No transactions found.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <app-paginator (pagination)="paginate($event)" [totalElements]="totalElements"></app-paginator>
+  </div>
+</div>
