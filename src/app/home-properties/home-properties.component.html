@@ -1,6 +1,8 @@
 <app-header></app-header>
 
-<div>
+<div class="position-relative">
+  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
+                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
 
   <!-- Hero Section -->
   <div class="py-5 text-white text-center" style="background: linear-gradient(90deg, #1e3a8a, #2563eb);">

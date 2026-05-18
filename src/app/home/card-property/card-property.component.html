@@ -34,14 +34,14 @@
     <div class="mb-2">
       <div class="d-flex justify-content-between small">
         <span>Investment Progress</span>
-        <span class="fw-medium">60%</span>
+        <span class="fw-medium">{{ property.fundingProgress ? (property.fundingProgress | number:'1.0-0') + '%' : 'N/A' }}</span>
       </div>
       <div class="progress" style="height: 6px;">
-        <div class="progress-bar bg-primary" style="width: 60%"></div>
+        <div class="progress-bar bg-primary" [style.width.%]="property.fundingProgress || 0"></div>
       </div>
       <div class="d-flex justify-content-between small text-muted mt-1">
-        <span>Raised: R60,000</span>
-        <span>Target: R100,000</span>
+        <span>Raised: {{ property.fundingRaised != null ? ('R ' + (property.fundingRaised | number:'1.0-0')) : 'N/A' }}</span>
+        <span>Target: {{ property.fundingTarget != null ? ('R ' + (property.fundingTarget | number:'1.0-0')) : ('R ' + (property.totalInvestment | number:'1.0-0')) }}</span>
       </div>
     </div>
   </div>

@@ -41,18 +41,17 @@
         </div>
       </div>
 
-      <p>About this Project</p>
+      <h5 class="fw-bold mt-4">About this Project</h5>
       <p class="text-muted">{{ property.description }}</p>
 
-      <p>Developer Information</p>
-      <p class="text-muted">{{ property.description }}</p>
+      <h5 class="fw-bold mt-4">Developer Information</h5>
+      <p class="text-muted">{{ property.developer || 'Not specified' }}</p>
 
-      <p>Property Features</p>
-      <p>Foreign Investor Ready</p>
+      <h5 class="fw-bold mt-4">Property Features</h5>
+      <p class="text-muted">Foreign Investor Ready</p>
 
-
-      <p>Location</p>
-      <p>456 Business Avenue, CBD, Cape Town</p>
+      <h5 class="fw-bold mt-4">Location</h5>
+      <p class="text-muted">{{ property.location || '456 Business Avenue, CBD, Cape Town' }}</p>
     </div>
 
     <!-- Right: Investment Sidebar -->
@@ -89,7 +88,7 @@
               <div class="progress-bar bg-success" role="progressbar" [style.width.%]="progressPercentage"></div>
             </div>
             <div class="d-flex justify-content-between small mt-1 text-muted">
-              <span>Raised: N/A</span>
+              <span>Raised: {{ fundingRound ? (fundingRound.currentAmount | currency:'R':'symbol':'1.0-0':'en-ZA') : 'N/A' }}</span>
               <span>Target: {{ formatCurrency(property.totalInvestment) }}</span>
             </div>
           </div>
@@ -102,7 +101,7 @@
           <div class="text-center small text-success mb-1">
             <i class="bi bi-shield-lock me-1"></i> Secure & Protected Investment
           </div>
-          <div class="text-center small text-primary mb-2">
+          <div class="text-center small text-primary mb-2" *ngIf="getUrgencyText()">
             {{ getUrgencyText() }}
           </div>
 
@@ -150,5 +149,40 @@
 <!--  (close)="showInvestmentSteps = false">-->
 <!--</app-investment-steps-dialog>-->
 
+<!-- Investment Modal -->
+<div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="showInvestModal"
+     style="background-color: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Invest in {{ property.title }}</h5>
+        <button type="button" class="btn-close" (click)="showInvestModal = false"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3" *ngIf="fundingRound">
+          <div class="d-flex justify-content-between text-muted small">
+            <span>Available: {{ (fundingRound.targetAmount - fundingRound.currentAmount) | currency:'R':'symbol':'1.0-0':'en-ZA' }}</span>
+            <span>ROI: {{ property.expectedRoi }}%</span>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Investment Amount (ZAR)</label>
+          <input [(ngModel)]="investAmount" type="number" class="form-control" placeholder="Enter amount" min="1">
+        </div>
+        <p class="text-muted small">
+          <i class="bi bi-info-circle"></i> Funds will be deducted from your wallet balance.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="showInvestModal = false">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="investAmount <= 0" (click)="confirmInvestment()">
+          Confirm Investment
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-toast position="bottom-center" key="tl"/>
 
 <app-footer></app-footer>

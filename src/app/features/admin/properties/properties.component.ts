@@ -1,10 +1,9 @@
 import {Component, OnInit, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {Button} from 'primeng/button';
-import {ProgressBar} from 'primeng/progressbar';
 import {Tag} from 'primeng/tag';
 import {Toast} from 'primeng/toast';
 import {Toolbar} from 'primeng/toolbar';
-import {SlicePipe} from '@angular/common';
+import {SlicePipe, NgIf} from '@angular/common';
 import {NgxUiLoaderModule} from 'ngx-ui-loader';
 import {CustomerService} from '../services/customer.service';
 import {DialogPropertyCreateComponent} from '../dialog/dialog-property-create/dialog-property-create.component';
@@ -20,6 +19,7 @@ import {GalleryComponent} from '../../../shared/components/gallery/gallery.compo
 import {SearchButtonComponent} from '../../../shared/components/search-button/search-button.component';
 import {PaginatorComponent} from '../../../shared/components/paginator/paginator.component';
 import {LoaderService} from '../../../core/services/loader.service';
+import {FormsModule} from '@angular/forms';
 import { SmartComponent } from '../../../shared/components/base/base.component';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { TrackByFunctions } from '../../../shared/utils/track-by.functions';
@@ -30,9 +30,10 @@ import { TrackByFunctions } from '../../../shared/utils/track-by.functions';
     DialogPropertyCreateComponent,
     GalleryComponent,
     Toast,
-    ProgressBar,
     Tag,
     SlicePipe,
+    NgIf,
+    FormsModule,
     Toolbar,
     Button,
     SearchButtonComponent,
@@ -66,6 +67,11 @@ export class PropertiesComponent extends SmartComponent implements OnInit {
 
   searchPropertiesInput: string = '';
 
+  showFundingModal = false;
+  selectedFundingProperty: Property | null = null;
+  fundingTargetAmount: number = 0;
+  fundingDeadline: string = '';
+
 
   constructor(private propertiesService: AdminPropertiesService, private messageService: MessageService, private loader: LoaderService) {
     super();
@@ -84,18 +90,81 @@ export class PropertiesComponent extends SmartComponent implements OnInit {
       case 'Joint Ventures':
         return 'success';
 
-      case 'New Developmentt':
-        return 'info';
-
       case 'Under Construction':
         return 'warn';
 
-      case 'renewal':
-        return null;
+      case 'Pre-Sale Investment':
+        return 'info';
+
+      default:
+        return '';
     }
+  }
 
+  getApprovalSeverity(status: string) {
+    switch (status) {
+      case 'APPROVED': return 'success';
+      case 'PENDING_REVIEW': return 'warn';
+      case 'REJECTED': return 'danger';
+      default: return 'info';
+    }
+  }
 
-    return ''
+  approveProperty(property: Property) {
+    this.loader.startLoader();
+    this.propertiesService.approveProperty(property.id).subscribe({
+      next: (response) => {
+        this.loader.stopLoader();
+        this.getAllProperties();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Approved',
+          detail: response.message,
+          key: 'tl',
+          life: 5000
+        });
+      },
+      error: (error: Error) => {
+        this.loader.stopLoader();
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Error',
+          detail: error.message,
+          key: 'tl',
+          life: 5000
+        });
+      }
+    });
+  }
+
+  rejectProperty(property: Property) {
+    const reason = prompt('Rejection reason:');
+    if (reason === null) return;
+
+    this.loader.startLoader();
+    this.propertiesService.rejectProperty(property.id, reason).subscribe({
+      next: (response) => {
+        this.loader.stopLoader();
+        this.getAllProperties();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Rejected',
+          detail: response.message,
+          key: 'tl',
+          life: 5000
+        });
+      },
+      error: (error: Error) => {
+        this.loader.stopLoader();
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Error',
+          detail: error.message,
+          key: 'tl',
+          life: 5000
+        });
+      }
+    });
   }
 
   getAllProperties() {
@@ -105,16 +174,18 @@ export class PropertiesComponent extends SmartComponent implements OnInit {
       size: this.size
     }
 
-    this.setLoading(true);
+    this.loader.startLoader();
     this.propertiesService.getAllProperties(paginator)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
           this.properties = response.content;
           this.totalElements = response.totalElements;
-          this.setLoading(false);
+          this.loader.stopLoader();
+          this.cdr.markForCheck();
         },
         error: (error: any) => {
+          this.loader.stopLoader();
           this.handleError(error);
         }
       });
@@ -188,5 +259,43 @@ export class PropertiesComponent extends SmartComponent implements OnInit {
     this.getAllProperties();
   }
 
+  openFundingRound(property: Property) {
+    this.selectedFundingProperty = property;
+    this.fundingTargetAmount = property.totalInvestment;
+    this.fundingDeadline = '';
+    this.showFundingModal = true;
+  }
 
+  createFundingRound() {
+    if (!this.selectedFundingProperty || this.fundingTargetAmount <= 0) return;
+
+    const deadline = this.fundingDeadline ? this.fundingDeadline + 'T00:00:00' : null;
+
+    this.loader.startLoader();
+    this.showFundingModal = false;
+    this.propertiesService.createFundingRound(this.selectedFundingProperty.id, this.fundingTargetAmount, deadline)
+      .subscribe({
+        next: (response) => {
+          this.loader.stopLoader();
+          this.getAllProperties();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Funding Round Created',
+            detail: response.message,
+            key: 'tl',
+            life: 5000
+          });
+        },
+        error: (error: Error) => {
+          this.loader.stopLoader();
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Error',
+            detail: error.message,
+            key: 'tl',
+            life: 5000
+          });
+        }
+      });
+  }
 }

@@ -86,7 +86,7 @@ export class HomePropertiesComponent extends SmartComponent implements OnInit {
   properties: Property[] = [];
 
   getProperties(){
-    this.setLoading(true);
+    this.loader.startLoader();
 
     const paginator: Pagination = {
       page: 0,
@@ -97,9 +97,11 @@ export class HomePropertiesComponent extends SmartComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.properties = response.content;
-          this.setLoading(false);
+          this.loader.stopLoader();
+          this.cdr.markForCheck();
         },
         error: (error: any) => {
+          this.loader.stopLoader();
           this.handleError(error);
         }
       });

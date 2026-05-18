@@ -16,10 +16,10 @@
           <h1 class="display-4 fw-bold gradient-text">
             Collaborative Property Investment Made Simple
           </h1>
-          <p class="lead my-4">Discover a powerful platform designed to help you achieve your goals efficiently and effectively.</p>
+          <p class="lead my-4">Join forces with like-minded investors to access premium property development opportunities that were previously out of reach.</p>
           <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-            <a routerLink="/auth/login" style="background-color: goldenrod" class="btn btn-light btn-lg px-4 me-md-2">Explore Properties</a>
-            <a routerLink="/auth/register" class="btn btn-outline-lig bg-light btn-lg px-4"></a>
+            <a routerLink="/home-properties" style="background-color: goldenrod" class="btn btn-light btn-lg px-4 me-md-2">Explore Properties</a>
+            <a routerLink="/how-it-works" class="btn btn-outline-light btn-lg px-4">How It Works</a>
           </div>
         </div>
       </div>
@@ -158,6 +158,54 @@
       </div>
     </div>
   }
+
+  <!-- Become a Developer CTA -->
+  <section class="py-5" style="background: linear-gradient(135deg, #1e3a8a, #2563eb);">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6 text-white mb-4 mb-md-0">
+          <h2 class="fw-bold">Are you a property developer?</h2>
+          <p class="lead">List your projects on ShareProp and connect with thousands of investors ready to fund your developments.</p>
+          <ul class="list-unstyled">
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> Access to a pool of verified investors</li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> Streamlined funding process</li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> Dedicated developer portal</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <div class="card shadow">
+            <div class="card-body p-4">
+              <h5 class="card-title mb-3">Get in touch</h5>
+              <div class="mb-3">
+                <input [(ngModel)]="inquiryName" type="text" class="form-control" placeholder="Your name">
+              </div>
+              <div class="mb-3">
+                <input [(ngModel)]="inquiryEmail" type="email" class="form-control" placeholder="Email address">
+              </div>
+              <div class="mb-3">
+                <input [(ngModel)]="inquiryPhone" type="text" class="form-control" placeholder="Phone number">
+              </div>
+              <div class="mb-3">
+                <input [(ngModel)]="inquiryCompany" type="text" class="form-control" placeholder="Company name">
+              </div>
+              <div class="mb-3">
+                <textarea [(ngModel)]="inquiryMessage" class="form-control" rows="3" placeholder="Tell us about your project"></textarea>
+              </div>
+              <button class="btn btn-primary w-100" [disabled]="!inquiryName || !inquiryEmail || inquirySubmitting" (click)="submitInquiry()">
+                @if (inquirySubmitting) {
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                }
+                Submit Inquiry
+              </button>
+              @if (inquirySuccess) {
+                <p class="text-success mt-2 mb-0 small"><i class="bi bi-check-circle"></i> {{ inquirySuccess }}</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <app-footer></app-footer>
 </div>

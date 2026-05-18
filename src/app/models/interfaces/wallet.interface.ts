@@ -56,6 +56,7 @@ export interface FundingRound {
   percentageFunded: number;
   status: FundingRoundStatus;
   deadline: string;
+  investorsToday: number;
 }
 
 export enum WalletTransactionType {

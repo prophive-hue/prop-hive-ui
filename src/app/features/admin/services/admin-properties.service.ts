@@ -46,4 +46,16 @@ export class AdminPropertiesService {
   getProperty(id: string): Observable<Property> {
     return this.repository.getProperty(id);
   }
+
+  approveProperty(propertyId: string): Observable<ResponseMessage> {
+    return this.repository.approveProperty(propertyId);
+  }
+
+  rejectProperty(propertyId: string, reason: string): Observable<ResponseMessage> {
+    return this.repository.rejectProperty(propertyId, reason);
+  }
+
+  createFundingRound(propertyId: string, targetAmount: number, deadline: string | null): Observable<ResponseMessage> {
+    return this.repository.createFundingRound(propertyId, targetAmount, deadline);
+  }
 }

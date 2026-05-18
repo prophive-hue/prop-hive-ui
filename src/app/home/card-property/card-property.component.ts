@@ -1,5 +1,5 @@
 import {Component, Input, ChangeDetectionStrategy, Output, EventEmitter} from '@angular/core';
-import {NgOptimizedImage} from '@angular/common';
+import {NgOptimizedImage, DecimalPipe} from '@angular/common';
 import {Property, PropertyCategory, PropertyStatus} from '../../features/admin/services/admin-properties.service';
 import {Router} from '@angular/router';
 import { PresentationComponent } from '../../shared/components/base/base.component';
@@ -7,7 +7,8 @@ import { PresentationComponent } from '../../shared/components/base/base.compone
 @Component({
   selector: 'app-card-property',
   imports: [
-    NgOptimizedImage
+    NgOptimizedImage,
+    DecimalPipe
   ],
   templateUrl: './card-property.component.html',
   styleUrl: './card-property.component.css',

@@ -8,7 +8,13 @@ export interface Property {
   expectedRoi: number;
   totalInvestment: number;
   status: PropertyStatus;
+  approvalStatus?: string;
+  rejectionReason?: string;
+  submittedBy?: string;
   imageUrls: string[];
+  fundingProgress?: number;
+  fundingRaised?: number;
+  fundingTarget?: number;
   createdAt?: string;
   updatedAt?: string;
 }

@@ -17,18 +17,22 @@ export class AdminPropertiesRepository extends BaseHttpService {
   }
 
   createProperty(property: CreateProperty): Observable<{ message: string }> {
-    return this.post<{ message: string }>('/property', property);
+    return this.post<{ message: string }>('/property/create', property);
   }
 
-  updateProperty(id: string, property: Partial<CreateProperty>): Observable<{ message: string }> {
-    return this.put<{ message: string }>(`/property/${id}`, property);
+  approveProperty(propertyId: string): Observable<{ message: string }> {
+    return this.put<{ message: string }>(`/property/${propertyId}/approve`, {});
   }
 
-  deleteProperty(id: string): Observable<{ message: string }> {
-    return this.delete<{ message: string }>(`/property/${id}`);
+  rejectProperty(propertyId: string, reason: string): Observable<{ message: string }> {
+    return this.put<{ message: string }>(`/property/${propertyId}/reject`, { reason });
   }
 
   getProperty(id: string): Observable<Property> {
     return this.get<Property>(`/property/${id}`);
+  }
+
+  createFundingRound(propertyId: string, targetAmount: number, deadline: string | null): Observable<{ message: string }> {
+    return this.post<{ message: string }>('/investment/funding-round', { propertyId, targetAmount, deadline });
   }
 }
