@@ -13,7 +13,7 @@ export interface AdminPropertiesPagination extends PaginationRequest {
 export class AdminPropertiesRepository extends BaseHttpService {
 
   getAllProperties(pagination: AdminPropertiesPagination): Observable<PaginatedResponse<Property>> {
-    return this.post<PaginatedResponse<Property>>('/property/all', pagination);
+    return this.post<PaginatedResponse<Property>>('/property/all/home', pagination);
   }
 
   createProperty(property: CreateProperty): Observable<{ message: string }> {
