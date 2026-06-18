@@ -7,7 +7,7 @@ export type { Property, CreateProperty, PaginatedResponse } from '../../../model
 export { PropertyCategory, PropertyStatus } from '../../../models';
 export type { Base64File } from '../../../models';
 
-import type { AdminPropertiesPagination } from '../../../core/api/repositories/admin-properties.repository';
+import type { AdminPropertiesPagination, PropertyFilter } from '../../../core/api/repositories/admin-properties.repository';
 
 export interface ResponseMessage {
   message: string;
@@ -18,7 +18,7 @@ export interface Pagination{
   size: number;
 }
 
-export type { AdminPropertiesPagination };
+export type { AdminPropertiesPagination, PropertyFilter };
 
 @Injectable({
   providedIn: 'root'
@@ -47,15 +47,23 @@ export class AdminPropertiesService {
     return this.repository.getProperty(id);
   }
 
+  getFilteredProperties(filter: PropertyFilter): Observable<PaginatedResponse<Property>> {
+    return this.repository.getFilteredProperties(filter);
+  }
+
+  openFunding(propertyId: string): Observable<ResponseMessage> {
+    return this.repository.openFunding(propertyId);
+  }
+
+  closeFunding(propertyId: string): Observable<ResponseMessage> {
+    return this.repository.closeFunding(propertyId);
+  }
+
   approveProperty(propertyId: string): Observable<ResponseMessage> {
     return this.repository.approveProperty(propertyId);
   }
 
   rejectProperty(propertyId: string, reason: string): Observable<ResponseMessage> {
     return this.repository.rejectProperty(propertyId, reason);
-  }
-
-  createFundingRound(propertyId: string, targetAmount: number, deadline: string | null): Observable<ResponseMessage> {
-    return this.repository.createFundingRound(propertyId, targetAmount, deadline);
   }
 }

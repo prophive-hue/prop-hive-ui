@@ -21,6 +21,10 @@ export class WalletService {
     return this.repository.getTransactions(userId);
   }
 
+  withdraw(userId: string, amount: number): Observable<any> {
+    return this.repository.withdraw(userId, amount);
+  }
+
   invest(userId: string, request: InvestRequest): Observable<Investment> {
     return this.repository.invest(userId, request);
   }

@@ -20,6 +20,10 @@ export class WalletRepository extends BaseHttpService {
     return this.get<WalletTransaction[]>(`/wallet/${userId}/transactions`);
   }
 
+  withdraw(userId: string, amount: number): Observable<any> {
+    return this.post(`/wallet/${userId}/withdraw`, { amount });
+  }
+
   invest(userId: string, request: InvestRequest): Observable<Investment> {
     return this.post<Investment>(`/investment/${userId}/invest`, request);
   }

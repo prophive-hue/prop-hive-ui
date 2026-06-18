@@ -1,6 +1,6 @@
-import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, inject} from '@angular/core';
 import {CardModule} from 'primeng/card';
-import {CurrencyPipe, DecimalPipe, NgStyle, DatePipe} from '@angular/common';
+import {CurrencyPipe, DecimalPipe, DatePipe, NgClass} from '@angular/common';
 import {Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {Pagination} from '../../admin/services/admin-properties.service';
@@ -9,20 +9,24 @@ import {WalletService} from '../services/wallet.service';
 import {AuthService} from '../../auth/services/auth.service';
 import {SmartComponent} from '../../../shared/components/base/base.component';
 import {takeUntil} from 'rxjs';
-import {TrackByFunctions} from '../../../shared/utils/track-by.functions';
+import {FavoritesRepository} from '../../../core/api/repositories/favorites.repository';
+import {AdminPropertiesService} from '../../admin/services/admin-properties.service';
+import {MessageService} from 'primeng/api';
+import {ToastModule} from 'primeng/toast';
 import type {InvestorStats, Investment, Wallet, WalletTransaction} from '../../../models';
+import type {Property} from '../../../models';
 
 @Component({
   selector: 'app-investor-dashboard',
-  imports: [CardModule, NgStyle, FormsModule, CurrencyPipe, DecimalPipe, DatePipe],
+  imports: [CardModule, NgClass, FormsModule, CurrencyPipe, DecimalPipe, DatePipe, ToastModule],
+  providers: [MessageService],
   templateUrl: './investor-dashboard.component.html',
   styleUrl: './investor-dashboard.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InvestorDashboardComponent extends SmartComponent implements OnInit {
 
-  trackById = TrackByFunctions.trackById;
-
+  // Calculator
   investmentAmount: number = 0;
   roi: number = 12;
   term: number = 6;
@@ -31,17 +35,27 @@ export class InvestorDashboardComponent extends SmartComponent implements OnInit
   nettReturns: number = 0;
   monthlyNett: number = 0;
   totalValue: number = 0;
-
-  override loading: boolean = false;
   showInvestmentSummary: boolean = false;
 
+  // Dashboard data
   deductions: any[] = [];
   stats: InvestorStats | null = null;
   investments: Investment[] = [];
   wallet: Wallet | null = null;
   transactions: WalletTransaction[] = [];
+  savedProperties: Property[] = [];
+
+  // Withdraw
+  showWithdrawModal = false;
+  withdrawAmount: number = 0;
+
+  // Active tab
+  activeTab: 'investments' | 'saved' | 'transactions' | 'calculator' = 'investments';
 
   private userId: string = '';
+  private favoritesRepo = inject(FavoritesRepository);
+  private propertiesService = inject(AdminPropertiesService);
+  private messageService = inject(MessageService);
 
   constructor(
     private router: Router,
@@ -66,12 +80,19 @@ export class InvestorDashboardComponent extends SmartComponent implements OnInit
     this.loadInvestments();
     this.loadWallet();
     this.loadTransactions();
+    this.loadSavedProperties();
   }
 
   openProfileCompletion() {
     this.router.navigate(['investor/onboarding']);
   }
 
+  // Tab navigation
+  setTab(tab: 'investments' | 'saved' | 'transactions' | 'calculator') {
+    this.activeTab = tab;
+  }
+
+  // Calculator
   onInvestmentChange(newValue: number) {
     this.investmentAmount = newValue;
     this.calculateReturns();
@@ -108,6 +129,84 @@ export class InvestorDashboardComponent extends SmartComponent implements OnInit
     return totalDeductions;
   }
 
+  // Withdraw
+  openWithdraw() {
+    this.withdrawAmount = 0;
+    this.showWithdrawModal = true;
+  }
+
+  confirmWithdraw() {
+    if (this.withdrawAmount <= 0 || this.withdrawAmount > (this.wallet?.balance || 0)) return;
+
+    this.walletService.withdraw(this.userId, this.withdrawAmount)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.showWithdrawModal = false;
+          this.loadWallet();
+          this.loadTransactions();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Withdrawal Requested',
+            detail: 'Your withdrawal is being processed.',
+            key: 'tl',
+            life: 5000
+          });
+        },
+        error: (error: any) => {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Withdrawal Failed',
+            detail: error?.message || 'Something went wrong',
+            key: 'tl',
+            life: 5000
+          });
+        }
+      });
+  }
+
+  // Saved properties
+  viewProperty(id: string) {
+    this.router.navigate(['/property-details', id]);
+  }
+
+  removeFavorite(propertyId: string) {
+    this.favoritesRepo.removeFavorite(this.userId, propertyId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.savedProperties = this.savedProperties.filter(p => p.id !== propertyId);
+          this.cdr.markForCheck();
+        }
+      });
+  }
+
+  // Investment status
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'ACTIVE': return 'bg-success';
+      case 'MATURED': return 'bg-info';
+      case 'CANCELLED': return 'bg-danger';
+      default: return 'bg-secondary';
+    }
+  }
+
+  // Portfolio breakdown
+  getPortfolioAllocation(): { title: string; percentage: number; amount: number }[] {
+    if (!this.investments.length) return [];
+    const total = this.investments.reduce((sum, inv) => sum + inv.amount, 0);
+    return this.investments.map(inv => ({
+      title: inv.propertyTitle,
+      percentage: (inv.amount / total) * 100,
+      amount: inv.amount
+    }));
+  }
+
+  deposit() {
+    this.router.navigate(['investor/deposit']);
+  }
+
+  // Data loading
   getAllDeductions() {
     const paginator: Pagination = { page: 0, size: 100 };
     this.deductionsService.getAllDeductions(paginator)
@@ -129,7 +228,7 @@ export class InvestorDashboardComponent extends SmartComponent implements OnInit
           this.stats = stats;
           this.cdr.markForCheck();
         },
-        error: (error: any) => this.handleError(error)
+        error: () => {}
       });
   }
 
@@ -141,7 +240,7 @@ export class InvestorDashboardComponent extends SmartComponent implements OnInit
           this.investments = investments;
           this.cdr.markForCheck();
         },
-        error: (error: any) => this.handleError(error)
+        error: () => {}
       });
   }
 
@@ -153,12 +252,8 @@ export class InvestorDashboardComponent extends SmartComponent implements OnInit
           this.wallet = wallet;
           this.cdr.markForCheck();
         },
-        error: (error: any) => this.handleError(error)
+        error: () => {}
       });
-  }
-
-  deposit() {
-    this.router.navigate(['investor/deposit']);
   }
 
   private loadTransactions() {
@@ -169,7 +264,26 @@ export class InvestorDashboardComponent extends SmartComponent implements OnInit
           this.transactions = transactions;
           this.cdr.markForCheck();
         },
-        error: (error: any) => this.handleError(error)
+        error: () => {}
+      });
+  }
+
+  private loadSavedProperties() {
+    this.favoritesRepo.getFavorites(this.userId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (ids) => {
+          ids.forEach(id => {
+            this.propertiesService.getProperty(id)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe({
+                next: (property) => {
+                  this.savedProperties.push(property);
+                  this.cdr.markForCheck();
+                }
+              });
+          });
+        }
       });
   }
 }

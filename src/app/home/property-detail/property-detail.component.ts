@@ -11,7 +11,6 @@ import { SmartComponent } from '../../shared/components/base/base.component';
 import { takeUntil } from 'rxjs';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { WalletService } from '../../features/investor/services/wallet.service';
-import type { FundingRound } from '../../models';
 
 @Component({
   selector: 'app-property-detail',
@@ -52,8 +51,8 @@ export class PropertyDetailComponent extends SmartComponent implements OnInit {
   isMobile = false;
   propertyId: any;
   currentImageIndex = 0;
-  fundingRound: FundingRound | null = null;
   isLoggedIn = false;
+  showDeveloperDetails = false;
   private userId = '';
 
   constructor(
@@ -70,12 +69,15 @@ export class PropertyDetailComponent extends SmartComponent implements OnInit {
   ngOnInit(): void {
     this.propertyId = this.route.snapshot.paramMap.get('id')?.toString();
     this.getProperty(this.propertyId);
-    this.loadFundingRound();
 
     this.isLoggedIn = this.authService.isLoggedIn();
     const user = this.authService.getCurrentUser();
     if (user) {
       this.userId = user.id;
+    }
+
+    if (this.route.snapshot.queryParamMap.get('showDeveloper') === 'true') {
+      this.showDeveloperDetails = true;
     }
   }
 
@@ -93,15 +95,22 @@ export class PropertyDetailComponent extends SmartComponent implements OnInit {
   }
 
   getUrgencyText(): string {
-    if (this.fundingRound && this.fundingRound.investorsToday > 0) {
-      return `${this.fundingRound.investorsToday} investor${this.fundingRound.investorsToday > 1 ? 's' : ''} invested today`;
-    }
     return '';
   }
 
   handleInvestNow(): void {
     if (!this.isLoggedIn) {
       this.router.navigate(['/auth/login'], { queryParams: { returnUrl: `/property-details/${this.propertyId}` } });
+      return;
+    }
+    if (!this.property.fundingOpen) {
+      this.toast.add({
+        severity: 'warn',
+        summary: 'Funding Closed',
+        detail: 'This property is not currently open for investment.',
+        key: 'tl',
+        life: 5000
+      });
       return;
     }
     this.showInvestModal = true;
@@ -116,7 +125,7 @@ export class PropertyDetailComponent extends SmartComponent implements OnInit {
         next: () => {
           this.showInvestModal = false;
           this.investAmount = 0;
-          this.loadFundingRound();
+          this.getProperty(this.propertyId);
           this.toast.add({
             severity: 'success',
             summary: 'Investment Successful',
@@ -134,19 +143,6 @@ export class PropertyDetailComponent extends SmartComponent implements OnInit {
             life: 5000
           });
         }
-      });
-  }
-
-  private loadFundingRound(): void {
-    this.walletService.getFundingRound(this.propertyId)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (fr) => {
-          this.fundingRound = fr;
-          this.progressPercentage = fr.percentageFunded;
-          this.cdr.markForCheck();
-        },
-        error: () => {}
       });
   }
 
@@ -182,7 +178,8 @@ export class PropertyDetailComponent extends SmartComponent implements OnInit {
       .subscribe({
       next: (response: Property) => {
         this.property = response;
-        this.currentImageIndex = 0; // Reset to first image
+        this.currentImageIndex = 0;
+        this.progressPercentage = response.fundingProgress || 0;
         this.setLoading(false);
       },
       error: (error: any) => {

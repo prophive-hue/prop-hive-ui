@@ -19,7 +19,7 @@ export class ConstantsService {
   }
 
   propertyTypes(): string[] {
-    return ['Residential', 'Commercial', 'Industrial', 'Land'];
+    return ['Residential', 'Commercial', 'Hospitality', 'Mixed-Use', 'Student Accommodation'];
   }
 
   propertyValues(): string[] {

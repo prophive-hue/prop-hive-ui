@@ -76,13 +76,16 @@
                         <i class="bi bi-x-lg"></i>
                       </button>
                     }
-                    @if (property.approvalStatus === 'APPROVED' && !property.fundingTarget) {
-                      <button class="btn btn-sm btn-primary" (click)="openFundingRound(property)">
+                    @if (property.approvalStatus === 'APPROVED' && !property.fundingOpen) {
+                      <button class="btn btn-sm btn-primary" (click)="openFundingRound(property)" title="Open Funding">
                         <i class="bi bi-cash-stack"></i>
                       </button>
                     }
-                    @if (property.fundingTarget) {
-                      <span class="badge bg-info align-self-center">Funded</span>
+                    @if (property.fundingOpen) {
+                      <button class="btn btn-sm btn-warning" (click)="closeFundingRound(property)" title="Close Funding">
+                        <i class="bi bi-lock"></i>
+                      </button>
+                      <span class="badge bg-success align-self-center">Open</span>
                     }
                   </div>
                 </td>
@@ -102,32 +105,4 @@
 </div>
 
 <p-toast position="bottom-center" key="tl"/>
-
-<!-- Funding Round Modal -->
-<div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="showFundingModal"
-     style="background-color: rgba(0, 0, 0, 0.5);">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Create Funding Round</h5>
-        <button type="button" class="btn-close" (click)="showFundingModal = false"></button>
-      </div>
-      <div class="modal-body">
-        <p class="text-muted">Property: <strong>{{ selectedFundingProperty?.title }}</strong></p>
-        <div class="mb-3">
-          <label class="form-label">Target Amount (ZAR)</label>
-          <input [(ngModel)]="fundingTargetAmount" type="number" class="form-control" placeholder="e.g. 1000000" min="1">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Deadline</label>
-          <input [(ngModel)]="fundingDeadline" type="date" class="form-control">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="showFundingModal = false">Cancel</button>
-        <button type="button" class="btn btn-primary" [disabled]="fundingTargetAmount <= 0" (click)="createFundingRound()">Create</button>
-      </div>
-    </div>
-  </div>
-</div>
 

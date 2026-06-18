@@ -1,218 +1,370 @@
 <div class="container pb-4">
-  <h3 class="mt-5">Investor Dashboard</h3>
+  <h3 class="mt-4 mb-3">Investor Dashboard</h3>
 
-  <div>
-    <p-card [styleClass]="'bg-light'">
-      <div>
-        <span><i class="bi bi-clipboard2-check text-primary"></i>  Complete your investor profile to access all investment opportunities.</span>
-        <button (click)="openProfileCompletion()" class="btn btn-primary float-end">Complete Profile <i
-          class="bi bi-arrow-right"></i></button>
+  <!-- Profile CTA -->
+  @if ((stats?.profileCompletion || 0) < 100) {
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="flex-grow-1">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="fw-medium"><i class="bi bi-clipboard2-check text-primary me-2"></i>Profile Completion</span>
+            <span class="fw-bold text-primary">{{ stats?.profileCompletion || 0 }}%</span>
+          </div>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar" [style.width.%]="stats?.profileCompletion || 0"
+                 [ngClass]="{
+                   'bg-danger': (stats?.profileCompletion || 0) < 30,
+                   'bg-warning': (stats?.profileCompletion || 0) >= 30 && (stats?.profileCompletion || 0) < 70,
+                   'bg-success': (stats?.profileCompletion || 0) >= 70
+                 }"></div>
+          </div>
+          <small class="text-muted">Complete your profile to access all investment opportunities.</small>
+        </div>
+        <button (click)="openProfileCompletion()" class="btn btn-primary btn-sm">Continue <i class="bi bi-arrow-right"></i></button>
       </div>
-    </p-card>
+    </div>
+  }
+
+  <!-- Stats Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <span class="text-muted small">Wallet Balance</span>
+            <i class="bi bi-wallet text-primary"></i>
+          </div>
+          <h5 class="fw-bold mt-2">{{ (wallet?.balance || 0) | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h5>
+          <div class="d-flex gap-1 mt-2">
+            <button (click)="deposit()" class="btn btn-sm btn-outline-primary">Deposit</button>
+            <button (click)="openWithdraw()" class="btn btn-sm btn-outline-secondary">Withdraw</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <span class="text-muted small">Total Invested</span>
+            <i class="bi bi-wallet2 text-primary"></i>
+          </div>
+          <h5 class="fw-bold mt-2">{{ (stats?.totalInvested || 0) | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <span class="text-muted small">Total Returns</span>
+            <i class="bi bi-graph-up-arrow text-success"></i>
+          </div>
+          <h5 class="fw-bold mt-2 text-success">{{ (stats?.totalReturns || 0) | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <span class="text-muted small">Active Properties</span>
+            <i class="bi bi-building text-primary"></i>
+          </div>
+          <h5 class="fw-bold mt-2">{{ stats?.activeProperties || 0 }}</h5>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="mt-4 mb-4" style="display: flex; gap: 1rem; justify-content: space-between; flex-wrap: wrap;">
-    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '200px', 'max-width': '500px' }">
-      <i class="bi-wallet float-end"></i>
-      <p>Wallet Balance</p>
-      <h5>{{ (wallet?.balance || 0) | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h5>
-      <button (click)="deposit()" class="btn btn-sm btn-outline-primary mt-2">Deposit</button>
-    </p-card>
+  <!-- Tab Navigation -->
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'investments'" (click)="setTab('investments')" href="javascript:void(0)">
+        <i class="bi bi-pie-chart me-1"></i>My Investments
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'saved'" (click)="setTab('saved')" href="javascript:void(0)">
+        <i class="bi bi-heart me-1"></i>Saved Properties
+        @if (savedProperties.length > 0) {
+          <span class="badge bg-primary ms-1">{{ savedProperties.length }}</span>
+        }
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'transactions'" (click)="setTab('transactions')" href="javascript:void(0)">
+        <i class="bi bi-clock-history me-1"></i>Transactions
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'calculator'" (click)="setTab('calculator')" href="javascript:void(0)">
+        <i class="bi bi-calculator me-1"></i>Calculator
+      </a>
+    </li>
+  </ul>
 
-    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '200px', 'max-width': '500px' }">
-      <i class="bi-wallet2 float-end"></i>
-      <p>Total Investments</p>
-      <h5>{{ (stats?.totalInvested || 0) | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h5>
-    </p-card>
-
-    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '200px', 'max-width': '500px' }">
-      <i style="color: gold" class="bi-graph-up-arrow float-end"></i>
-      <p>Total Returns</p>
-      <h5>{{ (stats?.totalReturns || 0) | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h5>
-    </p-card>
-
-    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '200px', 'max-width': '500px' }">
-      <i class="bi bi-radioactive float-end"></i>
-      <p>Active Properties</p>
-      <h5>{{ stats?.activeProperties || 0 }}</h5>
-    </p-card>
-  </div>
-
-
-  <div class="mt-4 mb-4" style="display: flex; gap: 1rem; justify-content: space-between; flex-wrap: wrap;">
-    <p-card [ngStyle]="{ 'flex': '2', 'min-width': '250px', 'max-width': '800px' }">
-      <h5><i class="bi bi-calculator"></i> Investment Calculator </h5>
-
-      <div class="form-group">
-        <label class="form-label">Investment Amount</label>
-        <input (ngModelChange)="onInvestmentChange($event)" [(ngModel)]="investmentAmount" class="form-control"
-               type="number" placeholder="Enter amount in ZAR">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">ROI</label>
-        <input (ngModelChange)="onRoiChange($event)" [(ngModel)]="roi" class="form-control" type="number"
-               placeholder="Enter ROI %">
-        <i class="text-muted">* This is an estimated ROI and actual returns may vary</i>
-      </div>
-
-      <div class="form-group mb-3">
-        <label class="form-label">Term (Months)</label>
-        <input (ngModelChange)="onTermChange($event)" [(ngModel)]="term" class="form-control" type="number"
-               placeholder="">
-      </div>
-
-
-      @if (showInvestmentSummary) {
-        <div>
-          <p-card [styleClass]="'bg-light mb-4'"
-                  [ngStyle]="{ 'flex': '1', 'min-width': '250px', 'max-width': '800px' }">
-            <h6>Investment Term Summary</h6>
-            <span>Investment period: <strong>{{ term }} months</strong></span>
-            <p>Annual ROI: <strong>{{ roi }} %</strong></p>
-          </p-card>
-
-          <p-card [styleClass]="'bg-light'" [ngStyle]="{ 'flex': '1', 'min-width': '250px', 'max-width': '800px' }">
-            <h6>Return Calculation Breakdown</h6>
-
-            <div class="d-flex justify-content-between">
-              <span>Gross Return (Investment * ROI):</span>
-              <span>{{ grossReturn | number:'1.2-2' }}</span>
-            </div>
-
-            <hr class="text-primary">
-
-            <h6>Platform Deductions</h6>
-
-            @for (deduction of deductions; track deductions) {
-              <div class="d-flex justify-content-between">
-                <div>
-                  <span>{{ deduction.name }} @if (deduction.type == 'Percentage') {
-                    <span> ({{ deduction.value }}%) </span>
-                  } @else {
-                    <span>({{ deduction.value }}R) </span>
-                  } </span>
+  <!-- Tab: My Investments -->
+  @if (activeTab === 'investments') {
+    <div class="row g-4">
+      <!-- Portfolio Breakdown -->
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <h6 class="fw-bold mb-3">Portfolio Breakdown</h6>
+            @if (getPortfolioAllocation().length > 0) {
+              @for (item of getPortfolioAllocation(); track item.title) {
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between small mb-1">
+                    <span>{{ item.title }}</span>
+                    <span class="fw-medium">{{ item.percentage | number:'1.0-0' }}%</span>
+                  </div>
+                  <div class="progress" style="height: 6px;">
+                    <div class="progress-bar" [style.width.%]="item.percentage"></div>
+                  </div>
+                  <small class="text-muted">{{ item.amount | currency:'R':'symbol':'1.0-0':'en-ZA' }}</small>
                 </div>
+              }
+            } @else {
+              <p class="text-muted small">No investments yet.</p>
+            }
+          </div>
+        </div>
+      </div>
 
-                <span>-R {{ (deduction.value / 100) * grossReturn | number:'1.2-2' }}</span>
-
+      <!-- Investments Table -->
+      <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <h6 class="fw-bold mb-3">All Investments</h6>
+            @if (investments.length > 0) {
+              <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                  <thead>
+                    <tr class="text-muted small">
+                      <th>Property</th>
+                      <th>Amount</th>
+                      <th>Share</th>
+                      <th>ROI</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (inv of investments; track inv.id) {
+                      <tr>
+                        <td>
+                          <span class="fw-medium">{{ inv.propertyTitle }}</span>
+                          <br><small class="text-muted">{{ inv.propertyLocation }}</small>
+                        </td>
+                        <td>{{ inv.amount | currency:'R':'symbol':'1.0-0':'en-ZA' }}</td>
+                        <td>{{ inv.sharePercentage | number:'1.2-2' }}%</td>
+                        <td class="text-success">{{ inv.expectedRoi }}%</td>
+                        <td><span class="badge" [ngClass]="getStatusClass(inv.status)">{{ inv.status }}</span></td>
+                        <td><small>{{ inv.investedAt | date:'mediumDate' }}</small></td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            } @else {
+              <div class="text-center py-4">
+                <i class="bi bi-building fs-2 text-muted"></i>
+                <p class="text-muted mt-2">No investments yet. Browse properties to start investing.</p>
+                <a routerLink="/home-properties" class="btn btn-primary btn-sm">Browse Properties</a>
               </div>
             }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
 
-            <hr class="text-primary">
+  <!-- Tab: Saved Properties -->
+  @if (activeTab === 'saved') {
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        @if (savedProperties.length > 0) {
+          <div class="row g-3">
+            @for (property of savedProperties; track property.id) {
+              <div class="col-12 col-md-6">
+                <div class="card border h-100">
+                  <div class="card-body d-flex align-items-center gap-3">
+                    <img [src]="property.imageUrls[0] || '/no-image.svg'" class="rounded" style="width: 80px; height: 60px; object-fit: cover;" alt="">
+                    <div class="flex-grow-1">
+                      <h6 class="mb-0 fw-bold">{{ property.title }}</h6>
+                      <small class="text-muted">{{ property.location }} • ROI: {{ property.expectedRoi }}%</small>
+                    </div>
+                    <div class="d-flex flex-column gap-1">
+                      <button class="btn btn-sm btn-outline-primary" (click)="viewProperty(property.id)">
+                        <i class="bi bi-eye"></i>
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" (click)="removeFavorite(property.id)">
+                        <i class="bi bi-heart-fill"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="text-center py-4">
+            <i class="bi bi-heart fs-2 text-muted"></i>
+            <p class="text-muted mt-2">No saved properties yet. Click the heart icon on properties you like.</p>
+            <a routerLink="/home-properties" class="btn btn-primary btn-sm">Browse Properties</a>
+          </div>
+        }
+      </div>
+    </div>
+  }
 
-            <div class="d-flex justify-content-between">
-              <h6>Total Deductions:</h6>
-              <span class="text-danger">{{ totalDeductions | currency:'R':'symbol':'1.2-2':'en-ZA' }}</span>
+  <!-- Tab: Transactions -->
+  @if (activeTab === 'transactions') {
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        @if (transactions.length > 0) {
+          <div class="table-responsive">
+            <table class="table table-sm table-striped align-middle">
+              <thead>
+                <tr class="text-muted small">
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Description</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (tx of transactions; track tx.id) {
+                  <tr>
+                    <td>
+                      <span class="badge" [ngClass]="{
+                        'bg-success': tx.type === 'DEPOSIT' || tx.type === 'RETURN',
+                        'bg-warning': tx.type === 'WITHDRAWAL',
+                        'bg-primary': tx.type === 'INVESTMENT',
+                        'bg-secondary': tx.type === 'FEE'
+                      }">{{ tx.type }}</span>
+                    </td>
+                    <td [class.text-success]="tx.type === 'DEPOSIT' || tx.type === 'RETURN'"
+                        [class.text-danger]="tx.type === 'WITHDRAWAL' || tx.type === 'FEE'">
+                      {{ tx.type === 'DEPOSIT' || tx.type === 'RETURN' ? '+' : '-' }}{{ tx.amount | currency:'R':'symbol':'1.2-2':'en-ZA' }}
+                    </td>
+                    <td><small>{{ tx.status }}</small></td>
+                    <td><small class="text-muted">{{ tx.description }}</small></td>
+                    <td><small>{{ tx.createdAt | date:'medium' }}</small></td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="text-center py-4">
+            <i class="bi bi-clock-history fs-2 text-muted"></i>
+            <p class="text-muted mt-2">No transactions yet.</p>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Tab: Calculator -->
+  @if (activeTab === 'calculator') {
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <h6 class="fw-bold mb-3"><i class="bi bi-calculator me-2"></i>Investment Calculator</h6>
+            <div class="mb-3">
+              <label class="form-label small">Investment Amount (ZAR)</label>
+              <input (ngModelChange)="onInvestmentChange($event)" [(ngModel)]="investmentAmount" class="form-control" type="number" placeholder="e.g. 50000">
+            </div>
+            <div class="mb-3">
+              <label class="form-label small">Expected ROI (%)</label>
+              <input (ngModelChange)="onRoiChange($event)" [(ngModel)]="roi" class="form-control" type="number" placeholder="e.g. 12">
+              <small class="text-muted">* Estimated ROI, actual returns may vary</small>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small">Term (Months)</label>
+              <input (ngModelChange)="onTermChange($event)" [(ngModel)]="term" class="form-control" type="number" placeholder="e.g. 12">
             </div>
 
-            <div class="d-flex justify-content-between">
-              <h6>Your Net Return:</h6>
-              <span class="text-success">{{ nettReturns | currency:'R':'symbol':'1.2-2':'en-ZA' }}</span>
-            </div>
+            @if (!showInvestmentSummary) {
+              <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Enter values above to see projected returns</small>
+            }
+          </div>
+        </div>
+      </div>
 
-          </p-card>
+      @if (showInvestmentSummary) {
+        <div class="col-lg-6">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body">
+              <h6 class="fw-bold mb-3">Projected Returns</h6>
 
-          <div class="mt-4">
-            <h6>Investment Returns Summary</h6>
-            <div class="mt-4 mb-4" style="display: flex; gap: 1rem; justify-content: space-between; flex-wrap: wrap;">
+              <div class="d-flex justify-content-between py-2 border-bottom">
+                <span class="text-muted">Gross Return</span>
+                <span class="fw-medium">{{ grossReturn | currency:'R':'symbol':'1.2-2':'en-ZA' }}</span>
+              </div>
 
-              <p-card [ngStyle]="{ 'flex': '1', 'min-width': '60px', 'max-width': '500px' }">
-                <p>Gross Return</p>
-                <h6 class="text-primary">{{ grossReturn | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h6>
-              </p-card>
+              @for (deduction of deductions; track deduction.name) {
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                  <span class="text-muted">{{ deduction.name }} ({{ deduction.value }}%)</span>
+                  <span class="text-danger">-{{ (deduction.value / 100) * grossReturn | currency:'R':'symbol':'1.2-2':'en-ZA' }}</span>
+                </div>
+              }
 
-              <p-card [ngStyle]="{ 'flex': '1', 'min-width': '60px', 'max-width': '500px' }">
-                <p>Total Deductions</p>
-                <h6 class="text-danger">{{ totalDeductions | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h6>
-              </p-card>
+              <div class="d-flex justify-content-between py-2 border-bottom">
+                <span class="fw-bold">Total Deductions</span>
+                <span class="text-danger fw-bold">{{ totalDeductions | currency:'R':'symbol':'1.2-2':'en-ZA' }}</span>
+              </div>
 
-              <p-card [ngStyle]="{ 'flex': '1', 'min-width': '60px', 'max-width': '500px' }">
-                <p>Net Return</p>
-                <h6 class="text-success">{{ nettReturns | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h6>
-              </p-card>
+              <div class="d-flex justify-content-between py-2 border-bottom">
+                <span class="fw-bold">Net Return</span>
+                <span class="text-success fw-bold">{{ nettReturns | currency:'R':'symbol':'1.2-2':'en-ZA' }}</span>
+              </div>
 
-              <p-card [ngStyle]="{ 'flex': '1', 'min-width': '60px', 'max-width': '500px' }">
-                <p>Monthly Net</p>
-                <h6>{{ monthlyNett | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h6>
-              </p-card>
+              <div class="d-flex justify-content-between py-2 border-bottom">
+                <span class="text-muted">Monthly Net</span>
+                <span>{{ monthlyNett | currency:'R':'symbol':'1.2-2':'en-ZA' }}</span>
+              </div>
 
-              <p-card [ngStyle]="{ 'flex': '1', 'min-width': '60px', 'max-width': '500px' }">
-                <p>Total Value</p>
-                <h6>{{ totalValue | currency:'R':'symbol':'1.2-2':'en-ZA' }}</h6>
-              </p-card>
+              <div class="d-flex justify-content-between py-2 mt-2 bg-light rounded p-3">
+                <span class="fw-bold">Total Value (Capital + Returns)</span>
+                <span class="fw-bold text-primary fs-5">{{ totalValue | currency:'R':'symbol':'1.2-2':'en-ZA' }}</span>
+              </div>
             </div>
           </div>
         </div>
-      } @else {
-        <i class="text-danger mt-3">Enter valid investment values to see investment returns summary</i>
       }
-
-    </p-card>
-    <p-card [ngStyle]="{ 'flex': '1', 'min-width': '250px', 'max-width': '800px' }">
-      <h5>Recent Investments</h5>
-      @if (investments.length > 0) {
-        <div class="table-responsive">
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>Property</th>
-                <th>Amount</th>
-                <th>Share</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (inv of investments; track inv.id) {
-                <tr>
-                  <td>{{ inv.propertyTitle }}</td>
-                  <td>{{ inv.amount | currency:'R':'symbol':'1.0-0':'en-ZA' }}</td>
-                  <td>{{ inv.sharePercentage | number:'1.2-2' }}%</td>
-                  <td>{{ inv.investedAt | date:'mediumDate' }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      } @else {
-        <span>No investments yet. Start investing to see your portfolio here.</span>
-      }
-    </p-card>
-
-  </div>
-
-  <div class="mt-4">
-    <p-card>
-      <h5><i class="bi bi-clock-history"></i> Transaction History</h5>
-      @if (transactions.length > 0) {
-        <div class="table-responsive">
-          <table class="table table-sm table-striped">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Description</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (tx of transactions; track tx.id) {
-                <tr>
-                  <td>{{ tx.type }}</td>
-                  <td>{{ tx.amount | currency:'R':'symbol':'1.2-2':'en-ZA' }}</td>
-                  <td>{{ tx.status }}</td>
-                  <td>{{ tx.description }}</td>
-                  <td>{{ tx.createdAt | date:'medium' }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      } @else {
-        <span>No transactions yet.</span>
-      }
-    </p-card>
-  </div>
-
+    </div>
+  }
 </div>
+
+<!-- Withdraw Modal -->
+@if (showWithdrawModal) {
+  <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Withdraw Funds</h5>
+          <button type="button" class="btn-close" (click)="showWithdrawModal = false"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted small">Available: {{ wallet?.balance || 0 | currency:'R':'symbol':'1.2-2':'en-ZA' }}</p>
+          <div class="mb-3">
+            <label class="form-label">Amount (ZAR)</label>
+            <input [(ngModel)]="withdrawAmount" type="number" class="form-control" placeholder="Enter amount" [max]="wallet?.balance || 0" min="1">
+          </div>
+          <p class="text-muted small"><i class="bi bi-info-circle me-1"></i>Withdrawals are processed within 1-3 business days.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="showWithdrawModal = false">Cancel</button>
+          <button class="btn btn-primary" [disabled]="withdrawAmount <= 0 || withdrawAmount > (wallet?.balance || 0)" (click)="confirmWithdraw()">Confirm Withdrawal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<p-toast position="bottom-center" key="tl"/>

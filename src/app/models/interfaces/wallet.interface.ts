@@ -45,6 +45,7 @@ export interface InvestorStats {
   totalReturns: number;
   activeProperties: number;
   walletBalance: number;
+  profileCompletion: number;
 }
 
 export interface FundingRound {

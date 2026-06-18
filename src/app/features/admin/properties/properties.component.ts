@@ -3,7 +3,7 @@ import {Button} from 'primeng/button';
 import {Tag} from 'primeng/tag';
 import {Toast} from 'primeng/toast';
 import {Toolbar} from 'primeng/toolbar';
-import {SlicePipe, NgIf} from '@angular/common';
+import {SlicePipe} from '@angular/common';
 import {NgxUiLoaderModule} from 'ngx-ui-loader';
 import {CustomerService} from '../services/customer.service';
 import {DialogPropertyCreateComponent} from '../dialog/dialog-property-create/dialog-property-create.component';
@@ -32,7 +32,6 @@ import { TrackByFunctions } from '../../../shared/utils/track-by.functions';
     Toast,
     Tag,
     SlicePipe,
-    NgIf,
     FormsModule,
     Toolbar,
     Button,
@@ -66,11 +65,6 @@ export class PropertiesComponent extends SmartComponent implements OnInit {
   size: number = 5;
 
   searchPropertiesInput: string = '';
-
-  showFundingModal = false;
-  selectedFundingProperty: Property | null = null;
-  fundingTargetAmount: number = 0;
-  fundingDeadline: string = '';
 
 
   constructor(private propertiesService: AdminPropertiesService, private messageService: MessageService, private loader: LoaderService) {
@@ -260,42 +254,56 @@ export class PropertiesComponent extends SmartComponent implements OnInit {
   }
 
   openFundingRound(property: Property) {
-    this.selectedFundingProperty = property;
-    this.fundingTargetAmount = property.totalInvestment;
-    this.fundingDeadline = '';
-    this.showFundingModal = true;
+    this.loader.startLoader();
+    this.propertiesService.openFunding(property.id).subscribe({
+      next: (response: any) => {
+        this.loader.stopLoader();
+        this.getAllProperties();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Funding Opened',
+          detail: response.message,
+          key: 'tl',
+          life: 5000
+        });
+      },
+      error: (error: Error) => {
+        this.loader.stopLoader();
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Error',
+          detail: error.message,
+          key: 'tl',
+          life: 5000
+        });
+      }
+    });
   }
 
-  createFundingRound() {
-    if (!this.selectedFundingProperty || this.fundingTargetAmount <= 0) return;
-
-    const deadline = this.fundingDeadline ? this.fundingDeadline + 'T00:00:00' : null;
-
+  closeFundingRound(property: Property) {
     this.loader.startLoader();
-    this.showFundingModal = false;
-    this.propertiesService.createFundingRound(this.selectedFundingProperty.id, this.fundingTargetAmount, deadline)
-      .subscribe({
-        next: (response) => {
-          this.loader.stopLoader();
-          this.getAllProperties();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Funding Round Created',
-            detail: response.message,
-            key: 'tl',
-            life: 5000
-          });
-        },
-        error: (error: Error) => {
-          this.loader.stopLoader();
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Error',
-            detail: error.message,
-            key: 'tl',
-            life: 5000
-          });
-        }
-      });
+    this.propertiesService.closeFunding(property.id).subscribe({
+      next: (response: any) => {
+        this.loader.stopLoader();
+        this.getAllProperties();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Funding Closed',
+          detail: response.message,
+          key: 'tl',
+          life: 5000
+        });
+      },
+      error: (error: Error) => {
+        this.loader.stopLoader();
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Error',
+          detail: error.message,
+          key: 'tl',
+          life: 5000
+        });
+      }
+    });
   }
 }

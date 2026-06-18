@@ -44,11 +44,52 @@
       <h5 class="fw-bold mt-4">About this Project</h5>
       <p class="text-muted">{{ property.description }}</p>
 
-      <h5 class="fw-bold mt-4">Developer Information</h5>
-      <p class="text-muted">{{ property.developer || 'Not specified' }}</p>
+      <!-- Developer Section -->
+      <div class="mt-4">
+        <h5 class="fw-bold">Developer</h5>
+        <div *ngIf="property.developerInfo; else noDeveloper">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body">
+              <div class="d-flex align-items-center mb-3">
+                <img *ngIf="property.developerInfo.logoUrl"
+                     [src]="property.developerInfo.logoUrl"
+                     class="rounded me-3"
+                     style="width: 48px; height: 48px; object-fit: cover;"
+                     alt="Developer logo">
+                <div>
+                  <h6 class="mb-0 fw-bold">{{ property.developerInfo.companyName }}</h6>
+                  <span class="badge bg-primary-subtle text-primary small">{{ property.developerInfo.developerType }}</span>
+                </div>
+                <button class="btn btn-sm btn-outline-primary ms-auto" (click)="showDeveloperDetails = !showDeveloperDetails">
+                  <i class="bi" [class.bi-chevron-down]="!showDeveloperDetails" [class.bi-chevron-up]="showDeveloperDetails"></i>
+                  {{ showDeveloperDetails ? 'Less' : 'More' }}
+                </button>
+              </div>
 
-      <h5 class="fw-bold mt-4">Property Features</h5>
-      <p class="text-muted">Foreign Investor Ready</p>
+              <div *ngIf="showDeveloperDetails">
+                <p class="text-muted small mb-2">{{ property.developerInfo.companyDescription }}</p>
+                <div class="row g-2 small">
+                  <div class="col-6">
+                    <span class="text-muted">Experience:</span>
+                    <span class="fw-medium ms-1">{{ property.developerInfo.yearsExperience }}</span>
+                  </div>
+                  <div class="col-6">
+                    <span class="text-muted">Email:</span>
+                    <span class="fw-medium ms-1">{{ property.developerInfo.email }}</span>
+                  </div>
+                  <div class="col-6">
+                    <span class="text-muted">Phone:</span>
+                    <span class="fw-medium ms-1">{{ property.developerInfo.phone }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noDeveloper>
+          <p class="text-muted">{{ property.developer || 'Not specified' }}</p>
+        </ng-template>
+      </div>
 
       <h5 class="fw-bold mt-4">Location</h5>
       <p class="text-muted">{{ property.location || '456 Business Avenue, CBD, Cape Town' }}</p>
@@ -88,14 +129,14 @@
               <div class="progress-bar bg-success" role="progressbar" [style.width.%]="progressPercentage"></div>
             </div>
             <div class="d-flex justify-content-between small mt-1 text-muted">
-              <span>Raised: {{ fundingRound ? (fundingRound.currentAmount | currency:'R':'symbol':'1.0-0':'en-ZA') : 'N/A' }}</span>
+              <span>Raised: {{ property.fundingRaised ? (property.fundingRaised | currency:'R':'symbol':'1.0-0':'en-ZA') : 'N/A' }}</span>
               <span>Target: {{ formatCurrency(property.totalInvestment) }}</span>
             </div>
           </div>
 
-          <button class="btn btn-primary w-100 mb-2" (click)="handleInvestNow()">
+          <button class="btn btn-primary w-100 mb-2" (click)="handleInvestNow()" [disabled]="!property.fundingOpen">
             <i class="bi bi-graph-up-arrow me-1"></i>
-            {{ getInvestButtonText() }}
+            {{ property.fundingOpen ? getInvestButtonText() : 'Funding Closed' }}
           </button>
 
           <div class="text-center small text-success mb-1">
@@ -159,9 +200,9 @@
         <button type="button" class="btn-close" (click)="showInvestModal = false"></button>
       </div>
       <div class="modal-body">
-        <div class="mb-3" *ngIf="fundingRound">
+        <div class="mb-3" *ngIf="property.fundingRaised">
           <div class="d-flex justify-content-between text-muted small">
-            <span>Available: {{ (fundingRound.targetAmount - fundingRound.currentAmount) | currency:'R':'symbol':'1.0-0':'en-ZA' }}</span>
+            <span>Available: {{ (property.totalInvestment - (property.fundingRaised || 0)) | currency:'R':'symbol':'1.0-0':'en-ZA' }}</span>
             <span>ROI: {{ property.expectedRoi }}%</span>
           </div>
         </div>

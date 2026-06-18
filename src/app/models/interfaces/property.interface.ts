@@ -5,9 +5,13 @@ export interface Property {
   category: PropertyCategory;
   description: string;
   developer: string;
+  developerInfo?: DeveloperInfo;
   expectedRoi: number;
   totalInvestment: number;
   status: PropertyStatus;
+  investmentType?: string;
+  managementType?: string;
+  fundingOpen?: boolean;
   approvalStatus?: string;
   rejectionReason?: string;
   submittedBy?: string;
@@ -19,6 +23,16 @@ export interface Property {
   updatedAt?: string;
 }
 
+export interface DeveloperInfo {
+  companyName: string;
+  email: string;
+  phone: string;
+  developerType: string;
+  yearsExperience: string;
+  companyDescription: string;
+  logoUrl?: string;
+}
+
 export interface CreateProperty {
   title: string;
   location: string;
@@ -28,6 +42,8 @@ export interface CreateProperty {
   expectedRoi: number;
   totalInvestment: number;
   status: PropertyStatus;
+  investmentType?: string;
+  managementType?: string;
   base64Images: Base64File[];
 }
 
@@ -40,8 +56,9 @@ export interface Base64File {
 export enum PropertyCategory {
   RESIDENTIAL = 'Residential',
   COMMERCIAL = 'Commercial',
-  INDUSTRIAL = 'Industrial',
-  LAND = 'Land'
+  HOSPITALITY = 'Hospitality',
+  MIXED_USE = 'Mixed-Use',
+  STUDENT_ACCOMMODATION = 'Student Accommodation'
 }
 
 export enum PropertyStatus {

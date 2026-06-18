@@ -7,6 +7,18 @@ export interface AdminPropertiesPagination extends PaginationRequest {
   propertyName?: string;
 }
 
+export interface PropertyFilter {
+  page: number;
+  size: number;
+  search?: string;
+  category?: string;
+  status?: string;
+  investmentType?: string;
+  managementType?: string;
+  minInvestment?: number;
+  maxInvestment?: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,6 +26,10 @@ export class AdminPropertiesRepository extends BaseHttpService {
 
   getAllProperties(pagination: AdminPropertiesPagination): Observable<PaginatedResponse<Property>> {
     return this.post<PaginatedResponse<Property>>('/property/all/home', pagination);
+  }
+
+  getFilteredProperties(filter: PropertyFilter): Observable<PaginatedResponse<Property>> {
+    return this.post<PaginatedResponse<Property>>('/property/all/home/filter', filter);
   }
 
   createProperty(property: CreateProperty): Observable<{ message: string }> {
@@ -32,7 +48,11 @@ export class AdminPropertiesRepository extends BaseHttpService {
     return this.get<Property>(`/property/${id}`);
   }
 
-  createFundingRound(propertyId: string, targetAmount: number, deadline: string | null): Observable<{ message: string }> {
-    return this.post<{ message: string }>('/investment/funding-round', { propertyId, targetAmount, deadline });
+  openFunding(propertyId: string): Observable<{ message: string }> {
+    return this.put<{ message: string }>(`/property/${propertyId}/funding/open`, {});
+  }
+
+  closeFunding(propertyId: string): Observable<{ message: string }> {
+    return this.put<{ message: string }>(`/property/${propertyId}/funding/close`, {});
   }
 }

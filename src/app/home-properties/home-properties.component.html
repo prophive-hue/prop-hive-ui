@@ -1,151 +1,16 @@
 <app-header></app-header>
 
-<div class="position-relative">
-  <ngx-ui-loader [overlayColor]="'rgba(135,128,128,0.3)'" [fgsType]="'three-strings'" [bgsOpacity]="0.1"
-                 fgsColor="#007FFF" [loaderId]="'loader'"></ngx-ui-loader>
-
-  <!-- Hero Section -->
-  <div class="py-5 text-white text-center" style="background: linear-gradient(90deg, #1e3a8a, #2563eb);">
-    <div class="container px-4">
-      <h1 class="display-4 fw-bold mb-3">Investment Properties</h1>
-      <p class="lead text-light mx-auto" style="max-width: 700px;">
-        Discover premium property investment opportunities across South Africa
-      </p>
-    </div>
+<!-- Hero Section -->
+<div class="py-5 text-white text-center" style="background: linear-gradient(90deg, #1e3a8a, #2563eb);">
+  <div class="container px-4">
+    <h1 class="display-4 fw-bold mb-3">Investment Properties</h1>
+    <p class="lead text-light mx-auto" style="max-width: 700px;">
+      Discover premium property investment opportunities across South Africa
+    </p>
   </div>
-
-  <!-- Features Section -->
-  <section class="features py-5">
-    <div class="container">
-      <!-- Mobile: Horizontal scroll -->
-      <div class="d-block d-md-none">
-        <div class="d-flex flex-row flex-nowrap gap-3 overflow-auto pb-2">
-          <div class="flex-shrink-0" *ngFor="let feature of features">
-            <div class="card border-0 shadow-sm" style="min-width: 140px;">
-              <div class="card-body text-center py-3">
-                <div class="feature-icon d-inline-flex align-items-center justify-content-center fs-4 mb-2">
-                  <i class="{{ feature.icon }}"></i>
-                </div>
-                <h6 class="card-title mb-0">{{ feature.title }}</h6>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tablet & Desktop: All visible in grid -->
-      <div class="d-none d-md-block">
-        <div class="row g-3 justify-content-center">
-          <div class="col-md-6 col-lg-4 col-xl-2" *ngFor="let feature of features">
-            <div class="card h-100 border-0 shadow-sm">
-              <div class="card-body text-center py-3">
-                <div class="feature-icon d-inline-flex align-items-center justify-content-center fs-4 mb-2">
-                  <i class="{{ feature.icon }}"></i>
-                </div>
-                <h6 class="card-title mb-0">{{ feature.title }}</h6>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="container mb-2">
-    <div class="form-group d-flex">
-      <div class="input-group mx-1">
-        <span class="input-group-text"><i class="bi bi-search"></i></span>
-        <input class="form-control" placeholder="search properties...">
-      </div>
-
-      <div>
-        <button class="btn btn-primary mx-1">Search</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="container mb-2 mt-3">
-    <div class="row g-1 justify-content-between">
-      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <select class="form-select">
-          <option value="">Investment Type</option>
-          @for (t of investmentTypes; track investmentTypes) {
-            <option [value]="t">{{t}}</option>
-          }
-        </select>
-      </div>
-      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <select class="form-select">
-          <option value="">Project Type</option>
-          @for (t of propertyCompletionTypes; track propertyCompletionTypes){
-            <option [value]="t">{{t}}</option>
-          }
-        </select>
-      </div>
-      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <select class="form-select">
-          <option value="">Property Type</option>
-          @for (t of propertyTypes; track propertyTypes){
-            <option [value]="t">{{t}}</option>
-          }
-        </select>
-      </div>
-      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <select class="form-select">
-          <option value="">Property Value</option>
-          @for (t of propertyValues; track propertyValues){
-            <option [value]="t">{{t}}</option>
-          }
-        </select>
-      </div>
-      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <select class="form-select">
-          <option value="" >Property Management</option>
-          @for (t of managementTypes;track managementTypes){
-            <option [value]="t">{{t}}</option>
-          }
-        </select>
-      </div>
-    </div>
-  </div>
-
-
-  @if (properties.length > 0) {
-    <div class="container mb-4">
-      <h3 class="mb-4 text-center">All Properties</h3>
-
-      <div class="position-relative">
-        <!-- Left Scroll Button -->
-        <button
-          class="btn btn-primary position-absolute start-0 top-50 translate-middle-y z-3 d-none d-md-block"
-          style="margin-left: 10px;"
-          (click)="scrollLeft()">
-          <i class="bi bi-chevron-left"></i>
-        </button>
-
-        <!-- Right Scroll Button -->
-        <button
-          class="btn btn-primary position-absolute end-0 top-50 translate-middle-y z-3 d-none d-md-block"
-          style="margin-right: 10px;"
-          (click)="scrollRight()">
-          <i class="bi bi-chevron-right"></i>
-        </button>
-
-        <!-- Properties Container -->
-        <div class="px-2 px-md-5">
-          <div #scrollContainer class="d-flex overflow-auto gap-2 gap-md-3 pb-3" style="scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none;">
-            @for (p of properties; track p) {
-              <div class="flex-shrink-0" style="width: calc(100vw - 2rem); max-width: 300px;">
-                <app-card-property [property]="p"></app-card-property>
-              </div>
-            }
-          </div>
-        </div>
-      </div>
-    </div>
-  }
-
-
-
-  <app-footer></app-footer>
 </div>
+
+<!-- Shared Property List -->
+<app-property-list></app-property-list>
+
+<app-footer></app-footer>
